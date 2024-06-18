@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <title>Naver Map with Marker Clustering</title>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0rm45zpj5b"></script>
+  <script type="text/javascript" src="../static/js/MarkerClustering.js"></script>
+  <script type="text/javascript" src="../static/js/real_estate.js"></script>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #map {
+      width: calc(100% - 70px);
+      height: 100%;
+      position: absolute;
+      left: 70px;
+    }
+    .marker_container {
+      height: 30px;
+      padding: 0px 10px;
+      position: absolute;
+      border-radius: 5px;
+      background-color: #EAE3A1;
+      font-size: 14px;
+      color: white;
+      text-align: center;
+      align-content: center;
+      text-wrap: nowrap;
+      z-index: 1;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
+    .marker_container:hover {
+      z-index: 999;
+    }
+    .marker_container:after {
+      content: ""; 
+      position: absolute; 
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent; 
+      border-right: 4px solid transparent; 
+      border-top: 6px solid #EAE3A1;
+    }
+    .search {
+      position: absolute;
+      z-index: 999;
+      right: 50px;
+      top: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .search img {
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      right: 15px;
+      cursor: pointer;
+    }
+    .searchBox {
+      height: 40px;
+      width: 300px;
+      border-radius: 10px;
+      background: rgb(248, 248, 2486);
+      font-size: 14px;
+      padding-left: 15px;
+      font-weight: bold;
+      border: 0px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
+    .searchBox::placeholder {
+      color: #b7b7b7;
+    }
+    .searchBox:focus {
+      outline: none;
+    }
+    .navbar {
+      height: 100%;
+      width: 70px;
+      z-index: 999;
+      background-color: white;
+      border-right: 1px solid #d4d4d4;
+      position: absolute;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .navContent {
+      display: flex;
+      height: 70px;
+      width: 70px;
+      border-bottom: 1px solid #d4d4d4;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    .navContent img {
+      width: 30px;
+      height: 30px;
+    }
+    .menu {
+      display: none;
+      position: absolute;
+      left: 70px;
+      top: 0;
+      width: 400px;
+      height: 100%;
+      background-color: white;
+      border-left: 1px solid #d4d4d4;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+      z-index: 998;
+    }
+    .menu.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navContent" id="homeIcon">
+      <img src="../static/assets/images/home.png" />
+    </div>
+    <div class="navContent" id="commIcon">
+      <img src="../static/assets/images/comm.png" />
+    </div>
+    <div class="navContent" id="userIcon">
+      <img src="../static/assets/images/user.png" />
+    </div>
+  </div>
+  <div id="map">
+    <div class="search">
+      <input class="searchBox" type='text' placeholder='검색어 입력' />
+      <img src='../static/assets/images/search.png' />
+    </div>
+  </div>
+  <div class="menu" id="homeMenu">
+    Home Menu Content
+  </div>
+  <div class="menu" id="commMenu">
+    Community Menu Content
+  </div>
+  <div class="menu" id="userMenu">
+    User Menu Content
+  </div>
+  <div class="menu" id="aptInfo">
+    아파트 정보
+  </div>
+  
+  <script>
+    var map = new naver.maps.Map("map", {
+      zoom: 11,
+      center: new naver.maps.LatLng(37.5664056, 126.9778222),
+      zoomControl: true,
+      zoomControlOptions: {
+        position: naver.maps.Position.TOP_RIGHT,
+        style: naver.maps.ZoomControlStyle.SMALL,
+      },
+    });
+
+    var markers = [],
+      data = mapTest.mapTest2;
+
+    for (var i = 0, ii = data.length; i < ii; i++) {
+      var spot = data[i];
+
+      if (spot.grd_la !== null && spot.grd_lo !== null) {
+        var latlng = new naver.maps.LatLng(spot.grd_la, spot.grd_lo);
+        var apt = spot.complex_name;
+        var marker = new naver.maps.Marker({
+          position: latlng,
+          draggable: false,
+          clickable: true,
+          icon: {
+            content: [
+              '<div class="marker_container">',
+                '<span><strong>'+apt+'</strong></span>',
+              '</div>'
+            ].join(''),
+            size: new naver.maps.Size(40, 40),
+            anchor: new naver.maps.Point(20, 20)
+          }
+        });
+
+        markers.push(marker);
+
+        // 마커 클릭 이벤트 핸들러 추가
+        naver.maps.Event.addListener(marker, 'click', function(e) {
+          var clickedMarker = e.overlay;
+          var markerPosition = clickedMarker.getPosition();
+          var clickedApt = $(clickedMarker.getIcon().content).find('strong').text();
+
+          // 메뉴 내용을 클릭된 마커 정보로 업데이트
+          $('#aptInfo').html('<p>Clicked Marker Information</p><p>Apt: ' + clickedApt + '</p><p>Latitude: ' + markerPosition.lat() + '</p><p>Longitude: ' + markerPosition.lng() + '</p>');
+
+          // 모든 메뉴를 닫고 aptInfo 메뉴를 열기
+          $('.menu').removeClass('active');
+          $('#aptInfo').addClass('active');
+
+        });
+      }
+    }
+
+    var htmlMarker1 = {
+      content:
+        '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-1.png);background-size:contain;"></div>',
+      size: N.Size(40, 40),
+      anchor: N.Point(20, 20)
+    },
+    htmlMarker2 = {
+      content:
+        '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-2.png);background-size:contain;"></div>',
+      size: N.Size(40, 40),
+      anchor: N.Point(20, 20)
+    },
+    htmlMarker3 = {
+      content:
+        '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-3.png);background-size:contain;"></div>',
+      size: N.Size(40, 40),
+      anchor: N.Point(20, 20)
+    },
+    htmlMarker4 = {
+      content:
+        '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-4.png);background-size:contain;"></div>',
+      size: N.Size(40, 40),
+      anchor: N.Point(20, 20)
+    },
+    htmlMarker5 = {
+      content:
+        '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-5.png);background-size:contain;"></div>',
+      size: N.Size(40, 40),
+      anchor: N.Point(20, 20)
+    };
+
+    var markerClustering = new MarkerClustering({
+      minClusterSize: 2,
+      maxZoom: 18,
+      map: map,
+      markers: markers,
+      disableClickZoom: false,
+      gridSize: 100,
+      icons: [
+        htmlMarker1,
+        htmlMarker2,
+        htmlMarker3,
+        htmlMarker4,
+        htmlMarker5
+      ],
+      indexGenerator: [10, 100, 200, 500, 1000],
+      stylingFunction: function (clusterMarker, count) {
+        $(clusterMarker.getElement()).find("div:first-child").text(count);
+      }
+    });
+
+    $(document).ready(function () {
+      function toggleMenu(iconId, menuId) {
+        $("#" + iconId).click(function () {
+          var isActive = $("#" + menuId).hasClass("active");
+
+          $(".menu").removeClass("active");
+
+          if (!isActive) {
+            $("#" + menuId).addClass("active");
+          }
+        });
+      }
+
+      toggleMenu("homeIcon", "homeMenu");
+      toggleMenu("commIcon", "commMenu");
+      toggleMenu("userIcon", "userMenu");
+    });
+  </script>
+</body>
+</html>
