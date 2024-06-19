@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosa.realestate.users.UserDAO">
+	<select id="getUserById" resultType="UserDTO">
+		select
+			user_id as userId,
+			email,
+			password,
+			nickname,
+			is_deleted as isDeleted,
+			created_at as createdAt,
+			updated_at as updatedAt
+		from users
+		where user_id = #{userId}
+	</select>
+
+	<select id="getUserList" resultType="UserDTO">
+		select
+			user_id as id,
+      		email,
+      		password,
+      		nickname,
+      		is_deleted as isDeleted,
+      		created_at as createdAt,
+      		updated_at as updatedAt
+		from users
+	</select>
+
+	<insert id="createUser">
+		insert into users(email, password, nickname)
+		values(#{email}, #{password}, #{nickname})
+	</insert>
+
+	<update id="updateUser">
+		update users
+		set email = #{email}, password = #{password}, nickname=#{nickname}
+		where
+		id = #{id}
+	</update>
+
+	<update id="deleteUser">
+		update users
+		set is_deleted = 'Y'
+		where id = #{id}
+	</update>
+</mapper>
