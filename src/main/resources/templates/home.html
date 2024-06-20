@@ -24,11 +24,17 @@
 			<select name='city' id='city'>
 				<option value='selectCity' disabled='true' selected>행정구역</option>
 				<option value='seoul'>서울</option>
-			</select> <select name='district' id='district'>
+			</select> 
+			<select th:field="*{districtList}">
 				<option value='selectDistrict' disabled='true' selected>자치구</option>
 				<option value='allDistrict'>전체</option>
-				<option>데이터 필요</option>
-			</select> <select name='price' id='price'>
+				<!-- 리스트의 각 항목에 대해 옵션을 생성하고, 'selectedDistrictId'가 일치하면 선택됩니다. -->
+  				<option th:each="district : ${districtList}" 
+		          th:value="${district.districtId}" 
+		          th:text="${district.districtName}"
+		          th:selected="${district.districtId} == ${selectedDistrictId}" />
+			</select> 
+			<select name='price' id='price'>
 				<option value='selectPrice' disabled='true' selected>가격대</option>
 				<option value='allPrice'>전체</option>
 				<option>데이터 필요</option>
