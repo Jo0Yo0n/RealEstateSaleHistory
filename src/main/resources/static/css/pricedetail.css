@@ -41,8 +41,10 @@ body, html {
 	flex-direction: row;
 }
 .person{
-	height: 250px;
+	height: 300px;
 	position: absolute;
+	margin-top:-5px;
+	margin-left: -100px;
 }
 .priceDetailContainer{
 	display:flex;
