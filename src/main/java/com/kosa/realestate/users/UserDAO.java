@@ -12,13 +12,15 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface UserDAO {
-  UserDTO getUserById(Long id);
+  void createUser(Users user);
+  
+  // Optional<UserDTO> 
+  
+  Users getUserById(Long id);
 
-  List<UserDTO> getUserList();
+  List<Users> getUserList();
 
-  int createUser(UserDTO user);
+  void updateUser(Users user);
 
-  int updateUser(UserDTO user);
-
-  int deleteUser(Long id);
+  void deleteUser(Long id);
 }
