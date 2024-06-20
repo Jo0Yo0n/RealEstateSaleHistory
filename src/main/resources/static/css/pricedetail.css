@@ -1,0 +1,130 @@
+@charset "UTF-8";
+body, html {
+  margin: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+	padding:40px 0px;
+}
+.detailPageContainer{
+	display:flex;
+	flex-direction:column;
+	width: 1024px;
+	align-items:center;
+}
+.aptContainer{
+	width: 1024px;
+	display:flex;
+	flex-direction:row;
+	justify-content: flex-start;
+	align-items:baseline;
+}
+.aptName{
+	font-size:26px;
+}
+.aptAddress{
+	font-size:22px;
+	color: #616161;
+	margin-left: 10px;
+}
+.chartContainer{
+	width: 1024px;
+	display:flex;
+	flex-direction: row;
+	justify-content: space-between; 
+	margin-top:30px;
+	align-items:center;
+}
+.shoulderKneeChart{
+	width:450px;
+	display:flex;
+	flex-direction: row;
+}
+.person{
+	height: 250px;
+	position: absolute;
+}
+.priceDetailContainer{
+	display:flex;
+	flex-direction:column;
+	width: 1024px;
+	align-items:center; 
+	margin-top:30px;
+	justify-content:flex-start;
+}
+.priceTitle{
+	font-size:22px;
+	width:1024px;
+}
+.priceContentContainer{
+	width: 1024px;
+	height: 150px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	font-size: 18px;
+}
+.PriceContent{
+	width: 500px;
+	height: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.priceInnerContent{
+	display: flex;
+	flex-direction: column;
+	height:90px;
+	justify-content: space-around;
+}
+.priceHighRow{
+	display: flex;
+	flex-direction: column;
+	color:#616161;
+}
+.tradeListContainer{
+	width: 1024px;
+	display: flex;
+	flex-direction: column;
+	height: 500px; 
+	margin-top:30px;
+}
+.tradeTitle{
+	font-size:22px;
+}
+.tradeList{
+	display:flex;
+	flex-direction:column;
+	width:1024px;
+	margin-top:20px;
+}
+.tradeListTitle{
+	width: 964px;
+	height: 50px;
+	border-bottom: 1px solid #616161;
+	padding: 0 30px;
+	display:flex;
+	flex-direction:row;
+	justify-content:space-around;
+}
+.tradeListColumn{
+	width: 100px;
+	margin-top:20px;
+	text-align:center;
+}
+.tradeListContent{
+	width: 964px;
+	height: 50px;
+	border-bottom: 1px solid #616161;
+	padding: 0 30px;
+	display:flex;
+	flex-direction:row;
+	justify-content:space-around;
+	margin-top: 10px;
+}
+.tradeListValue{
+	width: 100px;
+	margin-top:20px;
+	text-align:center;
+	
+}

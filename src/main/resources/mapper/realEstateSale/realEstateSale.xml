@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosa.realestate.realestates.repository.IRealEstateSaleRepository">
+<select id="getRealEstateSaleCount" parameterType="int" resultType="int">
+	SELECT COUNT(*) FROM REAL_ESTATE_SALE
+	<if test="realEstateId != null">
+		WHERE REAL_ESTATE_ID = #{realEstateId}
+	</if>
+</select>
+
+
+
+
+</mapper>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>price detail</title>
+<link rel='stylesheet' href='../static/css/pricedetail.css' type='text/css' />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+	<div class='detailPageContainer'>
+		<div class='aptContainer'>
+			<div class='aptName'>
+				<strong>아파트 이름</strong>
+			</div>
+			<div class='aptAddress'>
+				<strong>(아파트 주소)</strong>
+			</div>
+		</div>
+		<div class='chartContainer'>
+			<div class='basicChart'>
+				<canvas id="basicChart" width="450" height="300"></canvas>
+			</div>
+			<div class='shoulderKneeChart'>
+				<img src='../static/assets/images/person.png' class='person'/>
+				<canvas id='skChart' width='450' height='300'></canvas>
+			</div>
+		</div>
+		<div class='priceDetailContainer'>
+			<div class='priceTitle'><strong>가격 정보</strong></div>
+			<div class='priceContentContainer'>
+				<div class='PriceContent'>
+					<span>최근 실거래가(20xx.xx.xx) : xx억</span>
+					<div class='priceInnerContent'>
+						<span>최근 5년 실거래가</span>
+						<div class='priceHighRow'>
+							<span>&nbsp;&nbsp;최고가 : xx억</span>	
+							<span>&nbsp;&nbsp;최저가 : xx억</span>	
+						</div>
+					</div>
+				</div>
+				<div class='PriceContent'>
+					<span>층 : 21층</span>
+					<span>전용면적(m²) : xxx.xm²</span>
+					<span>등기일자 :</span>
+				</div>
+			</div>
+		</div>
+		<div class='tradeListContainer'>
+			<div class='tradeTitle'><strong>거래내역</strong></div>
+			<div class='tradeList'>
+				<div class='tradeListTitle'>
+					<span class='tradeListColumn'><strong>계약년월</strong></span>
+					<span class='tradeListColumn'><strong>계약유형</strong></span>
+					<span class='tradeListColumn'><strong>전용면적(m²)</strong></span>
+					<span class='tradeListColumn'><strong>층</strong></span>
+					<span class='tradeListColumn'><strong>가격(억)</strong></span>
+				</div>
+				<div class='tradeListContent'>
+					<span class='tradeListValue'>2024/08</span>
+					<span class='tradeListValue'>매매</span>
+					<span class='tradeListValue'>xxx.x</span>
+					<span class='tradeListValue'>12</span>
+					<span class='tradeListValue'>24</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		let bsCt = document.getElementById('basicChart');
+	
+		let basicChart = new Chart(bsCt, {
+		  type: 'line',
+		  data: {
+		    labels: ['2020', '2021', '2022', '2023'],
+		    datasets: [
+		      {
+		        label: 'Dataset',
+		        data: [10,20,30,40],
+		      }
+		    ]
+		  },
+		});
+		
+		let skCt = document.getElementById('skChart');
+		
+		let skChart = new Chart(skCt, {
+		  type: 'line',
+		  data: {
+		    labels: ['0'],
+		    datasets: [
+		      {
+		        data: [10,30,50],
+		      }
+		    ]
+		  },
+		});
+	</script>
+</body>
+</html>
