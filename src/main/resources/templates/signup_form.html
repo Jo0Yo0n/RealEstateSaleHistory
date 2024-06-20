@@ -5,20 +5,27 @@
             <h4>회원가입</h4>
         </div>
     </div>
-    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+    <form th:action="@{/users/signup}" th:object="${userCreateForm}" method="post">
         <!-- <div th:replace="~{form_errors :: formErrorsFragment}"></div> -->
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일 오류</div>
         <div>
             <label for="email">이메일</label>
             <input type="email" th:field="*{email}">
         </div>
+        
+        <div th:if="${#fields.hasErrors('password1')}" th:errors="*{password1}">비밀번호 오류</div>
         <div>
             <label for="password1">비밀번호</label>
             <input type="password" th:field="*{password1}">
         </div>
+        
+        <div th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}">비밀번호 확인 오류</div>
         <div>
             <label for="password2">비밀번호 확인</label>
             <input type="password" th:field="*{password2}">
         </div>
+        
+        <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉네임 오류</div>
         <div>
             <label for="nickname">닉네임</label>
             <input type="text" th:field="*{nickname}">
