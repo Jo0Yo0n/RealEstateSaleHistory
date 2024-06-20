@@ -10,6 +10,9 @@ import com.kosa.realestate.users.UserDAO;
 import com.kosa.realestate.users.UserDTO;
 import com.kosa.realestate.users.UserMapper;
 import com.kosa.realestate.users.Users;
+import com.kosa.realestate.users.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+
 
 /**
  * UserService 클래스
@@ -17,16 +20,17 @@ import com.kosa.realestate.users.Users;
  * @author 이주윤
  */
 @Service
+@RequiredArgsConstructor
 public class UserService {
+
   private final UserDAO userDAO;
+
   private final PasswordEncoder passwordEncoder;
+  
+  private final UserRepository userRepository;
+  
 
-  // 생성자 주입
-  public UserService(UserDAO userDAO, PasswordEncoder passwordEncoder) {
-    this.userDAO = userDAO;
-    this.passwordEncoder = passwordEncoder;
-  }
-
+  
   // User 생성
   public void createUser(String email, String password, String nickname) {
     Users user = Users.builder()
@@ -72,5 +76,24 @@ public class UserService {
   // User 삭제 (soft delete)
   public void deleteUser(Long id) {
     userDAO.deleteUser(id);
+  }
+
+  
+  // 이메일 기준 사용자 정보 조회
+  public UserDTO findByEmail( String email) {
+    
+    Users user = userRepository.findByEmail(email).orElseThrow(() -> new DuplicateUserException("not find user"));
+    
+    UserDTO userDTO = UserDTO.builder()
+        .userId(user.getUserId())
+        .email(user.getEmail())
+        .password(user.getPassword())
+        .nickname(user.getNickname())
+        .isDeleted(user.getIsDeleted())
+        .createdAt(user.getCreatedAt())
+        .updatedAt(user.getUpdatedAt())
+        .build();
+    
+    return userDTO;
   }
 }
