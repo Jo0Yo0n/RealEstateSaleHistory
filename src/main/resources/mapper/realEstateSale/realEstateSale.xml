@@ -35,7 +35,7 @@
     </association>
 </resultMap>
 
-    <select id="selectRealEstateWithSales" resultMap="RealEstateWithSaleMap">
+    <select id="selectRealEstateWithSales" resultMap="RealEstateWithSaleMap" parameterType="map">
         SELECT A.*, B.*
         From REAL_ESTATE A
         JOIN REAL_ESTATE_SALE B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID 
@@ -43,6 +43,8 @@
         <if test="realEstateId != null">
         	WHERE A.REAL_ESTATE_ID = #{realEstateId}
         </if>
+    	ORDER BY B.CONTRACT_DATE DESC
+    	OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
     </select>
 
 </mapper>

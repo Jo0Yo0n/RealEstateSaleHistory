@@ -6,5 +6,5 @@ import com.kosa.realestate.realestates.model.RealEstateWithSale;
 public interface IRealEstateSaleService {
   int getRealEstateSaleCount();
   int getRealEstateSaleCount(int realEstateId);
-  List<RealEstateWithSale> selectRealEstateWithSales(int realEstateId);
+  List<RealEstateWithSale> selectRealEstateWithSales(int realEstateId, int pageNum, int pageSize);
 }
