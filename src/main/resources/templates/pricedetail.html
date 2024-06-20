@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>price detail</title>
-<link rel='stylesheet' href='../static/css/pricedetail.css' type='text/css' />
+<link rel='stylesheet' th:href='@{/css/pricedetail.css}' type='text/css' />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </head>
 <body>
@@ -21,7 +21,7 @@
 				<canvas id="basicChart" width="450" height="300"></canvas>
 			</div>
 			<div class='shoulderKneeChart'>
-				<img src='../static/assets/images/person.png' class='person'/>
+				<img th:src="@{/assets/images/person.png}" class='person'/>
 				<canvas id='skChart' width='450' height='300'></canvas>
 			</div>
 		</div>
