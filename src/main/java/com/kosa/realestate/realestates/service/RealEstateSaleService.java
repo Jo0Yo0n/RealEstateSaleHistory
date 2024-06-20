@@ -1,6 +1,8 @@
 package com.kosa.realestate.realestates.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
+import com.kosa.realestate.realestates.model.RealEstateWithSale;
 import com.kosa.realestate.realestates.repository.IRealEstateSaleRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -20,4 +22,10 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.getRealEstateSaleCount(realEstateId);
   }
 
+  @Override
+  public List<RealEstateWithSale> selectRealEstateWithSales(int realEstateId) {
+    return estateSaleRepository.selectRealEstateWithSales(realEstateId);
+  }
+
+  
 }
