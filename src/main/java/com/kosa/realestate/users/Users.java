@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Table(name = "Users")
 @Getter
 @Setter
+@Builder
 public class Users {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +38,9 @@ public class Users {
   
   @Column(name = "is_deleted", nullable = false, length = 1)
   private char isDeleted;
+  
+  @Column(name = "created_at", nullable = false)
+  private LocalDateTime createdAt;
   
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;

@@ -1,5 +1,6 @@
 package com.kosa.realestate.users.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,8 +74,15 @@ public class UserController {
   // id로 회원조회(테스트)
   @GetMapping("/{userId}")
   @ResponseBody
-  public String getUserById(@PathVariable("userId") Long userId) {
+  public UserDTO getUserById(@PathVariable("userId") Long userId) {
     UserDTO userDTO = userService.getUserById(userId);
-    return "";
+    return userDTO;
+  }
+  
+  // 전체 회원 조회(테스트)
+  @GetMapping("/")
+  @ResponseBody
+  public List<UserDTO> getUserList() {
+    return userService.getUserList();
   }
 }
