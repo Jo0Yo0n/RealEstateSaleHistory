@@ -38,6 +38,11 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.selectRealEstateWithSales(params);
   }
 
+  @Override
+  public List<Map<String, Object>> getAllDestrictId() {
+    return estateSaleRepository.getAllDestrictId();
+  }
+
 
 
   

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.kosa.realestate.realestates.service.IRealEstateSaleService;
 import lombok.RequiredArgsConstructor;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,4 +26,13 @@ public class RealEstateSaleController {
     }
     return "estate/count";
   }
+  
+  @GetMapping("/estate/select")
+  public String estateSelect(Model model) {
+     model.addAttribute("districtList",realEstateSaleService.getAllDestrictId());
+     
+    return "estate/list";
+  }
+  
+  
 }

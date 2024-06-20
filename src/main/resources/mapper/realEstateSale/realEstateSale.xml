@@ -40,11 +40,31 @@
         From REAL_ESTATE A
         JOIN REAL_ESTATE_SALE B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID 
 		JOIN NEIGHBORHOOD C ON A.NEIGHBORHOOD_ID = C.NEIGHBORHOOD_ID
+		<where>
+			<if test="realEstateId != null">
+				A.REAL_ESTATE_ID = #{realEstateId}
+			</if>
+			<if test="">
+				AND 
+			</if>
+		</where>
         <if test="realEstateId != null">
         	WHERE A.REAL_ESTATE_ID = #{realEstateId}
         </if>
     	ORDER BY B.CONTRACT_DATE DESC
     	OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
     </select>
+
+
+	<select id="getAllDestrictId" resultType="hashmap">
+		SELECT 
+			district_id AS "districtId",
+			district_name AS "districtName"
+		FROM DISTRICT
+	</select>
+
+
+
+
 
 </mapper>
