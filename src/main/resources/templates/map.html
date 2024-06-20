@@ -1,74 +1,57 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-<title>Naver Map with Marker Clustering</title>
+<title>budongsan</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
 	crossorigin="anonymous"></script>
 <script type="text/javascript"
 	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0rm45zpj5b"></script>
-<script type="text/javascript" src="../static/js/MarkerClustering.js"></script>
-<script type="text/javascript" src="../static/js/map_data.js"></script>
-<link rel='stylesheet' href='../static/css/map.css' type='text/css' />
+<script type="text/javascript" th:src="@{/js/MarkerClustering.js}"></script>
+<script type="text/javascript" th:src="@{/js/map_data.js}"></script>
+<link rel='stylesheet' th:href='@{/css/map.css}' type='text/css' />
+<script th:inline="javascript">
+    var clusterMarkerImagePath = /*[[@{/assets/images/}]]*/ '../static/assets/images/';
+</script>
 </head>
 <body>
 	<div class="navbar">
 		<div class="navContent" id="homeIcon">
-			<img src="../static/assets/images/home.png" />
+			<img th:src="@{/assets/images/home.png}" />
 		</div>
 		<div class="navContent" id="commIcon">
-			<img src="../static/assets/images/comm.png" />
-		</div>
-		<div class="navContent" id="userIcon">
-			<img src="../static/assets/images/user.png" />
-		</div>
+            <img th:src="@{/assets/images/comm.png}" />
+        </div>
+        <div class="navContent" id="userIcon">
+            <img th:src="@{/assets/images/user.png}" />
+        </div>
 	</div>
 	<div id="map"></div>
 	<div class="menu" id="homeMenu">
-		<div class="closeMenu"><img src='../static/assets/images/close_menu.png' class='closeMenuImg'/></div>
-			<div class="homeMenuInnerContainer">
-			<div class="search">
-				<input class="searchBox" type='text' placeholder='검색어 입력' /> <img
-					src='../static/assets/images/search.png' />
-			</div>
-			<div class='searchFilter'>
-				<span class='filterId' id='apt'>아파트</span> <span class='filterId'
-					id='mf'>연립/다세대</span> <span class='filterId' id='sf'>단독/다가구</span>
-				<span class='filterId' id='op'>오피스텔</span>
-			</div>
-			<div class="searchSelectContainer">
-				<select name='city' id='city'>
-					<option value='selectCity' disabled='true' selected>행정구역</option>
-					<option value='seoul'>서울</option>
-				</select> <select name='district' id='district'>
-					<option value='selectDistrict' disabled='true' selected>자치구</option>
-					<option value='allDistrict'>전체</option>
-					<option>데이터 필요</option>
-				</select> <select name='price' id='price'>
-					<option value='selectPrice' disabled='true' selected>가격대</option>
-					<option value='allPrice'>전체</option>
-					<option>데이터 필요</option>
-				</select> <select name='area' id='area'>
-					<option value='selectArea' disabled='true' selected>면적</option>
-					<option value='allArea'>전체</option>
-					<option>데이터 필요</option>
-				</select>
-			</div>
-		</div>
+		<div class="closeMenu"><img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg'/></div>
+		<div th:include="home :: content"></div>
 	</div>
 	<div class="menu" id="commMenu">
-		Community Menu Content
-		<div class="closeMenu"><img src='../static/assets/images/close_menu.png' class='closeMenuImg'/></div>
-	</div>
-	<div class="menu" id="userMenu">
-		User Menu Content
-		<div class="closeMenu"><img src='../static/assets/images/close_menu.png' class='closeMenuImg'/></div>
-	</div>
-	<div class="menu" id="aptInfo">
-	</div>
+        <div class="closeMenu">
+            <img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg'/>
+        </div>
+    </div>
+    <div class="menu" id="userMenu">
+        User Menu Content
+        <div class="closeMenu">
+            <img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg'/>
+        </div>
+    </div>
+    <div class="menu" id="aptInfo"></div>
+    
+    <div id="closeBtnTemplate" style="display:none;">
+        <div class="closeMenu">
+            <img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg' />
+        </div>
+    </div>
 
 	<script>
 		var map = new naver.maps.Map("map", {
@@ -125,8 +108,8 @@
 				    $('.menu').removeClass('active');
 				    $('#aptInfo').addClass('active');
 
-				    // 닫기 버튼 추가
-				    var closeBtn = "<div class='closeMenu'><img src='../static/assets/images/close_menu.png' class='closeMenuImg'/></div>";
+				    // 닫기 버튼 추가 
+				    var closeBtn = $('#closeBtnTemplate').html();
 				    $('#aptInfo').prepend(closeBtn);
 
 				    // 닫기 버튼에 클릭 이벤트 추가
@@ -141,26 +124,26 @@
 		}
 
 		var htmlMarker1 = {
-			content : '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-1.png);background-size:contain;"></div>',
-			size : N.Size(40, 40),
-			anchor : N.Point(20, 20)
-		}, htmlMarker2 = {
-			content : '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-2.png);background-size:contain;"></div>',
-			size : N.Size(40, 40),
-			anchor : N.Point(20, 20)
-		}, htmlMarker3 = {
-			content : '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-3.png);background-size:contain;"></div>',
-			size : N.Size(40, 40),
-			anchor : N.Point(20, 20)
-		}, htmlMarker4 = {
-			content : '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-4.png);background-size:contain;"></div>',
-			size : N.Size(40, 40),
-			anchor : N.Point(20, 20)
-		}, htmlMarker5 = {
-			content : '<div style="position:absolute;cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(../static/assets/images/cluster-marker-5.png);background-size:contain;"></div>',
-			size : N.Size(40, 40),
-			anchor : N.Point(20, 20)
-		};
+			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-1.png);background-size:contain;"></div>',
+			    size: N.Size(40, 40),
+			    anchor: N.Point(20, 20)
+			}, htmlMarker2 = {
+			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-2.png);background-size:contain;"></div>',
+			    size: N.Size(40, 40),
+			    anchor: N.Point(20, 20)
+			}, htmlMarker3 = {
+			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-3.png);background-size:contain;"></div>',
+			    size: N.Size(40, 40),
+			    anchor: N.Point(20, 20)
+			}, htmlMarker4 = {
+			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-4.png);background-size:contain;"></div>',
+			    size: N.Size(40, 40),
+			    anchor: N.Point(20, 20)
+			}, htmlMarker5 = {
+			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-5.png);background-size:contain;"></div>',
+			    size: N.Size(40, 40),
+			    anchor: N.Point(20, 20)
+			};
 
 		var markerClustering = new MarkerClustering({
 			minClusterSize : 2,
@@ -205,21 +188,6 @@
 		});
 
 
-		$(document).ready(function() {
-			$('.filterId').click(function() {
-				// 모든 필터의 색상을 초기화
-				$('.filterId').removeClass('selectedFlag');
-
-				// 클릭된 요소에 클래스 추가
-				$(this).addClass('selectedFlag');
-
-				// 클릭된 요소의 id 추출
-				var selectedId = $(this).attr('id');
-				console.log(selectedId);
-
-				// id를 이용한 추가 작업을 여기에 작성
-			});
-		});
 
 	</script>
 </body>

@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+.homeMenuInnerContainer {
+	background-color:#F3F5F9;
+	display: flex;
+	align-items:center;
+	flex-direction: column;
+	height:100vh;
+}
+.searchFilter {
+	margin-top: 20px;
+	font-weight:bold;
+	font-size: 17px;
+	display: flex;
+	flex-direction: row;
+	justify-content:space-between;
+	width: 350px;
+}
+.filterId {
+	cursor:pointer;
+}
+
+.selectedFlag{
+	color:#F9DE7B;
+}
+
+.searchSelectContainer{
+	margin-top:20px;
+	width:350px;
+	display: flex;
+	flex-direction: row;
+	justify-content:center;
+}
+
+.searchSelectContainer select{
+	height: 30px;
+	border-radius:0px;
+}
