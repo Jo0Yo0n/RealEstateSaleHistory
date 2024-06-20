@@ -39,6 +39,7 @@ public class Users {
   @Column(name = "is_deleted", nullable = false, length = 1)
   private char isDeleted;
   
+
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
   

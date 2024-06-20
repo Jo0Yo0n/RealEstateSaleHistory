@@ -1,8 +1,10 @@
 package com.kosa.realestate.users;
 
 import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -14,6 +16,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UserDTO {
+  
   private Long userId;
   private String email;
   private String password;
