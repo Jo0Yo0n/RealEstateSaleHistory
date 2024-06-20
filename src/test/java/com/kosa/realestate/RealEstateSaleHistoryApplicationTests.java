@@ -1,26 +1,24 @@
 package com.kosa.realestate;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.kosa.realestate.realestates.model.RealEstateWithSale;
+import com.kosa.realestate.realestates.service.IRealEstateSaleService;
 
 @SpringBootTest
 class RealEstateSaleHistoryApplicationTests {
+ 
   @Autowired
-  private JdbcTemplate jdbcTemplate;
-
+  IRealEstateSaleService estateSaleService;
+  
   @Test
-  public void testConnection() {
-    assertThat(jdbcTemplate).isNotNull();
+  void selectList() {
+    List<RealEstateWithSale> list = estateSaleService.selectRealEstateWithSales(1, 7, 10);
+    System.out.println(list);
+    int result = list.size();
+    assertEquals(2, result);
   }
-
-  @Test
-  void contextLoads() {
-    String sql = "SELECT 1 FROM DUAL";
-    Integer result = jdbcTemplate.queryForObject(sql, Integer.class);
-    assertThat(result).isEqualTo(1);
-  }
-
 }

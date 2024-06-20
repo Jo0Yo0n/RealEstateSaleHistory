@@ -12,4 +12,6 @@ public interface IRealEstateSaleRepository {
   List<RealEstateWithSale> selectRealEstateWithSales();
   List<RealEstateWithSale> selectRealEstateWithSales(Map<String, Object> param);
   
+  List<Map<String, Object>> getAllDestrictId();
+  
 }
