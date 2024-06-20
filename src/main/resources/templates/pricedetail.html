@@ -84,16 +84,46 @@
 		let skCt = document.getElementById('skChart');
 		
 		let skChart = new Chart(skCt, {
-		  type: 'line',
-		  data: {
-		    labels: ['0'],
-		    datasets: [
-		      {
-		        data: [10,30,50],
-		      }
-		    ]
-		  },
-		});
+            type: 'line',
+            data: {
+                
+                datasets: [
+                    {
+                        label: 'Dataset 1',
+                        data: [10, 30, 50],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        position: 'right',
+                        ticks: {
+                            maxTicksLimit: 5 // y축 값 다섯 개만 나오게 설정
+                        }
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                elements: {
+                    line: {
+                        display: false // 라인 차트를 표시하지 않음
+                    },
+                    point: {
+                        display: false // 데이터 포인트를 표시하지 않음
+                    }
+                }
+            }
+        });
 	</script>
 </body>
 </html>

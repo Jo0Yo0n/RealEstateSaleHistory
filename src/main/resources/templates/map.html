@@ -11,7 +11,7 @@
 <script type="text/javascript"
 	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0rm45zpj5b"></script>
 <script type="text/javascript" src="../static/js/MarkerClustering.js"></script>
-<script type="text/javascript" src="../static/js/real_estate.js"></script>
+<script type="text/javascript" src="../static/js/map_data.js"></script>
 <link rel='stylesheet' href='../static/css/map.css' type='text/css' />
 </head>
 <body>
@@ -81,21 +81,24 @@
 			},
 		});
 
-		var markers = [], data = mapTest.mapTest2;
+		var markers = [], data = mapData.mapData2;
 
 		for (var i = 0, ii = data.length; i < ii; i++) {
 			var spot = data[i];
 
 			if (spot.grd_la !== null && spot.grd_lo !== null) {
-				var latlng = new naver.maps.LatLng(spot.grd_la, spot.grd_lo);
-				var apt = spot.complex_name;
+				var latlng = new naver.maps.LatLng(spot.LAT, spot.LNG);
+				var apt = spot.COMPLEX_NAME;
+				var price = spot.SALE_PRICE;
+				var estateId = spot.REAL_ESTATE_ID;
 				var marker = new naver.maps.Marker({
 					position : latlng,
 					draggable : false,
 					clickable : true,
 					icon : {
 						content : [ '<div class="marker_container">',
-								'<span><strong>' + apt + '</strong></span>',
+								'<span><strong>' + apt + '</strong>('+price+'억)</span>',
+								'<div class="disabled" style="display:none;">'+estateId+'</div>',
 								'</div>' ].join(''),
 						size : new naver.maps.Size(40, 40),
 						anchor : new naver.maps.Point(20, 20)
@@ -105,34 +108,34 @@
 				markers.push(marker);
 
 				// 마커 클릭 이벤트 핸들러 추가
+				// 마커 클릭 이벤트 핸들러 추가
 				naver.maps.Event.addListener(marker, 'click', function(e) {
-					var clickedMarker = e.overlay;
-					var markerPosition = clickedMarker.getPosition();
-					var clickedApt = $(clickedMarker.getIcon().content).find(
-							'strong').text();
+				    var clickedMarker = e.overlay;
+				    var clickedApt = $(clickedMarker.getIcon().content).find('strong').text();
+				    var ClickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
+				    
+				    // 아파트 이름을 기준으로 REAL_ESTATE_ID를 찾는 함수 호출
+				    /* var realEstateId = getRealEstateId(clickedApt); */ 
 
-					// 메뉴 내용을 클릭된 마커 정보로 업데이트
-					$('#aptInfo').html(
-							'<p>Clicked Marker Information</p><p>Apt: '
-									+ clickedApt + '</p><p>Latitude: '
-									+ markerPosition.lat()
-									+ '</p><p>Longitude: '
-									+ markerPosition.lng() + '</p>');
+				    // 메뉴 내용을 클릭된 마커 정보로 업데이트 (realEstateId를 사용하도록 수정)
+				    $('#aptInfo').html(
+				        '<p>Clicked Marker Information</p><p>Apt: ' + clickedApt + '</p><p>Real Estate ID: ' + ClickedId + '</p>');
 
-					// 모든 메뉴를 닫고 aptInfo 메뉴를 열기
-					$('.menu').removeClass('active');
-					$('#aptInfo').addClass('active');
+				    // 모든 메뉴를 닫고 aptInfo 메뉴를 열기
+				    $('.menu').removeClass('active');
+				    $('#aptInfo').addClass('active');
 
-					// 닫기 버튼 추가
-					var closeBtn = "<div class='closeMenu'><img src='../static/assets/images/close_menu.png' class='closeMenuImg'/></div>";
-					$('#aptInfo').prepend(closeBtn);
+				    // 닫기 버튼 추가
+				    var closeBtn = "<div class='closeMenu'><img src='../static/assets/images/close_menu.png' class='closeMenuImg'/></div>";
+				    $('#aptInfo').prepend(closeBtn);
 
-					// 닫기 버튼에 클릭 이벤트 추가
-					$('.closeMenuImg').click(function() {
-						$('#aptInfo').removeClass('active');
-						$(this).remove(); // 닫기 버튼 제거
-					});
-                });
+				    // 닫기 버튼에 클릭 이벤트 추가
+				    $('.closeMenuImg').click(function() {
+				        $('#aptInfo').removeClass('active');
+				        $(this).remove(); // 닫기 버튼 제거
+				    });
+				});
+
 
 			}
 		}
