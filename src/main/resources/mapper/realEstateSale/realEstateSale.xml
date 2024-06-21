@@ -4,7 +4,7 @@
 <mapper namespace="com.kosa.realestate.realestates.repository.IRealEstateSaleRepository">
 	
 	<select id="getRealEstateSaleCount" parameterType="int" resultType="int">
-		SELECT COUNT(*) FROM REAL_ESTATE_SALE
+		SELECT COUNT(*) FROM REAL_ESTATE_SALE A
 		JOIN Real_Estate_Sale B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID
 		<if test="realEstateId != null">
 			WHERE REAL_ESTATE_ID = #{realEstateId}
@@ -36,7 +36,22 @@
 </resultMap>
 
     <select id="selectRealEstateWithSales" resultMap="RealEstateWithSaleMap" parameterType="map">
-        SELECT A.*, B.*
+        SELECT 	A.REAL_ESTATE_ID,
+        		A.NEIGHBORHOOD_ID,
+        		A.COMPLEX_NAME,
+        		A.ADDRESS,
+        		A.ADDRESS_STREET,
+        		A.CONSTRUCTION_YEAR,
+        		A.LAT,
+        		A.LNG,
+         		B.SALES_ID,
+         		B.REAL_ESTATE_ID,
+         		B.SALE_PRICE,
+         		B.CONTRACT_DATE,
+         		NVL(TO_CHAR(B.REGISTRATION_DATE, 'YYYY-MM-DD'), ' ') AS REGISTRATION_DATE,
+         		B.BUILDING_NAME,
+         		B.FLOOR,
+         		B.EXCLUSIVE_AREA
         From REAL_ESTATE A
         JOIN REAL_ESTATE_SALE B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID 
 		JOIN NEIGHBORHOOD C ON A.NEIGHBORHOOD_ID = C.NEIGHBORHOOD_ID
@@ -58,8 +73,6 @@
 			district_name AS "districtName"
 		FROM DISTRICT
 	</select>
-
-
 
 
 

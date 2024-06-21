@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
+import com.kosa.realestate.realestates.model.RealEstate;
+import com.kosa.realestate.realestates.model.RealEstateSale;
 import com.kosa.realestate.realestates.model.RealEstateWithSale;
 import com.kosa.realestate.realestates.repository.IRealEstateSaleRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,8 @@ public class RealEstateSaleService implements IRealEstateSaleService {
   public List<Map<String, Object>> getAllDestrictId() {
     return estateSaleRepository.getAllDestrictId();
   }
+
+
 
 
 

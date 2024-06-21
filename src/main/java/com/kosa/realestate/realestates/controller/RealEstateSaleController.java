@@ -22,17 +22,9 @@ public class RealEstateSaleController {
   @GetMapping("/count")
   @ResponseBody
   public int estateCount(
-      @RequestParam(value = "realEstateId", required = false, defaultValue = "0") int realEstateId,
-      Model model) {
-    if (realEstateId == 0) {
-//      model.addAttribute("count",realEstateSaleService.getRealEstateSaleCount());
-      return realEstateSaleService.getRealEstateSaleCount();
-    } 
-    else {
-      model.addAttribute("count",realEstateSaleService.getRealEstateSaleCount(realEstateId));
-    }
-//    return "estate/count";
-    return realEstateSaleService.getRealEstateSaleCount(realEstateId);
+      @RequestParam(value = "realEstateId", required = false, defaultValue = "0") int realEstateId
+      ) {
+    return realEstateId == 0 ? realEstateSaleService.getRealEstateSaleCount() : realEstateSaleService.getRealEstateSaleCount(realEstateId);
   }
   
   @GetMapping("/select")
