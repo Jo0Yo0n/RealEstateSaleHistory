@@ -1,6 +1,7 @@
 package com.kosa.realestate.users;
 
 import java.util.List;
+import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -15,8 +16,13 @@ public interface UserDAO {
 
   void createUser(Users user);
   
+<<<<<<< Updated upstream
   // Optional<UserDTO> 
 
+=======
+  Optional<UserDTO> findUserByEmail(String email);
+  
+>>>>>>> Stashed changes
   Users getUserById(Long id);
 
   List<Users> getUserList();
