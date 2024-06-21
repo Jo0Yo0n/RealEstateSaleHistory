@@ -44,6 +44,6 @@ public class RealEstateSaleController {
   public List<RealEstateWithSale> getEstateList(
 
       ){
-    return realEstateSaleService.selectRealEstateWithSales(0,1,10);
+    return realEstateSaleService.selectRealEstateWithSales(1,1,10);
   }
 }
