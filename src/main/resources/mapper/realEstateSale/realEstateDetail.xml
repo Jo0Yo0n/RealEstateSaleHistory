@@ -40,8 +40,7 @@
 	        RE.LNG,
 	        RS.SALE_PRICE,
 	        RS.CONTRACT_DATE,
-	        <!-- NVL(TO_CHAR(RS.REGISTRATION_DATE, 'YYYY-MM-DD'), ' ') AS REGISTRATION_DATE, -->
-	        RS.REGISTRATION_DATE,
+	        NVL(TO_CHAR(RS.REGISTRATION_DATE, 'YYYY-MM-DD'), ' - ') AS REGISTRATION_DATE,
 	        RS.BUILDING_NAME,
 	        RS.FLOOR,
 	        RS.EXCLUSIVE_AREA
@@ -50,6 +49,39 @@
 	        JOIN REAL_ESTATE RE ON RS.REAL_ESTATE_ID = RE.REAL_ESTATE_ID
 	    WHERE 
 	        RS.SALES_ID = #{salesId}
+	</select>
+	
+	<select id="getRealEstatePrice" parameterType="int" resultType="RealEstateSale">
+	    <![CDATA[
+		    SELECT
+		        SALES_ID AS salesId,
+		        REAL_ESTATE_ID AS realEstateId,
+		        SALE_PRICE AS salePrice,
+		        CONTRACT_DATE AS contractDate,
+		        NVL(TO_CHAR(REGISTRATION_DATE, 'YYYY-MM-DD'), ' - ') AS registrationDate,
+		        BUILDING_NAME AS buildingName,
+		        FLOOR AS floor,
+		        EXCLUSIVE_AREA AS exclusiveArea
+		    FROM (
+		        SELECT
+		            SALES_ID,
+		            REAL_ESTATE_ID,
+		            SALE_PRICE,
+		            CONTRACT_DATE,
+		            REGISTRATION_DATE,
+		            BUILDING_NAME,
+		            FLOOR,
+		            EXCLUSIVE_AREA
+		        FROM REAL_ESTATE_SALE
+		        WHERE REAL_ESTATE_ID = (
+		            SELECT REAL_ESTATE_ID
+		            FROM REAL_ESTATE_SALE
+		            WHERE SALES_ID = #{salesId}
+		        )
+		        ORDER BY CONTRACT_DATE DESC
+		    )
+		    WHERE ROWNUM <= 10
+	    ]]>
 	</select>
 
  
