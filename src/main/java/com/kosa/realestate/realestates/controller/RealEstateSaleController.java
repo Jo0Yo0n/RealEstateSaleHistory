@@ -31,7 +31,7 @@ public class RealEstateSaleController {
   public String estateSelect(Model model) {
      model.addAttribute("districtList",realEstateSaleService.getAllDestrictId());
      
-    return "estate/list";
+    return "map";
   }
   
   
