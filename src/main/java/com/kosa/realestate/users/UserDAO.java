@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * UserDAO 클래스
+ * UserDAO 인터페이스
  * 
  * @author 이주윤
  */
@@ -15,14 +15,9 @@ import org.springframework.stereotype.Repository;
 public interface UserDAO {
 
   void createUser(Users user);
-  
-<<<<<<< Updated upstream
-  // Optional<UserDTO> 
 
-=======
-  Optional<UserDTO> findUserByEmail(String email);
-  
->>>>>>> Stashed changes
+  Optional<Users> findUserByEmail(String email);
+
   Users getUserById(Long id);
 
   List<Users> getUserList();

@@ -16,13 +16,14 @@ import jakarta.validation.Valid;
 
 /**
  * UserController 클래스
- * 
+ *
  * @author 이주윤
  */
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
   private UserService userService;
 
   public UserController(UserService userService) {
@@ -53,18 +54,18 @@ public class UserController {
       userService.createUser(userCreateForm.getEmail(), userCreateForm.getPassword1(),
           userCreateForm.getNickname());
     } catch (DuplicateUserException e) {
-      if(e.getMessage().contains("Email")) {
-        bindingResult.rejectValue("email", "emailDuplicate", "이 이메일은 이미 사용중입니다.");
+      if (e.getMessage().contains("Email")) {
+        bindingResult.rejectValue("email", "emailDuplicate", "사용 중인 이메일입니다.");
       } else if (e.getMessage().contains("Nickname")) {
-        bindingResult.rejectValue("nickname", "nicknameDuplicate", "이 닉네임은 이미 사용중입니다.");
+        bindingResult.rejectValue("nickname", "nicknameDuplicate", "사용 중인 닉네임입니다.");
       }
       return "signup_form";
     }
-    
+
     // TODO: redirect 위치를 메인 페이지로 변경하기
     return "redirect:/";
   }
-  
+
   // 로그인 페이지로 이동
   @GetMapping("/login")
   public String login() {
@@ -75,10 +76,9 @@ public class UserController {
   @GetMapping("/{userId}")
   @ResponseBody
   public UserDTO getUserById(@PathVariable("userId") Long userId) {
-    UserDTO userDTO = userService.getUserById(userId);
-    return userDTO;
+    return userService.getUserById(userId);
   }
-  
+
   // 전체 회원 조회(테스트)
   @GetMapping("/")
   @ResponseBody

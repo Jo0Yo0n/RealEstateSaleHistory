@@ -16,6 +16,19 @@
 		where user_id = #{userId}
 	</select>
 
+	<select id="findUserByEmail" resultType="Users">
+		select
+			user_id as userId,
+			email,
+			password,
+			nickname,
+			is_deleted as isDeleted,
+			created_at as createdAt,
+			updated_at as updatedAt
+		from users
+		where email = #{email}
+	</select>
+
 	<select id="getUserList" resultType="Users">
 		select
 			user_id as userId,
