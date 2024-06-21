@@ -187,7 +187,7 @@
 		    toggleMenu("userIcon", "userMenu");
 		});
 
-
+ 
 		$(document).ready(function() {
 		    $('#homeIcon').click(function() {
 		        $.ajax({
@@ -200,7 +200,7 @@
 		                    // 여기에 각 부동산 정보를 표시하는 HTML 마크업을 추가하세요.
 		                    // 예시로 'districtName' 대신 실제 부동산 정보 필드를 사용하세요.
 		                    realEstateListHtml += '<div class="realEstateItem">' +
-		                                          '<h4>' + realEstate.districtName + '</h4>' +
+		                                          '<h4>' + realEstate.realEstate.complexName + '</h4>' +
 		                                          // 다른 부동산 정보를 여기에 추가
 		                                          '</div>';
 		                });
@@ -211,7 +211,7 @@
 		            }
 		        });
 		    });
-		});
+		}); 
 
 	</script>
 </body>
