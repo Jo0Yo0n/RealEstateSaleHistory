@@ -39,36 +39,7 @@ body, html {
   border-right: 4px solid transparent; 
   border-top: 6px solid #FAEBAC;
 }
-.search {
-  display: flex;
-  align-items: center;
-  position: realtive;
-  margin-top: 20px;
-}
-.search img {
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  cursor: pointer;
-  right:35px;
-}
-.searchBox {
-  height: 40px;
-  width: 350px;
-  border-radius: 10px;
-  background: rgb(248, 248, 2486);
-  font-size: 14px;
-  padding-left: 15px;
-  font-weight: bold;
-  border: 0px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-}
-.searchBox::placeholder {
-  color: #b7b7b7;
-}
-.searchBox:focus {
-  outline: none;
-}
+
 .navbar {
   height: 100%;
   width: 70px;
