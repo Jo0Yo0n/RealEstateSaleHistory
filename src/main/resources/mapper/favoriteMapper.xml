@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosa.realestate.favorites.repository.FavoriteDao">
+
+	<!-- 즐겨찾기 아파트 리스트 조회 -->
+	<select id="selectFavoriteList" parameterType="long" resultType="FavoriteListDto">
+		select fa.favorite_id
+         	 , re.real_estate_id
+         	 , re.complex_name
+         	 , re.address
+         	 , re.address_street
+         	 , re.construction_year
+         	 , bt.building_type_id
+         	 , bt.building_type_name
+         	 , ne.neighborhood_id
+         	 , ne.neighborhood_name
+         	 , di.district_id
+         	 , di.district_name
+         	 , ci.city_id
+         	 , ci.city_name
+		  from favorite             fa
+	inner join real_estate          re
+        	on re.real_estate_id    = fa.real_estate_id
+	inner join building_type        bt
+        	on bt.building_type_id  = re.building_type_id
+	inner join neighborhood         ne
+        	on ne.neighborhood_id   = re.neighborhood_id
+	inner join district             di
+        	on di.district_id       = ne.district_id
+	inner join city                 ci
+        	on ci.city_id           = di.city_id
+     	 where fa.user_id           = #{userId}
+	</select>
+
+
+ 	<!-- 즐겨찾기 아파트 상세 조회 -->
+	<select  id="selectFavoriteDetailList" parameterType="long" resultType="FavoriteDetailListDto">
+		select re.real_estate_id
+			 , re.complex_name
+			 , res.sales_id
+		  	 , res.contract_date
+			 , res.registration_date
+			 , res.building_name
+			 , res.floor
+			 , res.exclusive_area
+			 , res.sale_price || '억'    sale_price
+		  from real_estate          re
+	inner join real_estate_sale     res
+			on res.real_estate_id   = re.real_estate_id
+		 where re.REAL_ESTATE_ID    = #{realEstateId}	
+	</select>
+	
+	
+</mapper>
