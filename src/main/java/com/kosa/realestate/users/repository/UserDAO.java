@@ -1,9 +1,10 @@
-package com.kosa.realestate.users;
+package com.kosa.realestate.users.repository;
 
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import com.kosa.realestate.users.Users;
 
 /**
  * UserDAO 인터페이스

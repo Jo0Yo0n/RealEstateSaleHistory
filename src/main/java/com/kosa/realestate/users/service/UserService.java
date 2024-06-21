@@ -1,10 +1,11 @@
 package com.kosa.realestate.users.service;
 
 import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.UserDAO;
 import com.kosa.realestate.users.UserDTO;
 import com.kosa.realestate.users.UserMapper;
 import com.kosa.realestate.users.Users;
+import com.kosa.realestate.users.repository.UserDAO;
+import com.kosa.realestate.users.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -23,20 +24,16 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private final UserDAO userDAO;
+  private final UserRepository userRepository;
 
   private final PasswordEncoder passwordEncoder;
-
-  // private final UserRepository userRepository;
 
 
   // User 생성
   public void createUser(String email, String password, String nickname) {
 
-    Users user = Users.builder()
-        .email(email)
-        .password(passwordEncoder.encode(password)) // 비밀번호 암호화
-        .nickname(nickname)
-        .build();
+    Users user = Users.builder().email(email).password(passwordEncoder.encode(password)) // 비밀번호 암호화
+        .nickname(nickname).build();
 
     // user가 작성한 email, nickname이 DB에 있는 데이터와 중복되는지 확인
     try {
@@ -62,9 +59,7 @@ public class UserService {
   public List<UserDTO> getUserList() {
     List<Users> usersList = userDAO.getUserList();
 
-    return usersList.stream()
-        .map(UserMapper::toDTO)
-        .collect(Collectors.toList());
+    return usersList.stream().map(UserMapper::toDTO).collect(Collectors.toList());
   }
 
   // User 업데이트
@@ -77,22 +72,20 @@ public class UserService {
     userDAO.deleteUser(id);
   }
 
+
   // 이메일 기준 사용자 정보 조회
-  // public UserDTO findByEmail( String email) {
-  //
-  // Users user = userRepository.findByEmail(email).orElseThrow(() -> new
-  // DuplicateUserException("not find user"));
-  //
-  // UserDTO userDTO = UserDTO.builder()
-  // .userId(user.getUserId())
-  // .email(user.getEmail())
-  // .password(user.getPassword())
-  // .nickname(user.getNickname())
-  // .isDeleted(user.getIsDeleted())
-  // .createdAt(user.getCreatedAt())
-  // .updatedAt(user.getUpdatedAt())
-  // .build();
-  //
-  // return userDTO;
-  // }
+  public UserDTO findByEmail(String email) {
+
+    Users user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new DuplicateUserException("not find user"));
+
+    return UserDTO.builder().
+        userId(user.getUserId())
+        .email(user.getEmail())
+        .nickname(user.getNickname())
+        .isDeleted(user.getIsDeleted())
+        .createdAt(user.getCreatedAt())
+        .updatedAt(user.getUpdatedAt())
+        .build();
+  }
 }

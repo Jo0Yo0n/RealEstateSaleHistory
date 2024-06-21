@@ -35,6 +35,7 @@ public class SecurityConfig {
             .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout"))
             .logoutSuccessUrl("/")
             .invalidateHttpSession(true))
+        .csrf(csrf -> csrf.disable())
     ;
     return http.build();
   }
