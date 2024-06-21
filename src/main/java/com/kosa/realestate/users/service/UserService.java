@@ -10,7 +10,6 @@ import com.kosa.realestate.users.UserDAO;
 import com.kosa.realestate.users.UserDTO;
 import com.kosa.realestate.users.UserMapper;
 import com.kosa.realestate.users.Users;
-import com.kosa.realestate.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 
@@ -27,7 +26,7 @@ public class UserService {
 
   private final PasswordEncoder passwordEncoder;
   
-  private final UserRepository userRepository;
+  // private final UserRepository userRepository;
   
 
   
