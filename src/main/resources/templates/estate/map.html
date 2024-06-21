@@ -188,6 +188,30 @@
 		});
 
 
+		$(document).ready(function() {
+		    $('#homeIcon').click(function() {
+		        $.ajax({
+		            url: '/real-estate/search',
+		            type: 'GET',
+		            dataType: 'json',
+		            success: function(realEstates) {
+		                var realEstateListHtml = '';
+		                realEstates.forEach(function(realEstate) {
+		                    // 여기에 각 부동산 정보를 표시하는 HTML 마크업을 추가하세요.
+		                    // 예시로 'districtName' 대신 실제 부동산 정보 필드를 사용하세요.
+		                    realEstateListHtml += '<div class="realEstateItem">' +
+		                                          '<h4>' + realEstate.districtName + '</h4>' +
+		                                          // 다른 부동산 정보를 여기에 추가
+		                                          '</div>';
+		                });
+		                $('.districtListContainer').html(realEstateListHtml);
+		            },
+		            error: function(error) {
+		                console.log('부동산 정보를 가져오는데 에러가 발생했습니다:', error);
+		            }
+		        });
+		    });
+		});
 
 	</script>
 </body>

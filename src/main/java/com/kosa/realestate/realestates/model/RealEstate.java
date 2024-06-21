@@ -17,5 +17,5 @@ public class RealEstate {
   private int constructionYear; //건축년도
   private double lat;   //위도
   private double lng;   //경도
-  private String buildingFlag;  //건물유형
+//  private String buildingFlag;  //건물유형
 }
