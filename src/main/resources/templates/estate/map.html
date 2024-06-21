@@ -188,19 +188,58 @@
 		});
 
  
+
 		$(document).ready(function() {
-		    $('#homeIcon').click(function() {
+			
+			 // 전체 게시물 수를 가져오는 함수
+		    function fetchTotalCount() {
+		        $.ajax({
+		            url: '/real-estate/count',
+		            type: 'GET',
+		            success: function(total) {
+		                createPagination(total, pageSize);
+		            },
+		            error: function(error) {
+		                console.log('전체 게시물 수를 가져오는데 에러가 발생했습니다:', error);
+		            }
+		        });
+		    }
+			
+			
+			
+			
+	        // 페이지 번호를 생성하는 함수
+	        function createPagination(total, pageSize) {
+	            var pageCount = Math.ceil(total / pageSize); // 전체 페이지 수 계산
+	            var paginationHtml = '';
+
+	            for (var i = 0; i < pageCount; i++) {
+	                paginationHtml += '<button class="pageButton" data-page="' + i + '">' + (i + 1) + '</button>';
+	            }
+
+	            $('.pagination').html(paginationHtml);
+	        }
+	            
+
+		    // 데이터를 가져오는 함수를 정의합니다.
+		    function fetchRealEstateData(realEstateId,page, size) {
 		        $.ajax({
 		            url: '/real-estate/search',
 		            type: 'GET',
 		            dataType: 'json',
+		            data: {
+		            	realEstateId: realEstateId,
+		                page: page,
+		                size: size
+		            },
 		            success: function(realEstates) {
 		                var realEstateListHtml = '';
 		                realEstates.forEach(function(realEstate) {
-		                    // 여기에 각 부동산 정보를 표시하는 HTML 마크업을 추가하세요.
-		                    // 예시로 'districtName' 대신 실제 부동산 정보 필드를 사용하세요.
+		                    // 각 부동산 정보를 표시하는 HTML 마크업을 추가합니다.
+		                    // 'complexName' 필드가 있는지 확인하고, 없으면 기본값을 사용합니다.
+		                    var complexName = realEstate.realEstate && realEstate.realEstate.complexName ? realEstate.realEstate.complexName : '정보 없음';
 		                    realEstateListHtml += '<div class="realEstateItem">' +
-		                                          '<h4>' + realEstate.realEstate.complexName + '</h4>' +
+		                                          '<h4>' + complexName + '</h4>' +
 		                                          // 다른 부동산 정보를 여기에 추가
 		                                          '</div>';
 		                });
@@ -210,8 +249,18 @@
 		                console.log('부동산 정보를 가져오는데 에러가 발생했습니다:', error);
 		            }
 		        });
-		    });
-		}); 
+		    }
+
+		    // #homeIcon 클릭 시 데이터를 가져오는 함수를 호출합니다.
+		    $('#homeIcon').click(fetchRealEstateData(0,1,10));
+		    
+	        // 페이지 버튼 클릭 이벤트 핸들러
+	        $('.pagination').on('click', '.pageButton', function() {
+	            var selectedPage = $(this).data('page');
+	            // 여기에 선택된 페이지에 대한 데이터를 가져오는 함수를 호출합니다.
+	        });
+		});
+
 
 	</script>
 </body>

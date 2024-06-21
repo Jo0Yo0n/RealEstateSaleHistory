@@ -41,7 +41,7 @@
         JOIN REAL_ESTATE_SALE B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID 
 		JOIN NEIGHBORHOOD C ON A.NEIGHBORHOOD_ID = C.NEIGHBORHOOD_ID
 		<where>
-			<if test="realEstateId != null">
+			<if test="realEstateId != 0">
 				A.REAL_ESTATE_ID = #{realEstateId}
 			</if>
 

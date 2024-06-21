@@ -20,16 +20,19 @@ public class RealEstateSaleController {
   private final IRealEstateSaleService realEstateSaleService;
 
   @GetMapping("/count")
-  public String estateCount(
+  @ResponseBody
+  public int estateCount(
       @RequestParam(value = "realEstateId", required = false, defaultValue = "0") int realEstateId,
       Model model) {
     if (realEstateId == 0) {
-      model.addAttribute("count",realEstateSaleService.getRealEstateSaleCount());
+//      model.addAttribute("count",realEstateSaleService.getRealEstateSaleCount());
+      return realEstateSaleService.getRealEstateSaleCount();
     } 
     else {
       model.addAttribute("count",realEstateSaleService.getRealEstateSaleCount(realEstateId));
     }
-    return "estate/count";
+//    return "estate/count";
+    return realEstateSaleService.getRealEstateSaleCount(realEstateId);
   }
   
   @GetMapping("/select")
@@ -42,8 +45,10 @@ public class RealEstateSaleController {
   @GetMapping("/search")
   @ResponseBody
   public List<RealEstateWithSale> getEstateList(
-
+      @RequestParam("realEstateId") int realEstateId,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size
       ){
-    return realEstateSaleService.selectRealEstateWithSales(1,1,10);
+    return realEstateSaleService.selectRealEstateWithSales(realEstateId,page,size);
   }
 }
