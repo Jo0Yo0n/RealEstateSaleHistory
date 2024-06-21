@@ -55,13 +55,13 @@
 					<span class='tradeListColumn'><strong>층</strong></span>
 					<span class='tradeListColumn'><strong>가격(억)</strong></span>
 				</div>
-				<div class='tradeListContent'>
-					<span class='tradeListValue'>2024/08</span>
-					<span class='tradeListValue'>매매</span>
-					<span class='tradeListValue'>xxx.x</span>
-					<span class='tradeListValue'>12</span>
-					<span class='tradeListValue'>24</span>
-				</div>
+				 <div th:each="sale : ${realEstatePirce}" class="tradeListContent">
+			        <span class="tradeListValue" th:text="${sale.contractDate}"></span>
+			        <span class="tradeListValue">매매</span>
+			        <span class="tradeListValue" th:text="${sale.exclusiveArea}"></span>
+			        <span class="tradeListValue" th:text="${sale.floor}"></span>
+			        <span class="tradeListValue" th:text="${sale.salePrice}"></span>
+			    </div>
 			</div>
 		</div>
 	</div>
@@ -79,6 +79,13 @@
 		      }
 		    ]
 		  },
+		    options: {
+		        plugins: {
+		            legend: {
+		                display: false // 라벨 숨기기
+		            }
+		        }
+		    }
 		});
 		
 		let skCt = document.getElementById('skChart');
