@@ -25,18 +25,14 @@ public class UserService {
   private final UserDAO userDAO;
 
   private final PasswordEncoder passwordEncoder;
-  
-  // private final UserRepository userRepository;
-  
 
-  
+  // private final UserRepository userRepository;
+
+
+
   // User 생성
   public void createUser(String email, String password, String nickname) {
-    Users user = Users.builder()
-        .email(email)
-        .password(password)
-        .nickname(nickname)
-        .build();
+    Users user = Users.builder().email(email).password(password).nickname(nickname).build();
 
     // user가 작성한 email, nickname이 DB에 있는 데이터와 중복되는지 확인
     try {
@@ -51,7 +47,7 @@ public class UserService {
       }
     }
   }
-  
+
   // userId로 User 반환
   public UserDTO getUserById(Long userId) {
     Users user = userDAO.getUserById(userId);
@@ -61,10 +57,8 @@ public class UserService {
   // 모든 User 반환
   public List<UserDTO> getUserList() {
     List<Users> usersList = userDAO.getUserList();
-    
-    return usersList.stream()
-              .map(UserMapper::toDTO)
-              .collect(Collectors.toList());
+
+    return usersList.stream().map(UserMapper::toDTO).collect(Collectors.toList());
   }
 
   // User 업데이트
@@ -77,22 +71,23 @@ public class UserService {
     userDAO.deleteUser(id);
   }
 
-  
+
   // 이메일 기준 사용자 정보 조회
-  public UserDTO findByEmail( String email) {
-    
-    Users user = userRepository.findByEmail(email).orElseThrow(() -> new DuplicateUserException("not find user"));
-    
-    UserDTO userDTO = UserDTO.builder()
-        .userId(user.getUserId())
-        .email(user.getEmail())
-        .password(user.getPassword())
-        .nickname(user.getNickname())
-        .isDeleted(user.getIsDeleted())
-        .createdAt(user.getCreatedAt())
-        .updatedAt(user.getUpdatedAt())
-        .build();
-    
-    return userDTO;
-  }
+  // public UserDTO findByEmail( String email) {
+  //
+  // Users user = userRepository.findByEmail(email).orElseThrow(() -> new
+  // DuplicateUserException("not find user"));
+  //
+  // UserDTO userDTO = UserDTO.builder()
+  // .userId(user.getUserId())
+  // .email(user.getEmail())
+  // .password(user.getPassword())
+  // .nickname(user.getNickname())
+  // .isDeleted(user.getIsDeleted())
+  // .createdAt(user.getCreatedAt())
+  // .updatedAt(user.getUpdatedAt())
+  // .build();
+  //
+  // return userDTO;
+  // }
 }
