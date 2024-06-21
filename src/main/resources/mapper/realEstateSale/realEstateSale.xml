@@ -21,7 +21,7 @@
         <result property="constructionYear" column="CONSTRUCTION_YEAR"/>
         <result property="lat" column="LAT"/>
         <result property="lng" column="LNG"/>
-        <result property="buildingFlag" column="BUILDING_FLAG"/>
+        <!-- <result property="buildingFlag" column="BUILDING_FLAG"/> -->
     </association>
     <association property="realEstateSale" javaType="RealEstateSale">
         <id property="salesId" column="SALES_ID"/>
@@ -44,13 +44,9 @@
 			<if test="realEstateId != null">
 				A.REAL_ESTATE_ID = #{realEstateId}
 			</if>
-			<if test="">
-				AND 
-			</if>
+
 		</where>
-        <if test="realEstateId != null">
-        	WHERE A.REAL_ESTATE_ID = #{realEstateId}
-        </if>
+
     	ORDER BY B.CONTRACT_DATE DESC
     	OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
     </select>
