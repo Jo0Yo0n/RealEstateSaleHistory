@@ -31,6 +31,10 @@ public class SecurityConfig {
         .formLogin((formLogin) -> formLogin
             .loginPage("/users/login")
             .defaultSuccessUrl("/"))    // TODO: SuccessUrl 메인 화면 url로 바꾸기
+        .logout((logout) -> logout    // 로그아웃 설정
+            .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout"))
+            .logoutSuccessUrl("/")
+            .invalidateHttpSession(true))
     ;
     return http.build();
   }
