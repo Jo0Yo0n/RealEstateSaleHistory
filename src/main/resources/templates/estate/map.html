@@ -188,7 +188,25 @@
 		});
 
 
-
+		$(document).ready(function() {
+		    $('#homeIcon').click(function() {
+		        $.ajax({
+		            url: '/real-estate/search',
+		            type: 'GET',
+		            dataType: 'json',
+		            success: function(districts) {
+		                var districtListHtml = '';
+		                districts.forEach(function(district) {
+		                    districtListHtml += '<div>' + district.districtName + '</div>';
+		                });
+		                $('.districtListContainer').html(districtListHtml);
+		            },
+		            error: function(error) {
+		                console.log('지역 정보를 가져오는데 에러가 발생했습니다:', error);
+		            }
+		        });
+		    });
+		});
 	</script>
 </body>
 </html>

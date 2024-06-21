@@ -9,6 +9,7 @@ import com.kosa.realestate.realestates.model.RealEstateWithSale;
 public interface IRealEstateSaleRepository {
   int getRealEstateSaleCount();
   int getRealEstateSaleCount(int realEstateId);
+  
   List<RealEstateWithSale> selectRealEstateWithSales();
   List<RealEstateWithSale> selectRealEstateWithSales(Map<String, Object> param);
   
