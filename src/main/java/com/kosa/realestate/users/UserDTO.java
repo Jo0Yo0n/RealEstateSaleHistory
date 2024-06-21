@@ -1,10 +1,8 @@
 package com.kosa.realestate.users;
 
 import java.time.LocalDateTime;
-
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -19,7 +17,7 @@ public class UserDTO {
   
   private Long userId;
   private String email;
-  private String password;
+//  private String password;  // 보안을 위해 DTO에 password 멤버변수 삭제
   private String nickname;
   private char isDeleted;
   private LocalDateTime createdAt;
