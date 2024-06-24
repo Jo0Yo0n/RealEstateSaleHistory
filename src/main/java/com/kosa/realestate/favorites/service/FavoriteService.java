@@ -1,7 +1,7 @@
 package com.kosa.realestate.favorites.service;
 
 import java.util.List;
-
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.kosa.realestate.favorites.dto.FavoriteDetailListDto;
@@ -26,8 +26,10 @@ public class FavoriteService {
 
 
   // 즐겨찾기 아파트 리스트 조회
-  public List<FavoriteListDto> findFavoriteList(Pageable pageable, String email) {
-
+  public List<FavoriteListDto> findFavoriteList(int page, String email) {
+    
+    Pageable pageable = PageRequest.of(page, 10);
+    
     UserDTO userDto = userService.findByEmail(email);
 
     return favoriteDao.selectFavoriteList(userDto.getUserId(), pageable.getOffset(), pageable.getPageSize());
@@ -35,8 +37,10 @@ public class FavoriteService {
 
 
   // 즐겨찾기 아파트 상세 조회
-  public List<FavoriteDetailListDto> findFavoriteDetailLst(Pageable pageable, Long realEstateId) {
+  public List<FavoriteDetailListDto> findFavoriteDetailLst(int page, Long realEstateId) {
 
+    Pageable pageable = PageRequest.of(page, 10);
+    
     return favoriteDao.selectFavoriteDetailList(realEstateId, pageable.getOffset(), pageable.getPageSize());
   }
 
