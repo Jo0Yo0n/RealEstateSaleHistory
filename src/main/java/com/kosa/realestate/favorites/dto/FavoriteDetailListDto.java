@@ -1,6 +1,7 @@
 package com.kosa.realestate.favorites.dto;
 
 import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,13 +1,16 @@
 package com.kosa.realestate.realestates.controller;
 
 import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import com.kosa.realestate.realestates.model.RealEstateSale;
 import com.kosa.realestate.realestates.model.RealEstateWithSale;
 import com.kosa.realestate.realestates.service.IRealEstateDetailService;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

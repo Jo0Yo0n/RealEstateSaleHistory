@@ -2,7 +2,9 @@ package com.kosa.realestate.realestates.repository;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
+
 import com.kosa.realestate.realestates.model.RealEstateWithSale;
 
 @Mapper

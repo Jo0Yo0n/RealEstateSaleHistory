@@ -2,8 +2,10 @@ package com.kosa.realestate.users.repository;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
 import com.kosa.realestate.users.Users;
 
 /**
