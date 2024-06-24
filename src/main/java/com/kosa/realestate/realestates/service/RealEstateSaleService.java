@@ -5,12 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
-import com.kosa.realestate.realestates.model.RealEstate;
-import com.kosa.realestate.realestates.model.RealEstateSale;
-=======
 
->>>>>>> 6aac81bb9e284b715efacedbe7d4bf108b2c5540
 import com.kosa.realestate.realestates.model.RealEstateWithSale;
 import com.kosa.realestate.realestates.repository.IRealEstateSaleRepository;
 
@@ -50,8 +45,6 @@ public class RealEstateSaleService implements IRealEstateSaleService {
   public List<Map<String, Object>> getAllDestrictId() {
     return estateSaleRepository.getAllDestrictId();
   }
-
-
 
 
 
