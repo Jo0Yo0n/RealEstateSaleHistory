@@ -1,155 +1,87 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>게시판 폼 예제</title>
-<link rel='stylesheet' href='../css/communityForm.css' type='text/css'/>
-<!-- 부트스트랩 CSS 링크 -->
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	rel="stylesheet">
-<!-- Select2 CSS 링크 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
-	rel="stylesheet" />
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Select2 JS 링크 -->
-<script
-	src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- 부트스트랩 JS 링크 -->
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<!-- Select2 초기화 스크립트 -->
-<script type="text/javascript">
-	$(document).ready(function() {
-		// Select2 초기화
-		$('select').select2();
-	});
-
-	// 허용할 파일 확장자 리스트(화이트리스트)
-	var allowedExtensions = [ 'jpg', 'jpeg', 'png', 'gif' ];
-	var maxSize = 5242880; // 5MB
-
-	function checkExtension(fileName, fileSize) {
-		var fileExtension = fileName.split('.').pop().toLowerCase(); //.을 기준으로 나눠 마지막 값(확장자)를 소문자로 변환함
-
-		if (fileSize >= maxSize) {
-			alert("파일 사이즈가 초과되었습니다.");
-			return false;
-		}
-
-		if (allowedExtensions.indexOf(fileExtension) === -1) {
-			alert("해당 파일은 허용된 확장자가 아닙니다.");
-			return false;
-		}
-		return true;
-	}
-
-	// 파일 업로드 (Ajax로 구현)
-	$(document).ready(
-			function() {
-				$("#uploadBtn").on(
-						"click",
-						function(e) {
-							e.preventDefault(); // 폼의 기본 제출을 막음
-
-							var formData = new FormData();
-							var inputFile = $("input[name='uploadFile']");
-							var files = inputFile[0].files;
-
-							for (var i = 0; i < files.length; i++) {
-								if (!checkExtension(files[i].name,
-										files[i].size)) {
-									return false;
-								}
-								formData.append("uploadFile", files[i]);
-							}
-
-							$
-									.ajax({
-										url : '/fileUpload',
-										type : 'POST',
-										data : formData,
-										processData : false,
-										contentType : false,
-										success : function(result) {
-											alert("Uploaded");
-										},
-										error : function(jqXHR, textStatus,
-												errorThrown) {
-											alert("Upload failed: "
-													+ textStatus + " - "
-													+ errorThrown);
-										}
-									});
-						});
-			});
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 폼 예제</title>
+    <title>게시판 폼 예제</title>
+	<link rel='stylesheet' href='../css/communityList.css' type='text/css'/>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 부트스트랩 CSS 링크 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Select2 CSS 링크 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 JS 링크 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- 부트스트랩 JS 링크 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Select2 초기화 스크립트 -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // Select2 초기화 (특정 셀렉트 박스에만 적용)
+            $('#selectbox1').select2({
+                minimumResultsForSearch: Infinity // 검색 기능 비활성화
+            });
+        });
+    </script>
 </head>
 <body>
-	<div class="container">
-		<div class="menu">
-			<div class="commutop">
-				<button class="btn btn-custom">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-						fill="currentColor" class="bi bi-arrow-left-short custom-svg"
-						viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-							d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
+    <div class="container">
+        <div class="menu">
+            <div class="commutop">
+                <button class="btn btn-custom">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short custom-svg" viewBox="0 0 16 16">                      
                     </svg>
-				</button>
-				<div class="commutext">
-					<h3>커뮤니티 작성</h3>
-				</div>
-			</div>
-			<hr>
-			<div class="textbox">
-				<select id="selectbox" name="selectbox" onchange=""
-					class="form-control pt-1 mt-4"
-					style="height: 33px; width: 40%; vertical-align: middle;">
-					<option value="" disabled selected>서울특별시</option>
-				</select> <select id="selectbox2" name="selectbox" onchange=""
-					class="form-control pt-1 mt-4"
-					style="height: 33px; width: 40%; vertical-align: middle;">
-					<option value="" disabled selected>자치구</option>
-					<option value="A">A</option>
-					<option value="b">b</option>
-					<option value="c">c</option>
-				</select>
-			</div>
-			<hr>
-			<div class="textbox">
-				<h3 class="commutext2">게시글 작성</h3>
-			</div>
-			<div class="col-md-12">
-				<div class="col-md-4">
-					<form>
-						<div class="form-group">
-							<label for="title">제목</label> <input type="text"
-								class="form-control" id="title" placeholder="제목을 입력하세요">
-						</div>
-						<div class="form-group">
-							<label for="content">내용</label>
-							<textarea class="form-control" id="content"
-								placeholder="내용을 입력하세요"></textarea>
-						</div>
+                </button>
+                <div class="commutext"><h3>커뮤니티</h3></div>
+            </div>
+            <hr>
+            <div class="select-row">
+                <select class="form-control pt-1 mt-4 selectbox">
+                    <option selected>행정구역</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+                <select class="form-control pt-1 mt-4 selectbox">
+                    <option selected>자치구</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <hr>
+            <div class="search">
+                <img src='../assets/images/search.png' />
+                <input class="searchBox" type='text' placeholder='검색어 입력' />
+                <select class="option">
+                    <option selected>최신순</option>
+                    <option value="1">좋아요순</option>
+                    <option value="2">오래된순</option>
+                </select>
+            </div>
 
-						<div class="uploadDiv">
-							<input type="file" name="uploadFile" multiple>
-						</div>
-						<br>
-					</form>
-					<div class="d-flex">
-						<button type="button" class="btn"
-							style="background-color: #FAEBAC; margin-right: 10px;">Cancel</button>
-						<button id="uploadBtn" type="button" class="btn"
-							style="background-color: #F9DE7B; margin-right: 10px;">Submit!</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header">
+                        <div class="nickname">닉네임자리</div>
+                        <div class="location">서울특별시 · 영등포구</div>
+                    </div>
+                    <div class="card-title">게시글 제목</div>
+                    <div class="card-text">한국 토지주택공사에서 조차 인지를 못하여 발생한 사례이다.<br>국토부의 보안 책은 과연 어떻게 나올지 지켜봐야...</div>
+                    <div class="card-footer">
+                        <div class="interaction">
+                            <button class="like">👍 1</button>
+                            <button class="comment">💬 1</button>
+                            <span class="view">👁️ 1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
