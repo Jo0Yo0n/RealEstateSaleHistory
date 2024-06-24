@@ -22,7 +22,23 @@ public class FileMetaDataController {
     public String name() {
         return "communityForm";
     }
+    
+    @GetMapping("/communityList")
+    public String communityList() {
+        return "communityList";
+    }
+    
+    @GetMapping("/communityCard")
+    public String communityCard() {
+        return "communityCard";
+    }
 
+    @GetMapping("/reply")
+    public String reply() {
+        return "reply";
+    }
+    
+    
     @PostMapping("/fileUpload")
     @ResponseBody
     public String fileUpload(@RequestParam("uploadFile") MultipartFile[] files) {
