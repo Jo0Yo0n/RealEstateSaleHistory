@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home page</title>
+</head>
+<body>
+  <h1>Welcome to the Home Page</h1>
+  <div sec:authorize="isAnonymous()">
+    <a th:href="@{/users/login}">로그인</a>
+  </div>
+  <div sec:authorize="isAuthenticated()">
+    <a th:href="@{/users/logout}">로그아웃</a>
+  </div>
+</body>
+</html>

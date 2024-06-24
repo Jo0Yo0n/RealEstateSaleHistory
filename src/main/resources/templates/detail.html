@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>price detail</title>
+<link rel='stylesheet' th:href='@{/css/detail.css}' type='text/css' />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+	<div class='detailPageContainer'>
+		<div class='aptContainer'>
+			<div class='aptName'>
+				<strong th:text="${realEstateDetail[0].realEstate.complexName}"></strong>
+			</div>
+			<div class='aptAddress'>
+				<strong th:text="'(' + ${realEstateDetail[0].realEstate.addressStreet} + ')'"></strong>
+			</div>
+		</div>
+		<div class='chartContainer'>
+			<div class='basicChart'>
+				<canvas id="basicChart" width="450" height="300"></canvas>
+			</div>
+			<div class='shoulderKneeChart'>
+				<img th:src="@{/assets/images/person.png}" class='person'/>
+				<canvas id='skChart' width='450' height='300'></canvas>
+			</div>
+		</div>
+		<div class='priceDetailContainer'>
+			<div class='priceTitle'><strong>가격 정보</strong></div>
+			<div class='priceContentContainer'>
+				<div class='PriceContent'>
+					<span th:text="${realEstateDetail[0].realEstateSale.salePrice} + '억'"></span>
+					<div class='priceInnerContent'>
+						<span>최근 5년 실거래가</span>
+						<div class='priceHighRow'>
+							<span>&nbsp;&nbsp;최고가 : xx억</span>	
+							<span>&nbsp;&nbsp;최저가 : xx억</span>	
+						</div>
+					</div>
+				</div>
+				<div class='PriceContent'>
+					<span th:text="'층 : '+${realEstateDetail[0].realEstateSale.floor}+'층'"></span>
+					<span th:text="'전용면적(m²) : '+${realEstateDetail[0].realEstateSale.exclusiveArea}+'m²'"></span>
+					<span th:text="'등기일자 : '+${realEstateDetail[0].realEstateSale.registrationDate}">등기일자 :</span>
+				</div>
+			</div>
+		</div>
+		<div class='tradeListContainer'>
+			<div class='tradeTitle'><strong>거래내역</strong></div>
+			<div class='tradeList'>
+				<div class='tradeListTitle'>
+					<span class='tradeListColumn'><strong>계약년월</strong></span>
+					<span class='tradeListColumn'><strong>계약유형</strong></span>
+					<span class='tradeListColumn'><strong>전용면적(m²)</strong></span>
+					<span class='tradeListColumn'><strong>층</strong></span>
+					<span class='tradeListColumn'><strong>가격(억)</strong></span>
+				</div>
+				 <div th:each="sale : ${realEstatePirce}" class="tradeListContent">
+			        <span class="tradeListValue" th:text="${sale.contractDate}"></span>
+			        <span class="tradeListValue">매매</span>
+			        <span class="tradeListValue" th:text="${sale.exclusiveArea}"></span>
+			        <span class="tradeListValue" th:text="${sale.floor}"></span>
+			        <span class="tradeListValue" th:text="${sale.salePrice}"></span>
+			    </div>
+			</div>
+		</div>
+	</div>
+	<script>
+		let bsCt = document.getElementById('basicChart');
+	
+		let basicChart = new Chart(bsCt, {
+		  type: 'line',
+		  data: {
+		    labels: ['2020', '2021', '2022', '2023'],
+		    datasets: [
+		      {
+		        label: 'Dataset',
+		        data: [10,20,30,40],
+		      }
+		    ]
+		  },
+		    options: {
+		        plugins: {
+		            legend: {
+		                display: false // 라벨 숨기기
+		            }
+		        }
+		    }
+		});
+		
+		let skCt = document.getElementById('skChart');
+		
+		let skChart = new Chart(skCt, {
+            type: 'line',
+            data: {
+                
+                datasets: [
+                    {
+                        label: 'Dataset 1',
+                        data: [10, 30, 50],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        position: 'right',
+                        ticks: {
+                            maxTicksLimit: 5 // y축 값 다섯 개만 나오게 설정
+                        }
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                elements: {
+                    line: {
+                        display: false // 라인 차트를 표시하지 않음
+                    },
+                    point: {
+                        display: false // 데이터 포인트를 표시하지 않음
+                    }
+                }
+            }
+        });
+	</script>
+</body>
+</html>
