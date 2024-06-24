@@ -56,6 +56,6 @@
 	<update id="deleteUser">
 		update users
 		set is_deleted = 'Y'
-		where id = #{id}
+		where user_id = #{userId}
 	</update>
 </mapper>

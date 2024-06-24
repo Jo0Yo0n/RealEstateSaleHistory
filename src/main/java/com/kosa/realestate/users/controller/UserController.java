@@ -1,21 +1,28 @@
 package com.kosa.realestate.users.controller;
 
+import com.kosa.realestate.favorites.dto.FavoriteListDto;
+import com.kosa.realestate.favorites.service.FavoriteService;
+import com.kosa.realestate.users.DuplicateUserException;
+import com.kosa.realestate.users.UserCreateForm;
+import com.kosa.realestate.users.UserDTO;
+import com.kosa.realestate.users.UserUpdateForm;
+import com.kosa.realestate.users.service.UserService;
+import jakarta.validation.Valid;
+import java.security.Principal;
 import java.util.List;
-
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.UserCreateForm;
-import com.kosa.realestate.users.UserDTO;
-import com.kosa.realestate.users.service.UserService;
-
-import jakarta.validation.Valid;
 
 /**
  * UserController 클래스
@@ -24,14 +31,13 @@ import jakarta.validation.Valid;
  */
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
-  private UserService userService;
-
-  public UserController(UserService userService) {
-    this.userService = userService;
-  }
+  private static final Logger log = LoggerFactory.getLogger(UserController.class);
+  private final UserService userService;
+  private final FavoriteService favoriteService;
 
   // 회원가입 페이지로 이동
   @GetMapping("/signup")
@@ -39,7 +45,7 @@ public class UserController {
     return "signup_form";
   }
 
-  // user가 작성한 폼을 DB에 저장
+  // 회원가입 폼 저장
   @PostMapping("/signup")
   public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
@@ -73,6 +79,57 @@ public class UserController {
   @GetMapping("/login")
   public String login() {
     return "login_form";
+  }
+
+  // 마이 페이지로 이동
+  @GetMapping("/me")
+  public String myPage(Principal principal, Model model) {
+    if(principal == null) {
+      log.error("권한이 없습니다.");
+      return "access_denied";
+    }
+
+    String email = principal.getName();
+    UserDTO userDTO = userService.findUserByEmail(email);
+    model.addAttribute("user", userDTO);
+
+    List<FavoriteListDto> favoriteListDtoList = favoriteService.findFavoriteList(0, email);
+    model.addAttribute("favoriteListDtoList", favoriteListDtoList);
+
+    return "my_page_temp";
+  }
+
+  // 회원 정보 수정 페이지로 이동
+  @GetMapping("/me/update")
+  public String updateUser(UserUpdateForm userUpdateForm) {
+    return "update_form";
+  }
+
+  // 회원 정보 수정 폼 저장
+  @PostMapping("/me")
+  public String updateUser(@Valid UserUpdateForm userUpdateForm, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return "update_form";
+    }
+
+    // 확인 비밀번호 불일치
+    if (!userUpdateForm.getPassword1().equals(userUpdateForm.getPassword2())) {
+      bindingResult.rejectValue("password1", "passwordInCorrect", "패스워드가 일치하지 않습니다.");
+      return "update_form";
+    }
+
+    return "redirect:/users/me";
+  }
+
+  // 회원 탈퇴
+  @DeleteMapping("/me")
+  public ResponseEntity<Void> deleteUser(Principal principal) {
+    String email = principal.getName();
+    UserDTO userDTO = userService.findUserByEmail(email);
+    Long userId = userDTO.getUserId();
+
+    userService.deleteUser(userId);
+    return ResponseEntity.ok().build();
   }
 
   // id로 회원조회(테스트)

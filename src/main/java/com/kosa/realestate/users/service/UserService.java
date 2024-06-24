@@ -1,9 +1,11 @@
 package com.kosa.realestate.users.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,8 +77,17 @@ public class UserService {
     userDAO.deleteUser(id);
   }
 
+  // 이메일 기준 사용자 정보 조회 (MyBatis)
+  public UserDTO findUserByEmail(String email) throws UsernameNotFoundException {
+    Optional<Users> _user = userDAO.findUserByEmail(email);
+    if(_user.isEmpty()) {
+      throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+    }
 
-  // 이메일 기준 사용자 정보 조회
+    return UserMapper.toDTO(_user.get()); // Users 객체를 UserDTO 로 변환 후 반환
+  }
+
+  // 이메일 기준 사용자 정보 조회 (JPA)
   public UserDTO findByEmail(String email) {
 
     Users user = userRepository.findByEmail(email)

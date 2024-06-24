@@ -11,6 +11,7 @@
   </div>
   <div sec:authorize="isAuthenticated()">
     <a th:href="@{/users/logout}">로그아웃</a>
+    <a th:href="@{/users/me}">마이페이지</a>
   </div>
 </body>
 </html>

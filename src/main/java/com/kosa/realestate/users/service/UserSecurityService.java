@@ -33,6 +33,10 @@ public class UserSecurityService implements UserDetailsService {
       throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
     }
 
+    if (_user.get().getIsDeleted() == 'Y') {
+      throw new UsernameNotFoundException("탈퇴한 회원입니다.");
+    }
+
     Users user = _user.get();
 
     List<GrantedAuthority> authorities = new ArrayList<>();
