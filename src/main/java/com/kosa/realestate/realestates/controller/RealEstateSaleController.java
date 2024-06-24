@@ -41,7 +41,7 @@ public class RealEstateSaleController {
   public List<RealEstateWithSale> getEstateList(
       @RequestParam(value="realEstateId" ,defaultValue = "0") int realEstateId,
       @RequestParam(value = "page", defaultValue = "0") int page,
-      @RequestParam("size") int size
+      @RequestParam(value = "size", defaultValue = "10") int size
       ){
     return realEstateSaleService.selectRealEstateWithSales(realEstateId,page,size);
   }

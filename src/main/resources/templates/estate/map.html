@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0rm45zpj5b"></script>
 	<script type="text/javascript" th:src="@{/js/MarkerClustering.js}"></script>
 	<script type="text/javascript" th:src="@{/js/map_data.js}"></script>
+	<script type="text/javascript" th:src="@{/js/map_marker.js}"></script>
 	<link rel='stylesheet' th:href='@{/css/map.css}' type='text/css' />
 	<script th:inline="javascript">
 		var clusterMarkerImagePath = /*[[@{/assets/images/}]]*/ '../static/assets/images/';
@@ -97,13 +98,11 @@
 					var clickedMarker = e.overlay;
 					var clickedApt = $(clickedMarker.getIcon().content).find('strong').text();
 					var ClickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
-
 					// 아파트 이름을 기준으로 REAL_ESTATE_ID를 찾는 함수 호출
 					/* var realEstateId = getRealEstateId(clickedApt); */
 
 					// 메뉴 내용을 클릭된 마커 정보로 업데이트 (realEstateId를 사용하도록 수정)
-					$('#aptInfo').html(
-						'<p>Clicked Marker Information</p><p>Apt: ' + clickedApt + '</p><p>Real Estate ID: ' + ClickedId + '</p>');
+					$('#aptInfo').html( `<p>Clicked Marker Information</p><p>Apt: ${clickedApt} </p><p>Real Estate Id: ${ClickedId} </p>`);
 
 					// 모든 메뉴를 닫고 aptInfo 메뉴를 열기
 					$('.menu').removeClass('active');
@@ -200,25 +199,22 @@
 
 			var paginationHtml = '<div class="pagination">';
 			var startPage, endPage;
+			var maxPage = 10;
 
-			if (totalPages <= 10) {
-				// 전체 페이지 수가 10 이하인 경우 모든 페이지 번호를 표시
+			// 현재 페이지가 1부터 10 사이인 경우
+			if (currentPage <= maxPage) {
 				startPage = 1;
-				endPage = totalPages;
+				endPage = maxPage;
 			} else {
-				// 전체 페이지 수가 10을 초과하는 경우
-				var maxPage = 10;
-				var halfMaxPage = Math.floor(maxPage / 2);
+				// 현재 페이지를 기준으로 앞뒤로 5페이지씩 표시
+				var startOffset = (currentPage % maxPage) === 0 ? maxPage : currentPage % maxPage;
+				startPage = currentPage - startOffset + 1;
+				endPage = startPage + maxPage - 1;
 
-				if (currentPage <= halfMaxPage) {
-					startPage = 1;
-					endPage = maxPage;
-				} else if (currentPage + halfMaxPage >= totalPages) {
-					startPage = totalPages - maxPage + 1;
+				// 총 페이지 수를 넘지 않도록 조정
+				if (endPage > totalPages) {
 					endPage = totalPages;
-				} else {
-					startPage = currentPage - halfMaxPage;
-					endPage = currentPage + halfMaxPage - 1;
+					startPage = totalPages - maxPage + 1;
 				}
 			}
 
@@ -227,9 +223,9 @@
 				paginationHtml += '<button class="page-item page-link" data-page="1">처음</button>';
 			}
 
-			// '이전' 버튼 생성
-			if (currentPage > 1) {
-				paginationHtml += '<button class="page-item page-link" data-page="' + (currentPage - 1) + '">이전</button>';
+			// '이전 10페이지' 버튼 생성
+			if (startPage > maxPage) {
+				paginationHtml += '<button class="page-item page-link" data-page="' + (startPage - maxPage) + '">이전 10페이지</button>';
 			}
 
 			// 페이지 번호 버튼 생성
@@ -237,9 +233,9 @@
 				paginationHtml += '<button class="page-item page-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
 			}
 
-			// '다음' 버튼 생성
-			if (currentPage < totalPages) {
-				paginationHtml += '<button class="page-item page-link" data-page="' + (currentPage + 1) + '">다음</button>';
+			// '다음 10페이지' 버튼 생성
+			if (endPage < totalPages) {
+				paginationHtml += '<button class="page-item page-link" data-page="' + (endPage + 1) + '">다음 10페이지</button>';
 			}
 
 			// '마지막' 페이지로 이동하는 버튼
@@ -250,6 +246,7 @@
 			paginationHtml += '</div>';
 			$('.pagination').html(paginationHtml);
 		}
+
 
 
 
@@ -340,12 +337,12 @@
 		$('#homeIcon').click(function () {
 			fetchEstateCount(0).then(allCount => {
 				console.log(allCount);
-				createPagination(1,Math.ceil(allCount/10));
+				createPagination(1, Math.ceil(allCount / 10));
 			}); // 첫 번째 페이지 데이터와 총 데이터 개수를 가져옵니다.
 			fetchRealEstateData(0, 1, 10); //첫 번째 페이지 
 		});
 
-		//
+
 	</script>
 </body>
 
