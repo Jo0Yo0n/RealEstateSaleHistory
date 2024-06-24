@@ -1,16 +1,18 @@
 package com.kosa.realestate.realestates.controller;
 
 import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.kosa.realestate.realestates.model.RealEstateWithSale;
 import com.kosa.realestate.realestates.service.IRealEstateSaleService;
+
 import lombok.RequiredArgsConstructor;
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequiredArgsConstructor

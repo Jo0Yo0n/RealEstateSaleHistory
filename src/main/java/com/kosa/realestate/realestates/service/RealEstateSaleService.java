@@ -3,9 +3,12 @@ package com.kosa.realestate.realestates.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Service;
+
 import com.kosa.realestate.realestates.model.RealEstateWithSale;
 import com.kosa.realestate.realestates.repository.IRealEstateSaleRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service

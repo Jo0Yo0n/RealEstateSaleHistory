@@ -1,8 +1,9 @@
 package com.kosa.realestate.favorites.service;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
-import com.github.gavlyukovskiy.boot.jdbc.decorator.flexypool.FlexyPoolProperties.Metrics.Reporter.Log;
+
 import com.kosa.realestate.favorites.dto.FavoriteDetailListDto;
 import com.kosa.realestate.favorites.dto.FavoriteDto;
 import com.kosa.realestate.favorites.dto.FavoriteListDto;
@@ -12,7 +13,7 @@ import com.kosa.realestate.favorites.repository.FavoriteRepostiory;
 import com.kosa.realestate.users.DuplicateUserException;
 import com.kosa.realestate.users.UserDTO;
 import com.kosa.realestate.users.service.UserService;
-import groovy.util.logging.Log4j2;
+
 import lombok.RequiredArgsConstructor;
 
 @Service

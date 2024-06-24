@@ -1,8 +1,10 @@
 package com.kosa.realestate.favorites.repository;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
 import com.kosa.realestate.favorites.dto.FavoriteDetailListDto;
 import com.kosa.realestate.favorites.dto.FavoriteListDto;
 
