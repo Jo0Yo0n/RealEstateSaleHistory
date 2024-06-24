@@ -195,9 +195,9 @@
 		
 		// 페이지네이션 생성 함수
 		function createPagination(currentPage, totalPages) {
-		    var paginationHtml = '<ul class="pagination">';
+		    var paginationHtml = '<div class="pagination">';
 		    var startPage, endPage;
-		    
+
 		    if (totalPages <= 10) {
 		        // 전체 페이지 수가 10 이하인 경우 모든 페이지 번호를 표시
 		        startPage = 1;
@@ -215,27 +215,36 @@
 		            endPage = currentPage + 4;
 		        }
 		    }
-		    
+
 		    // '처음' 페이지로 이동하는 버튼
 		    if (startPage > 1) {
-		        paginationHtml += '<li class="page-item"><a class="page-link" href="#" data-page="1">처음</a></li>';
+		        paginationHtml += '<button class="page-item page-link" data-page="1">처음</button>';
 		    }
-		    
+
+		    // '이전' 버튼 생성
+		    if (currentPage > 1) {
+		        paginationHtml += '<button class="page-item page-link" data-page="' + (currentPage - 1) + '">이전</button>';
+		    }
+
 		    // 페이지 번호 버튼 생성
 		    for (var i = startPage; i <= endPage; i++) {
-		        paginationHtml += '<li class="page-item' + (i === currentPage ? ' active' : '') + '">';
-		        paginationHtml += '<a class="page-link" href="#" data-page="' + i + '">' + i + '</a>';
-		        paginationHtml += '</li>';
+		        paginationHtml += '<button class="page-item page-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
 		    }
-		    
+
+		    // '다음' 버튼 생성
+		    if (currentPage < totalPages) {
+		        paginationHtml += '<button class="page-item page-link" data-page="' + (currentPage + 1) + '">다음</button>';
+		    }
+
 		    // '마지막' 페이지로 이동하는 버튼
 		    if (endPage < totalPages) {
-		        paginationHtml += '<li class="page-item"><a class="page-link" href="#" data-page="' + totalPages + '">마지막</a></li>';
+		        paginationHtml += '<button class="page-item page-link" data-page="' + totalPages + '">마지막</button>';
 		    }
-		    
-		    paginationHtml += '</ul>';
+
+		    paginationHtml += '</div>';
 		    $('.pagination').html(paginationHtml);
 		}
+
 
 		
 		
@@ -256,7 +265,7 @@
 		        		var realEstateListHtml = '';
 		        		data.forEach(function(realEstate){
 		        			realEstateListHtml += '<div class="realEstateItem">' +
-		        			'<h4>' + realEstate.realEstateSale.salesId +'</h4>';
+		        			'<h4>' + realEstate.realEstateSale.salesId +'</h4>'+'</div>';
 		        		});
 		        		$('.districtListContainer').html(realEstateListHtml);
 		        	} else {
@@ -274,11 +283,12 @@
   	  // 총 데이터 개수를 가져오는 AJAX 요청 함수
         function fetchEstateCount(realEstateId) {
             $.ajax({
-                url: '/count',
+                url: '/real-estate/count',
                 type: 'GET',
                 data: { realEstateId: realEstateId },
                 success: function(count) {
                     totalEstateCount = count;
+										console.log(count);
                     createPagination(1, Math.ceil(count / 10));
                 },
                 error: function(error) {
@@ -298,6 +308,7 @@
         // #homeIcon 클릭 시 데이터를 가져오는 함수와 전체 게시물 수를 가져오는 함수를 호출합니다.
         $('#homeIcon').click(function() {
             fetchEstateCount(0); // 첫 번째 페이지 데이터와 총 데이터 개수를 가져옵니다.
+						fetchRealEstateData(0,1,10); //첫 번째 페이지 
         });
 		
 		

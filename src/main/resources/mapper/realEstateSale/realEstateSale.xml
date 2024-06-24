@@ -5,9 +5,9 @@
 	
 	<select id="getRealEstateSaleCount" parameterType="int" resultType="int">
 		SELECT COUNT(*) FROM REAL_ESTATE_SALE A
-		JOIN Real_Estate_Sale B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID
+		JOIN Real_Estate B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID
 		<if test="realEstateId != null">
-			WHERE REAL_ESTATE_ID = #{realEstateId}
+			WHERE A.REAL_ESTATE_ID = #{realEstateId}
 		</if>
 	</select>
 
