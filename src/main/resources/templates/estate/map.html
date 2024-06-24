@@ -32,7 +32,7 @@
 	<div id="map"></div>
 	<div class="menu" id="homeMenu">
 		<div class="closeMenu"><img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg'/></div>
-		<div th:include="home :: content"></div>
+		<div th:insert="~{home :: content}"></div>
 	</div>
 	<div class="menu" id="commMenu">
         <div class="closeMenu">
@@ -189,79 +189,129 @@
 
  
 
-		$(document).ready(function() {
-			
-			 // 전체 게시물 수를 가져오는 함수
-		    function fetchTotalCount() {
-		        $.ajax({
-		            url: '/real-estate/count',
-		            type: 'GET',
-		            success: function(total) {
-		                createPagination(total, pageSize);
-		            },
-		            error: function(error) {
-		                console.log('전체 게시물 수를 가져오는데 에러가 발생했습니다:', error);
-		            }
-		        });
-		    }
-			
-			
-			
-			
-	        // 페이지 번호를 생성하는 함수
-	        function createPagination(total, pageSize) {
-	            var pageCount = Math.ceil(total / pageSize); // 전체 페이지 수 계산
-	            var paginationHtml = '';
+		
+		
+		
+		
+		// 페이지네이션 생성 함수
+		function createPagination(currentPage, totalPages) {
+		    var paginationHtml = '<div class="pagination">';
+		    var startPage, endPage;
 
-	            for (var i = 0; i < pageCount; i++) {
-	                paginationHtml += '<button class="pageButton" data-page="' + i + '">' + (i + 1) + '</button>';
-	            }
-
-	            $('.pagination').html(paginationHtml);
-	        }
-	            
-
-		    // 데이터를 가져오는 함수를 정의합니다.
-		    function fetchRealEstateData(realEstateId,page, size) {
-		        $.ajax({
-		            url: '/real-estate/search',
-		            type: 'GET',
-		            dataType: 'json',
-		            data: {
-		            	realEstateId: realEstateId,
-		                page: page,
-		                size: size
-		            },
-		            success: function(realEstates) {
-		                var realEstateListHtml = '';
-		                realEstates.forEach(function(realEstate) {
-		                    // 각 부동산 정보를 표시하는 HTML 마크업을 추가합니다.
-		                    // 'complexName' 필드가 있는지 확인하고, 없으면 기본값을 사용합니다.
-		                    var complexName = realEstate.realEstate && realEstate.realEstate.complexName ? realEstate.realEstate.complexName : '정보 없음';
-		                    realEstateListHtml += '<div class="realEstateItem">' +
-		                                          '<h4>' + complexName + '</h4>' +
-		                                          // 다른 부동산 정보를 여기에 추가
-		                                          '</div>';
-		                });
-		                $('.districtListContainer').html(realEstateListHtml);
-		            },
-		            error: function(error) {
-		                console.log('부동산 정보를 가져오는데 에러가 발생했습니다:', error);
-		            }
-		        });
+		    if (totalPages <= 10) {
+		        // 전체 페이지 수가 10 이하인 경우 모든 페이지 번호를 표시
+		        startPage = 1;
+		        endPage = totalPages;
+		    } else {
+		        // 전체 페이지 수가 10을 초과하는 경우
+		        if (currentPage <= 6) {
+		            startPage = 1;
+		            endPage = 10;
+		        } else if (currentPage + 4 >= totalPages) {
+		            startPage = totalPages - 9;
+		            endPage = totalPages;
+		        } else {
+		            startPage = currentPage - 5;
+		            endPage = currentPage + 4;
+		        }
 		    }
 
-		    // #homeIcon 클릭 시 데이터를 가져오는 함수를 호출합니다.
-		    $('#homeIcon').click(fetchRealEstateData(0,1,10));
-		    
-	        // 페이지 버튼 클릭 이벤트 핸들러
-	        $('.pagination').on('click', '.pageButton', function() {
-	            var selectedPage = $(this).data('page');
-	            // 여기에 선택된 페이지에 대한 데이터를 가져오는 함수를 호출합니다.
-	        });
-		});
+		    // '처음' 페이지로 이동하는 버튼
+		    if (startPage > 1) {
+		        paginationHtml += '<button class="page-item page-link" data-page="1">처음</button>';
+		    }
+
+		    // '이전' 버튼 생성
+		    if (currentPage > 1) {
+		        paginationHtml += '<button class="page-item page-link" data-page="' + (currentPage - 1) + '">이전</button>';
+		    }
+
+		    // 페이지 번호 버튼 생성
+		    for (var i = startPage; i <= endPage; i++) {
+		        paginationHtml += '<button class="page-item page-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
+		    }
+
+		    // '다음' 버튼 생성
+		    if (currentPage < totalPages) {
+		        paginationHtml += '<button class="page-item page-link" data-page="' + (currentPage + 1) + '">다음</button>';
+		    }
+
+		    // '마지막' 페이지로 이동하는 버튼
+		    if (endPage < totalPages) {
+		        paginationHtml += '<button class="page-item page-link" data-page="' + totalPages + '">마지막</button>';
+		    }
+
+		    paginationHtml += '</div>';
+		    $('.pagination').html(paginationHtml);
+		}
 
 
+		
+		
+		
+		// AJAX를 사용하여 부동산 목록 데이터를 가져오는 함수
+		function fetchRealEstateData(realEstateId, page, size) {
+		    $.ajax({
+		        url: '/real-estate/search',
+		        type: 'GET',
+		        data: {
+		        	realEstateId : realEstateId,
+		            page: page,
+		            size: size
+		        },
+		        success: function(data) {
+		        	if(data && data.length > 0) {
+		        		//데이터가 존재하는 경우, HTML 생성 및 삽입
+		        		var realEstateListHtml = '';
+		        		data.forEach(function(realEstate){
+		        			realEstateListHtml += '<div class="realEstateItem">' +
+		        			'<h4>' + realEstate.realEstateSale.salesId +'</h4>'+'</div>';
+		        		});
+		        		$('.districtListContainer').html(realEstateListHtml);
+		        	} else {
+		        		// 데이터가 없을 경우, 사용자에게 알림
+		        		$('.districtListContainer').html('<p>부동산 목록이 없습니다.</p>')
+		        	}
+		        	
+		        },
+		        error: function(error) {
+		            console.error('데이터를 가져오는데 실패했습니다:', error);
+		        }
+		    });
+		}
+		
+  	  // 총 데이터 개수를 가져오는 AJAX 요청 함수
+        function fetchEstateCount(realEstateId) {
+            $.ajax({
+                url: '/real-estate/count',
+                type: 'GET',
+                data: { realEstateId: realEstateId },
+                success: function(count) {
+                    totalEstateCount = count;
+										console.log(count);
+                    createPagination(1, Math.ceil(count / 10));
+                },
+                error: function(error) {
+                    console.error('Error fetching estate count:', error);
+                }
+            });
+        }
+		
+		
+     // 페이지 번호 클릭 이벤트 핸들러
+        $(document).on('click', '.page-link', function(e) {
+            e.preventDefault();
+            var selectedPage = parseInt($(this).data('page'));
+            fetchRealEstateData(0, selectedPage, 10); // 여기서 0은 realEstateId의 예시 값입니다.
+        });
+
+        // #homeIcon 클릭 시 데이터를 가져오는 함수와 전체 게시물 수를 가져오는 함수를 호출합니다.
+        $('#homeIcon').click(function() {
+            fetchEstateCount(0); // 첫 번째 페이지 데이터와 총 데이터 개수를 가져옵니다.
+						fetchRealEstateData(0,1,10); //첫 번째 페이지 
+        });
+		
+		
 	</script>
 </body>
 </html>
