@@ -43,4 +43,8 @@ public class RealEstateSaleController {
       ){
     return realEstateSaleService.selectRealEstateWithSales(realEstateId,page,size);
   }
+  
+  
+  
+  
 }
