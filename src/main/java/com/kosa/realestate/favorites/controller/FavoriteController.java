@@ -33,9 +33,7 @@ public class FavoriteController {
   public String favoriteList(
       Model model, @RequestParam(value="page", defaultValue = "0") int page, Principal principal) {
 
-    Pageable pageable = PageRequest.of(page, 10);
-    
-    List<FavoriteListDto> favoriteListDto = favoriteService.findFavoriteList(pageable, "tot0119@naver.com");
+    List<FavoriteListDto> favoriteListDto = favoriteService.findFavoriteList(page, principal.getName());
 
     model.addAttribute("count", favoriteListDto.size());
     model.addAttribute("favorites", favoriteListDto);
@@ -49,10 +47,8 @@ public class FavoriteController {
   public String favoriteDetailList(
       @PathVariable("realEstateId") Long realEstateId,
       @RequestParam(value="page", defaultValue = "0") int page) {
-
-    Pageable pageable = PageRequest.of(page, 10);
-    
-    favoriteService.findFavoriteDetailLst(pageable, realEstateId);
+   
+    favoriteService.findFavoriteDetailLst(page, realEstateId);
 
     return null;
   }
