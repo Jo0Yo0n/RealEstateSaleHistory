@@ -86,6 +86,9 @@ body, html {
 	flex-direction: column;
 	color:#616161;
 }
+.MaxMinPrice {
+	margin-left: 10px;
+}
 .tradeListContainer{
 	width: 1024px;
 	display: flex;
@@ -101,6 +104,7 @@ body, html {
 	flex-direction:column;
 	width:1024px;
 	margin-top:20px;
+	padding-bottom: 50px;
 }
 .tradeListTitle{
 	width: 964px;

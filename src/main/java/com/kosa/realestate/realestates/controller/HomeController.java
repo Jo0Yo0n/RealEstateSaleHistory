@@ -27,9 +27,9 @@ public class HomeController {
   public String detail(@PathVariable("salesId") int salesId, Model model) {
       // realEstateId에 맞는 데이터를 가져와서 모델에 추가하는 로직
       List<RealEstateWithSale> realEstateDetail = realEstateDetailService.getRealEstateDetail(salesId);
-      List<RealEstateSale> realEstatePirce = realEstateDetailService.getRealEstatePrice(salesId);
+      List<RealEstateSale> realEstatePrice = realEstateDetailService.getRealEstatePrice(salesId);
       model.addAttribute("realEstateDetail", realEstateDetail);
-      model.addAttribute("realEstatePirce", realEstatePirce);
+      model.addAttribute("realEstatePrice", realEstatePrice);
       return "detail";
   }
 }
