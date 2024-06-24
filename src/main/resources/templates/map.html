@@ -32,7 +32,7 @@
 	<div id="map"></div>
 	<div class="menu" id="homeMenu">
 		<div class="closeMenu"><img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg'/></div>
-		<div th:include="home :: content"></div>
+		<!-- <div th:include="home :: content"></div> -->
 	</div>
 	<div class="menu" id="commMenu">
         <div class="closeMenu">
@@ -124,25 +124,25 @@
 		}
 
 		var htmlMarker1 = {
-			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-1.png);background-size:contain;"></div>',
-			    size: N.Size(40, 40),
-			    anchor: N.Point(20, 20)
+			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-1.png);background-size:contain;"></div>',
+			    size: N.Size(50, 50),
+			    anchor: N.Point(25, 25)
 			}, htmlMarker2 = {
-			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-2.png);background-size:contain;"></div>',
-			    size: N.Size(40, 40),
-			    anchor: N.Point(20, 20)
+			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-2.png);background-size:contain;"></div>',
+			    size: N.Size(50, 50),
+			    anchor: N.Point(25, 25)
 			}, htmlMarker3 = {
-			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-3.png);background-size:contain;"></div>',
-			    size: N.Size(40, 40),
-			    anchor: N.Point(20, 20)
+			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-3.png);background-size:contain;"></div>',
+			    size: N.Size(50, 50),
+			    anchor: N.Point(25, 25)
 			}, htmlMarker4 = {
-			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-4.png);background-size:contain;"></div>',
-			    size: N.Size(40, 40),
-			    anchor: N.Point(20, 20)
+			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-4.png);background-size:contain;"></div>',
+			    size: N.Size(50, 50),
+			    anchor: N.Point(25, 25)
 			}, htmlMarker5 = {
-			    content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-5.png);background-size:contain;"></div>',
-			    size: N.Size(40, 40),
-			    anchor: N.Point(20, 20)
+			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-5.png);background-size:contain;"></div>',
+			    size: N.Size(50, 50),
+			    anchor: N.Point(25, 25)
 			};
 
 		var markerClustering = new MarkerClustering({
@@ -151,7 +151,7 @@
 			map : map,
 			markers : markers,
 			disableClickZoom : false,
-			gridSize : 100,
+			gridSize : 250,
 			icons : [ htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4,
 					htmlMarker5 ],
 			indexGenerator : [ 10, 100, 200, 500, 1000 ],
