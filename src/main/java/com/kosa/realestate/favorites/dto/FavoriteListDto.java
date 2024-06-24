@@ -1,5 +1,6 @@
 package com.kosa.realestate.favorites.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,12 @@ public class FavoriteListDto {
   private String address;
   private String addressStreet;
   private Long constructionYear;
+  private Double minSalePrice;
+  private Double maxSalePrice;
+  private Double latelySalePrice;
+  private String latelyContractDate;
+  private Double latelyExclusiveArea;
+  private Long latelyFloor;
   private Long buildingTypeId;
   private String buildingTypeName;
   private Long neighborhoodId;

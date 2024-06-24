@@ -5,13 +5,20 @@
 <mapper namespace="com.kosa.realestate.favorites.repository.FavoriteDao">
 
 	<!-- 즐겨찾기 아파트 리스트 조회 -->
-	<select id="selectFavoriteList" parameterType="long" resultType="FavoriteListDto">
+	<select id="selectFavoriteList" resultType="FavoriteListDto">
 		select fa.favorite_id
          	 , re.real_estate_id
          	 , re.complex_name
          	 , re.address
          	 , re.address_street
          	 , re.construction_year
+			 , min(res.sale_price)  min_sale_price
+			 , max(res.sale_price)  max_sale_price
+			 , max(res.sale_price) keep (dense_rank last order by res.contract_date)     lately_sale_price
+			 , to_char(to_date(max(res.contract_date) keep
+			     (dense_rank last order by res.contract_date), 'YYYYMMDD'), 'YYYY.MM.DD')lately_contract_date
+			 , max(res.exclusive_area) keep (dense_rank last order by res.contract_date) lately_exclusive_area
+			 , max(res.floor) keep (dense_rank last order by res.contract_date)          lately_floor
          	 , bt.building_type_id
          	 , bt.building_type_name
          	 , ne.neighborhood_id
@@ -23,6 +30,8 @@
 		  from favorite             fa
 	inner join real_estate          re
         	on re.real_estate_id    = fa.real_estate_id
+	inner join real_estate_sale     res
+	    	  on res.real_estate_id   = re.real_estate_id
 	inner join building_type        bt
         	on bt.building_type_id  = re.building_type_id
 	inner join neighborhood         ne
@@ -32,11 +41,26 @@
 	inner join city                 ci
         	on ci.city_id           = di.city_id
      	 where fa.user_id           = #{userId}
+	  group by fa.favorite_id
+			 , re.real_estate_id
+			 , re.complex_name
+			 , re.address
+			 , re.address_street
+			 , re.construction_year
+			 , bt.building_type_id
+			 , bt.building_type_name
+			 , ne.neighborhood_id
+			 , ne.neighborhood_name
+			 , di.district_id
+			 , di.district_name
+			 , ci.city_id
+			 , ci.city_name
+		offset #{offset} rows fetch next #{pageSize} rows only
 	</select>
 
 
  	<!-- 즐겨찾기 아파트 상세 조회 -->
-	<select  id="selectFavoriteDetailList" parameterType="long" resultType="FavoriteDetailListDto">
+	<select id="selectFavoriteDetailList" resultType="FavoriteDetailListDto">
 		select re.real_estate_id
 			 , re.complex_name
 			 , res.sales_id
@@ -50,6 +74,7 @@
 	inner join real_estate_sale     res
 			on res.real_estate_id   = re.real_estate_id
 		 where re.REAL_ESTATE_ID    = #{realEstateId}	
+		offset #{offset} rows fetch next #{pageSize} rows only
 	</select>
 	
 	

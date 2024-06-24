@@ -1,8 +1,9 @@
 package com.kosa.realestate.favorites.service;
 
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.github.gavlyukovskiy.boot.jdbc.decorator.flexypool.FlexyPoolProperties.Metrics.Reporter.Log;
 import com.kosa.realestate.favorites.dto.FavoriteDetailListDto;
 import com.kosa.realestate.favorites.dto.FavoriteDto;
 import com.kosa.realestate.favorites.dto.FavoriteListDto;
@@ -12,7 +13,6 @@ import com.kosa.realestate.favorites.repository.FavoriteRepostiory;
 import com.kosa.realestate.users.DuplicateUserException;
 import com.kosa.realestate.users.UserDTO;
 import com.kosa.realestate.users.service.UserService;
-import groovy.util.logging.Log4j2;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,18 +26,22 @@ public class FavoriteService {
 
 
   // 즐겨찾기 아파트 리스트 조회
-  public List<FavoriteListDto> findFavoriteList(String email) {
-
+  public List<FavoriteListDto> findFavoriteList(int page, String email) {
+    
+    Pageable pageable = PageRequest.of(page, 10);
+    
     UserDTO userDto = userService.findByEmail(email);
 
-    return favoriteDao.selectFavoriteList(userDto.getUserId());
+    return favoriteDao.selectFavoriteList(userDto.getUserId(), pageable.getOffset(), pageable.getPageSize());
   }
 
 
   // 즐겨찾기 아파트 상세 조회
-  public List<FavoriteDetailListDto> findFavoriteDetailLst(Long realEstateId) {
+  public List<FavoriteDetailListDto> findFavoriteDetailLst(int page, Long realEstateId) {
 
-    return favoriteDao.selectFavoriteDetailList(realEstateId);
+    Pageable pageable = PageRequest.of(page, 10);
+    
+    return favoriteDao.selectFavoriteDetailList(realEstateId, pageable.getOffset(), pageable.getPageSize());
   }
 
 

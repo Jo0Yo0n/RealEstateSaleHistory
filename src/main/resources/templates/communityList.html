@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 폼 예제</title>
+    <title>게시판 폼 예제</title>
+	<link rel='stylesheet' href='../css/communityList.css' type='text/css'/>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 부트스트랩 CSS 링크 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Select2 CSS 링크 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 JS 링크 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- 부트스트랩 JS 링크 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Select2 초기화 스크립트 -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // Select2 초기화 (특정 셀렉트 박스에만 적용)
+            $('#selectbox1').select2({
+                minimumResultsForSearch: Infinity // 검색 기능 비활성화
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <div class="commutop">
+                <button class="btn btn-custom">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short custom-svg" viewBox="0 0 16 16">                      
+                    </svg>
+                </button>
+                <div class="commutext"><h3>커뮤니티</h3></div>
+            </div>
+            <hr>
+            <div class="select-row">
+                <select class="form-control pt-1 mt-4 selectbox">
+                    <option selected>행정구역</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+                <select class="form-control pt-1 mt-4 selectbox">
+                    <option selected>자치구</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <hr>
+            <div class="search">
+                <img src='../assets/images/search.png' />
+                <input class="searchBox" type='text' placeholder='검색어 입력' />
+                <select class="option">
+                    <option selected>최신순</option>
+                    <option value="1">좋아요순</option>
+                    <option value="2">오래된순</option>
+                </select>
+            </div>
+
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header">
+                        <div class="nickname">닉네임자리</div>
+                        <div class="location">서울특별시 · 영등포구</div>
+                    </div>
+                    <div class="card-title">게시글 제목</div>
+                    <div class="card-text">한국 토지주택공사에서 조차 인지를 못하여 발생한 사례이다.<br>국토부의 보안 책은 과연 어떻게 나올지 지켜봐야...</div>
+                    <div class="card-footer">
+                        <div class="interaction">
+                            <button class="like">👍 1</button>
+                            <button class="comment">💬 1</button>
+                            <span class="view">👁️ 1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
