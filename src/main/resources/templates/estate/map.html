@@ -190,6 +190,7 @@
  
 
 		$(document).ready(function() {
+			
 			// 페이지네이션 생성 함수
 			function createPagination(currentPage, total, pageSize) {
 			    var pageCount = Math.ceil(total / pageSize);
@@ -223,7 +224,7 @@
 			        paginationHtml += '<button class="pageButton" data-page="' + (pageCount - 1) + '">마지막으로</button>';
 			    }
 
-			    // 페이지네이션 HTML을 districtListContainer 내부의 pagination 컨테이너에 추가
+			    // 페이지네이션 HTML을 페이지네이션 컨테이너에 추가
 			    $('.pagination').html(paginationHtml);
 			}
 			

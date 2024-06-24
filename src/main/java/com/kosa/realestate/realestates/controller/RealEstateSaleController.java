@@ -37,8 +37,8 @@ public class RealEstateSaleController {
   @GetMapping("/search")
   @ResponseBody
   public List<RealEstateWithSale> getEstateList(
-      @RequestParam("realEstateId") int realEstateId,
-      @RequestParam("page") int page,
+      @RequestParam(value="realEstateId" ,defaultValue = "0") int realEstateId,
+      @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam("size") int size
       ){
     return realEstateSaleService.selectRealEstateWithSales(realEstateId,page,size);
