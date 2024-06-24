@@ -1,0 +1,41 @@
+<html layout:decorate="~{my_page}">
+<div layout:fragment="content">
+  <div th:each="favorite, loop : ${favorites}">
+    <div class="building" th:classappend="${loop.index % 2 == 0} ? '' : 'building-background'">
+
+      <div class="building-header">
+        <div class="building-label" th:text="${favorite.buildingTypeName}"></div>
+        <div class="building-name" th:text="${favorite.complexName}"></div>
+      </div>
+
+      <div class="building-info">
+        <div>
+          <span th:text="${favorite.cityName}"></span>
+          <span th:text="' / ' + ${favorite.districtName}"></span>
+          <span th:text="' / ' + ${favorite.neighborhoodName}"></span>
+        </div>
+        <div>
+          <span th:text="'설립:' + ${favorite.constructionYear}"></span>
+          <span th:text="' / 번지:' + ${favorite.address}"></span>
+          <span th:text="' / 도로명:' + ${favorite.addressStreet}"></span>
+        </div>
+      </div>
+
+      <div class="building-sale">
+        <div>
+          <div class="lately-title">최근 매매 실거래가</div>
+          <div class="lately-price" th:text="${favorite.latelySalePrice} + '억'"></div>
+          <div class="lately-info" th:text="${favorite.latelyContractDate} + ', ' + ${favorite.latelyFloor} + '층, ' + ${favorite.latelyExclusiveArea} + '㎡'"></div>
+        </div>
+        <div class="sale-info">
+          <div>
+            <span class="sale-title">전체 매매가</span>
+            <span class="sale-price" th:text="${favorite.minSalePrice} + '억 ~ ' + ${favorite.maxSalePrice} + '억'"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</html>

@@ -1,0 +1,178 @@
+body {
+  font-family: Arial, sans-serif;
+  width: 400px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 1px solid #000000;
+}
+
+.container {
+  width: 90%;
+  padding: 20px;
+}
+
+/* 사용자 정보 */
+.user-info {
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.user-info::after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #E0E0E0;
+  position: absolute;
+  bottom: 0;
+}
+
+.logo {
+  color: #F9DE7B;
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.nickname {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.user-edit {
+  font-size: 0.7em;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.user-edit img {
+  height: 1.2em;
+  margin: 0px 0px 0px 10px;
+}
+
+.user-email {
+  font-size: 0.8em;
+  margin-left: 5px;
+}
+
+/* 즐겨찾기 */
+.favorite {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0px 10px 0px;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.favorite-info {
+  display: flex;
+}
+
+.favorite-title, .favorite-count {
+  color: #F4CA74;
+  border-bottom: 2px solid #F9DE7B;
+}
+
+.favorite-count {
+  font-size: 0.5em;
+  margin-top: 7px;
+}
+
+.favorite-edit {
+  font-size: 0.7em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.favorite-edit img {
+  height: 1.5em;
+}
+
+/* 아파트 카드 */
+.building {
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+}
+
+.building:hover {
+  transform: translateY(-5px);
+}
+
+.building-background {
+  background-color: #FAEBAC;
+}
+
+.building-header {
+  display: flex;
+  align-items: center;
+}
+
+.building-label {
+  font-size: 0.3em;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  padding: 2px 3px;
+  margin-right: 5px;
+  border: 1px solid #E0E0E0;
+}
+
+.building-name {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.building-info {
+  font-size: 0.5em;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+/* 최근 거래 내역 */
+.building-sale {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lately-title {
+  font-size: 0.8em;
+}
+
+.lately-price {
+  color: #E3242B;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.lately-info {
+  font-size: 0.5em;
+}
+
+.sale-info {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.sale-title {
+  font-size: 0.5em;
+}
+
+.sale-price {
+  color: #E3242B;
+  font-size: 0.8em;
+}
+
+
+/* 스크롤 수정 예정 */
+.favorite-container {
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
+  flex: 1;
+  overflow-y: auto;
+}

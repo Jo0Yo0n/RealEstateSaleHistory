@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="css/my_favorite.css">
+
+	<meta charset="UTF-8">
+	<title>마이페이지</title>
+</head>
+<body>
+	<div class="container">
+		<div class="user-info">
+			<div class="logo">Logo</div>
+			<span class="nickname">닉네임</span>
+			<span class="user-edit">
+				<img th:src="@{/assets/images/user-edit.png}"/> 수정하기
+			</span>
+			<div>
+				<span class="user-email">이메일</span>
+			</div>
+		</div>
+
+		<div>
+			<div class="favorite">
+				<div class="favorite-info">
+					<div class="favorite-title">관심매물</div>
+					<div class="favorite-count">(21)</div>
+				</div>
+				<div class="favorite-edit"><img th:src="@{/assets/images/del.png}"/>편집</div>
+			</div>
+
+			<div class="favorite-container">
+				<th:block layout:fragment="content"></th:block>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
