@@ -109,7 +109,7 @@ public class UserController {
   }
 
   // 회원 정보 수정 폼 저장
-//  @PostMapping("/me")
+//  @PutMapping("/me")
 //  @ResponseBody
 //  public ResponseEntity<?> updateUser(@Valid UserUpdateForm userUpdateForm, BindingResult bindingResult,
 //      Principal principal) {
