@@ -1,5 +1,6 @@
 package com.kosa.realestate.users.service;
 
+import com.kosa.realestate.users.UserContext;
 import com.kosa.realestate.users.model.Users;
 import com.kosa.realestate.users.repository.UserRepository;
 import java.util.ArrayList;
@@ -8,7 +9,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,6 +42,6 @@ public class UserSecurityService implements UserDetailsService {
     List<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("USER")); // 현재는 USER 권한만 존재
 
-    return new User(user.getEmail(), user.getPassword(), authorities);
+    return new UserContext(user, authorities);
   }
 }
