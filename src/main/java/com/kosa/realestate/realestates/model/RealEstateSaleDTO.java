@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RealEstateSale {
+public class RealEstateSaleDTO {
   
   private int salesId;  //매매아이디
   private int realEstateId; //부동산아이디
