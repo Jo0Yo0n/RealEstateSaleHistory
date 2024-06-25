@@ -1,4 +1,4 @@
-package com.kosa.realestate.users;
+package com.kosa.realestate.users.model;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;

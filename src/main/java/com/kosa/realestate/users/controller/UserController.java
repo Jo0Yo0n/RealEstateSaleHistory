@@ -3,10 +3,10 @@ package com.kosa.realestate.users.controller;
 import com.kosa.realestate.favorites.dto.FavoriteListDto;
 import com.kosa.realestate.favorites.service.FavoriteService;
 import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.UserCreateForm;
-import com.kosa.realestate.users.UserDTO;
-import com.kosa.realestate.users.UserUpdateForm;
-import com.kosa.realestate.users.service.UserService;
+import com.kosa.realestate.users.model.UserCreateForm;
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.model.UserUpdateForm;
+import com.kosa.realestate.users.service.IUserService;
 import jakarta.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
 
   private static final Logger log = LoggerFactory.getLogger(UserController.class);
-  private final UserService userService;
+  private final IUserService userService;
   private final FavoriteService favoriteService;
 
   // 회원가입 페이지로 이동
@@ -84,8 +84,7 @@ public class UserController {
   // 마이 페이지로 이동
   @GetMapping("/me")
   public String myPage(Principal principal, Model model) {
-    if(principal == null) {
-      log.error("권한이 없습니다.");
+    if (principal == null) {
       return "access_denied";
     }
 
@@ -101,25 +100,44 @@ public class UserController {
 
   // 회원 정보 수정 페이지로 이동
   @GetMapping("/me/update")
-  public String updateUser(UserUpdateForm userUpdateForm) {
+  public String updateUser(Principal principal, UserUpdateForm userUpdateForm) {
+    if (principal == null) {
+      return "access_denied";
+    }
+
     return "update_form";
   }
 
   // 회원 정보 수정 폼 저장
-  @PostMapping("/me")
-  public String updateUser(@Valid UserUpdateForm userUpdateForm, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      return "update_form";
-    }
-
-    // 확인 비밀번호 불일치
-    if (!userUpdateForm.getPassword1().equals(userUpdateForm.getPassword2())) {
-      bindingResult.rejectValue("password1", "passwordInCorrect", "패스워드가 일치하지 않습니다.");
-      return "update_form";
-    }
-
-    return "redirect:/users/me";
-  }
+//  @PostMapping("/me")
+//  @ResponseBody
+//  public ResponseEntity<?> updateUser(@Valid UserUpdateForm userUpdateForm, BindingResult bindingResult,
+//      Principal principal) {
+//    Map<String, String> response = new HashMap<>();
+//
+//    // 유효하지 않은 데이터
+//    if (bindingResult.hasErrors()) {
+//      response.put("message", "폼 데이터가 유효하지 않습니다.");
+//      return ResponseEntity.badRequest().body(response);
+//    }
+//
+//    // 확인 비밀번호 불일치
+//    if (!userUpdateForm.getPassword1().equals(userUpdateForm.getPassword2())) {
+//      response.put("message", "패스워드가 일치하지 않습니다.");
+//      return ResponseEntity.badRequest().body(response);
+//    }
+//
+//    String email = principal.getName();
+//    boolean success = userService.updateUser(email, userUpdateForm.getPassword1());
+//
+//    if (success) {
+//      response.put("message", "회원정보가 성공적으로 수정되었습니다.");
+//      return ResponseEntity.ok(response);
+//    } else {
+//      response.put("message", "회원정보 수정에 실패하였습니다.");
+//      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//    }
+//  }
 
   // 회원 탈퇴
   @DeleteMapping("/me")

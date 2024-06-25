@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kosa.realestate.users.repository.UserDAO">
+<mapper namespace="com.kosa.realestate.users.repository.UserRepository">
 	<select id="getUserById" resultType="Users">
 		select
 			user_id as userId,
@@ -48,9 +48,9 @@
 
 	<update id="updateUser">
 		update users
-		set email = #{email}, password = #{password}, nickname=#{nickname}
+		set password = #{password}
 		where
-		id = #{id}
+		email = #{email}
 	</update>
 
 	<update id="deleteUser">

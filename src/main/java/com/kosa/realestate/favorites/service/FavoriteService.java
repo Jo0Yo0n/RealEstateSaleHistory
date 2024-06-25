@@ -1,9 +1,5 @@
 package com.kosa.realestate.favorites.service;
 
-import java.util.List;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import com.kosa.realestate.favorites.dto.FavoriteDetailListDto;
 import com.kosa.realestate.favorites.dto.FavoriteDto;
 import com.kosa.realestate.favorites.dto.FavoriteListDto;
@@ -11,15 +7,19 @@ import com.kosa.realestate.favorites.entity.Favorite;
 import com.kosa.realestate.favorites.repository.FavoriteDao;
 import com.kosa.realestate.favorites.repository.FavoriteRepostiory;
 import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.UserDTO;
-import com.kosa.realestate.users.service.UserService;
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.service.IUserService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class FavoriteService {
 
-  private final UserService userService;
+  private final IUserService userService;
 
   private final FavoriteDao favoriteDao;
   private final FavoriteRepostiory favoriteRepostiory;
@@ -30,7 +30,7 @@ public class FavoriteService {
     
     Pageable pageable = PageRequest.of(page, 10);
     
-    UserDTO userDto = userService.findByEmail(email);
+    UserDTO userDto = userService.findUserByEmail(email);
 
     return favoriteDao.selectFavoriteList(userDto.getUserId(), pageable.getOffset(), pageable.getPageSize());
   }
@@ -48,7 +48,7 @@ public class FavoriteService {
   // 즐겨찾기 추가
   public FavoriteDto addFavorite(Long realEstateId, String email) {
     System.out.println(email);
-    UserDTO userDto = userService.findByEmail(email);
+    UserDTO userDto = userService.findUserByEmail(email);
 
     System.out.println("조회");
     Favorite favorite = favoriteRepostiory

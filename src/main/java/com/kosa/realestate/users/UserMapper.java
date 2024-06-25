@@ -1,5 +1,8 @@
 package com.kosa.realestate.users;
 
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.model.Users;
+
 /**
  * UserMapper 클래스
  *

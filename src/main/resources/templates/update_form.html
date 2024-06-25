@@ -1,26 +1,110 @@
-<!-- update_form.html -->
-<!-- 작성자: 이주윤 -->
-<html>
-<div>
-  <div>
-    <div>
-      <h4>회원정보 수정</h4>
-    </div>
-  </div>
-  <form th:action="@{/users/me}" th:object="${userUpdateForm}" method="post">
-    <div th:if="${#fields.hasErrors('password1')}" th:errors="*{password1}">비밀번호 오류</div>
-    <div>
-      <label for="password1">비밀번호</label>
-      <input type="password" th:field="*{password1}">
-    </div>
+<!--&lt;!&ndash; update_form.html &ndash;&gt;-->
+<!--&lt;!&ndash; 작성자: 이주윤 &ndash;&gt;-->
+<!--<html lang="ko">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>회원정보 수정</title>-->
+<!--  <meta name="_csrf" content="${_csrf.token}"/>-->
+<!--  <meta name="_csrf_header" content="${_csrf.headerName}"/>-->
+<!--  <link rel="stylesheet"-->
+<!--        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--  <div>-->
+<!--    <div>-->
+<!--      <div>-->
+<!--        <h4>회원정보 수정</h4>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <form id="updateForm" method="post">-->
+<!--      <div>-->
+<!--        <label for="password1">비밀번호</label>-->
+<!--        <input type="password" id="password1">-->
+<!--      </div>-->
 
-    <div th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}">비밀번호 확인 오류</div>
-    <div>
-      <label for="password2">비밀번호 확인</label>
-      <input type="password" th:field="*{password2}">
-    </div>
+<!--      <div>-->
+<!--        <label for="password2">비밀번호 확인</label>-->
+<!--        <input type="password" id="password2">-->
+<!--      </div>-->
 
-    <button type="submit">회원정보 수정</button>
-  </form>
-</div>
-</html>
+<!--      <button type="submit">회원정보 수정</button>-->
+<!--    </form>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; 모달 &ndash;&gt;-->
+<!--  <div class="modal fade" id="messageModal" tabindex="-1" role="dialog"-->
+<!--       aria-labelledby="messageModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog" role="document">-->
+<!--      <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--          <h5 class="modal-title" id="messageModalLabel">알림</h5>-->
+<!--          <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="modal-body" id="modalMessage">-->
+<!--          &lt;!&ndash; 메시지 내용 &ndash;&gt;-->
+<!--        </div>-->
+<!--        <div class="modal-footer">-->
+<!--          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--  $(document).ready(function () {-->
+<!--    $("#updateForm").on("submit", function (event) {-->
+<!--      event.preventDefault();-->
+
+<!--      // 기존 오류 메시지 숨기기-->
+<!--      $("#password1Error").hide();-->
+<!--      $("#password2Error").hide();-->
+
+<!--      // CSRF 토큰 가져오기-->
+<!--      var csrfToken = $("meta[name='_csrf']").attr("content");-->
+<!--      var csrfHeader = $("meta[name='_csrf_header']").attr("content");-->
+
+<!--      $.ajax({-->
+<!--        url: "/users/me",-->
+<!--        type: "POST",-->
+<!--        contentType: "application/json",-->
+<!--        data: JSON.stringify({-->
+<!--          password1: $("#password1").val(),-->
+<!--          password2: $("#password2").val()-->
+<!--        }),-->
+<!--        beforeSend: function (xhr) {-->
+<!--          xhr.setRequestHeader(csrfHeader, csrfToken);-->
+<!--        },-->
+<!--        success: function (response) {-->
+<!--          $("#modalMessage").text(response.message);-->
+<!--          $("#messageModal").modal('show');-->
+
+<!--          // 성공 시 페이지를 다시 로드하거나 특정 동작 수행-->
+<!--          setTimeout(function () {-->
+<!--            location.reload();-->
+<!--          }, 2000); // 2초 후 페이지 다시 로드-->
+<!--        },-->
+<!--        error: function (response) {-->
+<!--          if (response.responseJSON) {-->
+<!--            if (response.responseJSON.message.includes('password1')) {-->
+<!--              $("#password1Error").text(response.responseJSON.message).show();-->
+<!--            }-->
+<!--            if (response.responseJSON.message.includes('password2')) {-->
+<!--              $("#password2Error").text(response.responseJSON.message).show();-->
+<!--            }-->
+<!--          } else {-->
+<!--            $("#modalMessage").text("회원정보 수정에 실패하였습니다.");-->
+<!--            $("#messageModal").modal('show');-->
+<!--          }-->
+<!--        }-->
+<!--      });-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
