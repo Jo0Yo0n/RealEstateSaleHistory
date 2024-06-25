@@ -29,6 +29,13 @@ body, html {
 	color: #616161;
 	margin-left: 10px;
 }
+.base-date{
+	font-size: 18px;
+	color: #BDBDBD;
+	position: absolute;
+	margin-right: -800px;
+	margin-top: 60px;
+}
 .chart-container {
 	width: 1024px;
 	display: flex;
@@ -45,8 +52,38 @@ body, html {
 .person {
 	height: 300px;
 	position: absolute;
-	margin-top: -5px;
+	margin-top: 30px;
 	margin-left: -100px;
+}
+table {
+    width: 350px;
+    height: 300px;
+    border-collapse: collapse;
+    border-top: 1px solid #d4d4d4;
+    margin-left: -50px;
+    margin-top: 50px;
+}
+
+tr {
+    border-bottom: 1px solid #d4d4d4;
+}
+
+td {
+    height: calc(390px / 6); /* 각 행의 높이를 300px / 5로 설정 */
+    text-align: center;
+}
+.none-border{
+	border-bottom: 0px;
+}
+.shoulder-knee-price{
+	width: 120px;
+	text-align: end;
+	position: absolute;
+	margin-left: 170px;
+	margin-top: -45px;
+}
+.text-gray{
+	color: #bdbdbd;
 }
 .price-detail-container {
 	display: flex;
@@ -135,3 +172,4 @@ body, html {
 	margin-top: 20px;
 	text-align: center;
 }
+
