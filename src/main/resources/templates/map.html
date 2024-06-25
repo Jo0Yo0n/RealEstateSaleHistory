@@ -79,10 +79,10 @@
 					draggable : false,
 					clickable : true,
 					icon : {
-						content : [ '<div class="marker_container">',
-								'<span><strong>' + apt + '</strong>('+price+'억)</span>',
-								'<div class="disabled" style="display:none;">'+estateId+'</div>',
-								'</div>' ].join(''),
+						content : [ `<div class="marker_container">
+								<span><strong>${apt}</strong>(${price}억)</span>
+								<div class="disabled" style="display:none;">${estateId}</div>
+								</div>` ].join(''),
 						size : new naver.maps.Size(40, 40),
 						anchor : new naver.maps.Point(20, 20)
 					}
@@ -102,7 +102,7 @@
 
 				    // 메뉴 내용을 클릭된 마커 정보로 업데이트 (realEstateId를 사용하도록 수정)
 				    $('#aptInfo').html(
-				        '<p>Clicked Marker Information</p><p>Apt: ' + clickedApt + '</p><p>Real Estate ID: ' + ClickedId + '</p>');
+				        `<p>Clicked Marker Information</p><p>Apt: ${clickedApt}</p><p>Real Estate ID: ${ClickedId}</p>`);
 
 				    // 모든 메뉴를 닫고 aptInfo 메뉴를 열기
 				    $('.menu').removeClass('active');
@@ -124,23 +124,23 @@
 		}
 
 		var htmlMarker1 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-1.png);background-size:contain;"></div>',
+			    content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-1.png);background-size:contain;"></div>`,
 			    size: N.Size(50, 50),
 			    anchor: N.Point(25, 25)
 			}, htmlMarker2 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-2.png);background-size:contain;"></div>',
+			    content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-2.png);background-size:contain;"></div>`,
 			    size: N.Size(50, 50),
 			    anchor: N.Point(25, 25)
 			}, htmlMarker3 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-3.png);background-size:contain;"></div>',
+			    content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-3.png);background-size:contain;"></div>`,
 			    size: N.Size(50, 50),
 			    anchor: N.Point(25, 25)
 			}, htmlMarker4 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-4.png);background-size:contain;"></div>',
+			    content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-4.png);background-size:contain;"></div>`,
 			    size: N.Size(50, 50),
 			    anchor: N.Point(25, 25)
 			}, htmlMarker5 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-5.png);background-size:contain;"></div>',
+			    content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-5.png);background-size:contain;"></div>`,
 			    size: N.Size(50, 50),
 			    anchor: N.Point(25, 25)
 			};
