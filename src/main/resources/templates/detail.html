@@ -19,13 +19,21 @@
 				<strong th:text="'(' + ${realEstateDetail[0].realEstate.addressStreet} + ')'"></strong>
 			</div>
 		</div>
+		<div class='base-date'>기준일 : 2024-06-13</div>
 		<div class='chart-container'>
 			<div class='basic-chart'>
 				<canvas id="basic-chart" width="450" height="300"></canvas>
 			</div>
 			<div class='shoulder-knee-chart'>
 				<img th:src="@{/assets/images/person.png}" class='person'/>
-				<canvas id='sk-chart' width='450' height='300'></canvas>
+				<!-- <canvas id='sk-chart' width='450' height='300'></canvas> -->
+				<table>
+			        <tr><td><span class="shoulder-knee-price text-gray" id="chart-max"></span></td></tr>
+			        <tr><td><span class="shoulder-knee-price" id="chart-shoulder"></span></td></tr>
+			        <tr><td><span class="shoulder-knee-price text-gray" id="chart-median"></span></td></tr>
+			        <tr><td><span class="shoulder-knee-price" id="chart-knee"></span></td></tr>
+			        <tr class="none-border"><td><span class="shoulder-knee-price text-gray" id="chart-min"></span></td></tr>
+			    </table>
 			</div>
 		</div>
 		<div class='price-detail-container'>
@@ -74,6 +82,11 @@
 	    document.addEventListener("DOMContentLoaded", function() {
 	        document.getElementById("max-price").innerText = "최고가 : " + maxValue + "억";
 	        document.getElementById("min-price").innerText = "최저가 : " + minValue + "억";
+	        document.getElementById("chart-max").innerText = maxValue+"억";
+	        document.getElementById("chart-shoulder").innerText = "어깨 " + eightyPercentValue+"억";
+	        document.getElementById("chart-median").innerText = medianValue+"억";
+	        document.getElementById("chart-knee").innerText = "무릎 " + twentyPercentValue+"억";
+	        document.getElementById("chart-min").innerText = minValue+"억";
 	    });
 
 	
@@ -85,6 +98,9 @@
 	    
 	    var maxValue = Math.max(...values);
 	    var minValue = Math.min(...values);
+	    var medianValue = (maxValue + minValue) / 2 ;
+	    var eightyPercentValue = minValue + 0.8 * (maxValue - minValue);
+	    var twentyPercentValue = minValue + 0.2 * (maxValue - minValue);
 	    
 	    let bsCt = document.getElementById('basic-chart');
 		
