@@ -1,7 +1,7 @@
 package com.kosa.realestate.users.service;
 
-import com.kosa.realestate.users.Users;
-import com.kosa.realestate.users.repository.UserDAO;
+import com.kosa.realestate.users.model.Users;
+import com.kosa.realestate.users.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +24,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserSecurityService implements UserDetailsService {
 
-  private final UserDAO userDAO;
+  private final UserRepository userRepository;
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    Optional<Users> _user = userDAO.findUserByEmail(email);
+    Optional<Users> _user = userRepository.findUserByEmail(email);
     if (_user.isEmpty()) {
       throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+    }
+
+    if (_user.get().getIsDeleted() == 'Y') {
+      throw new UsernameNotFoundException("탈퇴한 회원입니다.");
     }
 
     Users user = _user.get();
