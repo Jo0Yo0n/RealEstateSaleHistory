@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.kosa.realestate.realestates.controller.RealEstateSaleController;
-import com.kosa.realestate.realestates.model.RealEstateWithSale;
 import com.kosa.realestate.realestates.service.IRealEstateSaleService;
 import com.kosa.realestate.realestates.service.RealEstateSaleService;
 
