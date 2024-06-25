@@ -81,7 +81,7 @@
 		WHERE A.DISTRICT_ID = #{destrictId}
 	</select>
 	
-	<select id="selectRealEstateWithSalesByCondition" resultType="RealEstateWithSaleMapDTO">
+<!-- 	<select id="selectRealEstateWithSalesByCondition" resultType="RealEstateWithSaleMapDTO">
     SELECT * FROM your_table
     <where>
         <if test="param1 != null">
@@ -94,7 +94,7 @@
             AND column3 = #{param3}
         </if>
     </where>
-</select>
+</select> -->
 	
 	
 	<select id="getRealEstateDetail" parameterType="int" resultMap="RealEstateWithSaleMapDTO">
