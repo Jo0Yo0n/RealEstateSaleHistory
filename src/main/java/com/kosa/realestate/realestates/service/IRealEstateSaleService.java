@@ -11,6 +11,7 @@ public interface IRealEstateSaleService {
   List<RealEstateWithSaleDTO> selectRealEstateWithSales(int realEstateId, int pageNum, int pageSize);
   
   List<Map<String, Object>> getAllDestrictId();
+  List<Map<String, Object>> getAllNeighborhood(int destrictId);
   
   List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId);
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);

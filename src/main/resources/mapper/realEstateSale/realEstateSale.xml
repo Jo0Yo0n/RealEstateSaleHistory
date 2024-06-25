@@ -73,6 +73,30 @@
 			district_name AS "districtName"
 		FROM DISTRICT
 	</select>
+	
+	<select id="getAllNeighborhood" resultType="hashmap" parameterType="int">
+		SELECT B.NEIGHBORHOOD_NAME
+		FROM DISTRICT A
+		JOIN NEIGHBORHOOD B ON A.DISTRICT_ID = B.DISTRICT_ID
+		WHERE A.DISTRICT_ID = #{destrictId}
+	</select>
+	
+	<select id="selectRealEstateWithSalesByCondition" resultType="RealEstateWithSaleMapDTO">
+    SELECT * FROM your_table
+    <where>
+        <if test="param1 != null">
+            AND column1 = #{param1}
+        </if>
+        <if test="param2 != null">
+            AND column2 = #{param2}
+        </if>
+        <if test="param3 != null">
+            AND column3 = #{param3}
+        </if>
+    </where>
+</select>
+	
+	
 	<select id="getRealEstateDetail" parameterType="int" resultMap="RealEstateWithSaleMapDTO">
 	    SELECT 
 	        RS.SALES_ID,

@@ -54,5 +54,10 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.getRealEstatePrice(salesId);
   }
 
+  @Override
+  public List<Map<String, Object>> getAllNeighborhood(int destrictId) {
+    return estateSaleRepository.getAllNeighborhood(destrictId);
+  }
+
   
 }

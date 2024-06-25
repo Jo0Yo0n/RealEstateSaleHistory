@@ -14,8 +14,12 @@ public interface RealEstateSaleRepository {
   
   List<RealEstateWithSaleDTO> selectRealEstateWithSales();
   List<RealEstateWithSaleDTO> selectRealEstateWithSales(Map<String, Object> param);
-  
+  //자치구 리스트 조회
   List<Map<String, Object>> getAllDestrictId();
+  //동 리스트 조회
+  List<Map<String, Object>> getAllNeighborhood(int destrictId);
+  //검색조건으로 매매기록 조회하기
+  List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition();
   
   List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId);
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);
