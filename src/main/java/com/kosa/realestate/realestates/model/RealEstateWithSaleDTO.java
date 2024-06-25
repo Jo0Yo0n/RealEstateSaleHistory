@@ -7,8 +7,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RealEstateWithSale {
+public class RealEstateWithSaleDTO {
 
-  private RealEstate realEstate;
-  private RealEstateSale realEstateSale;
+  private RealEstateDTO realEstate;
+  private RealEstateSaleDTO realEstateSale;
 }

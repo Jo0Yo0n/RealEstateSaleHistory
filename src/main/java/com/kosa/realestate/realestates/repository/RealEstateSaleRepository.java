@@ -1,14 +1,19 @@
-package com.kosa.realestate.realestates.service;
+package com.kosa.realestate.realestates.repository;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
 import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
 import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 
-public interface IRealEstateSaleService {
+@Mapper
+public interface RealEstateSaleRepository {
   int getRealEstateSaleCount();
   int getRealEstateSaleCount(int realEstateId);
-  List<RealEstateWithSaleDTO> selectRealEstateWithSales(int realEstateId, int pageNum, int pageSize);
+  
+  List<RealEstateWithSaleDTO> selectRealEstateWithSales();
+  List<RealEstateWithSaleDTO> selectRealEstateWithSales(Map<String, Object> param);
   
   List<Map<String, Object>> getAllDestrictId();
   

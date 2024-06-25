@@ -7,6 +7,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
 	crossorigin="anonymous"></script>
+	<script type="text/javascript" th:src="@{/js/home.js}"></script>
 <link rel='stylesheet' th:href='@{/css/home.css}' type='text/css' />
 </head>
 <body>
@@ -46,27 +47,11 @@
 		</div>
 
 	    <div class="districtListContainer">
-	        <!-- 기존의 부동산 목록이 표시되는 곳 -->
+        <!-- 기존의 부동산 목록이 표시되는 곳 -->
 	    </div>
         <!-- 페이지네이션을 위한 컨테이너 -->
         <div class="pagination"></div>
 	</div>
-	<script>
-		$(document).ready(function() {
-			$('.filterId').click(function() {
-				// 모든 필터의 색상을 초기화
-				$('.filterId').removeClass('selectedFlag');
 	
-				// 클릭된 요소에 클래스 추가
-				$(this).addClass('selectedFlag');
-	
-				// 클릭된 요소의 id 추출
-				var selectedId = $(this).attr('id');
-				console.log(selectedId);
-	
-				// id를 이용한 추가 작업을 여기에 작성
-			});
-		});
-	</script>
 </body>
 </html>
