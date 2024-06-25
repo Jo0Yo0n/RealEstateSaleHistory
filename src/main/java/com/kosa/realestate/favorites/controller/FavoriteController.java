@@ -1,11 +1,7 @@
 package com.kosa.realestate.favorites.controller;
 
-import com.kosa.realestate.favorites.dto.FavoriteListDto;
 import java.security.Principal;
-
 import java.util.List;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,11 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
-import com.kosa.realestate.favorites.dto.FavoriteDto;
-import com.kosa.realestate.favorites.service.FavoriteService;
-
+import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
+import com.kosa.realestate.favorites.service.IFavoriteService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -25,18 +19,18 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/favorites")
 public class FavoriteController {
 
-  private final FavoriteService favoriteService;
+  private final IFavoriteService favoriteService;
 
 
   // 즐겨찾기 아파트 리스트 조회
   @GetMapping
   public String favoriteList(
-      Model model, @RequestParam(value="page", defaultValue = "0") int page, Principal principal) {
+      Model model, Principal principal, @RequestParam(value="page", defaultValue = "0") int page) {
+//    principal.getName()
+    List<FavoriteListDTO> favoriteListDto = favoriteService.findFavoriteList(page, "tot0119@naver.com");
 
-    List<FavoriteListDto> favoriteListDto = favoriteService.findFavoriteList(page, principal.getName());
-
-    model.addAttribute("count", favoriteListDto.size());
-    model.addAttribute("favorites", favoriteListDto);
+    model.addAttribute("favoriteCount", favoriteListDto.size());
+    model.addAttribute("favoriteList", favoriteListDto);
 
     return "favorite_list";
   }
@@ -45,32 +39,32 @@ public class FavoriteController {
   // 즐겨찾기 아파트 상세 조회
   @GetMapping("/details/{realEstateId}")
   public String favoriteDetailList(
+      Model model,
       @PathVariable("realEstateId") Long realEstateId,
       @RequestParam(value="page", defaultValue = "0") int page) {
    
     favoriteService.findFavoriteDetailLst(page, realEstateId);
 
-    return null;
+    return "favorite_list";
   }
 
 
   // 즐겨찾기 추가
   @PostMapping("/{realEstateId}")
-  public String favoriteAdd(@PathVariable("realEstateId") Long realEstateId, Principal principal) {
+  public String favoriteAdd(Principal principal, @PathVariable("realEstateId") Long realEstateId) {
     
-    FavoriteDto favoriteDto = favoriteService.addFavorite(realEstateId, principal.getName());
+    favoriteService.addFavorite(realEstateId, "tot0119@naver.com");
     
-    return null;
+    return "favorite_list";
   }
 
 
   // 즐겨찾기 삭제
   @DeleteMapping("/{favoriteId}")
-  public String favoriteRemove(@PathVariable("favoriteId") Long favoriteId, Principal principal) {
+  public String favoriteRemove(Principal principal, @PathVariable("favoriteId") Long favoriteId) {
 
     favoriteService.removeFavorite(favoriteId);
-
-
-    return null;
+    
+    return "favorite_list";
   }
 }
