@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kosa.realestate.realestates.repository.IRealEstateSaleRepository">
+<mapper namespace="com.kosa.realestate.realestates.repository.RealEstateSaleRepository">
 	
 	<select id="getRealEstateSaleCount" parameterType="int" resultType="int">
 		SELECT COUNT(*) FROM REAL_ESTATE_SALE A
@@ -11,8 +11,8 @@
 		</if>
 	</select>
 
-<resultMap type="RealEstateWithSale" id="RealEstateWithSaleMap">
-	<association property="realEstate" javaType="RealEstate">
+<resultMap type="RealEstateWithSaleDTO" id="RealEstateWithSaleMapDTO">
+	<association property="realEstate" javaType="RealEstateDTO">
         <id property="realEstateId" column="REAL_ESTATE_ID"/>
         <result property="neighborhoodId" column="NEIGHBORHOOD_ID"/>
         <result property="complexName" column="COMPLEX_NAME"/>
@@ -23,7 +23,7 @@
         <result property="lng" column="LNG"/>
         <!-- <result property="buildingFlag" column="BUILDING_FLAG"/> -->
     </association>
-    <association property="realEstateSale" javaType="RealEstateSale">
+    <association property="realEstateSale" javaType="RealEstateSaleDTO">
         <id property="salesId" column="SALES_ID"/>
         <result property="realEstateId" column="REAL_ESTATE_ID"/>
         <result property="salePrice" column="SALE_PRICE"/>
@@ -35,7 +35,7 @@
     </association>
 </resultMap>
 
-    <select id="selectRealEstateWithSales" resultMap="RealEstateWithSaleMap" parameterType="map">
+    <select id="selectRealEstateWithSales" resultMap="RealEstateWithSaleMapDTO" parameterType="map">
         SELECT 	A.REAL_ESTATE_ID,
         		A.NEIGHBORHOOD_ID,
         		A.COMPLEX_NAME,
@@ -73,7 +73,90 @@
 			district_name AS "districtName"
 		FROM DISTRICT
 	</select>
-
+	
+	<select id="getAllNeighborhood" resultType="hashmap" parameterType="int">
+		SELECT B.NEIGHBORHOOD_NAME
+		FROM DISTRICT A
+		JOIN NEIGHBORHOOD B ON A.DISTRICT_ID = B.DISTRICT_ID
+		WHERE A.DISTRICT_ID = #{destrictId}
+	</select>
+	
+<!-- 	<select id="selectRealEstateWithSalesByCondition" resultType="RealEstateWithSaleMapDTO">
+    SELECT * FROM your_table
+    <where>
+        <if test="param1 != null">
+            AND column1 = #{param1}
+        </if>
+        <if test="param2 != null">
+            AND column2 = #{param2}
+        </if>
+        <if test="param3 != null">
+            AND column3 = #{param3}
+        </if>
+    </where>
+</select> -->
+	
+	
+	<select id="getRealEstateDetail" parameterType="int" resultMap="RealEstateWithSaleMapDTO">
+	    SELECT 
+	        RS.SALES_ID,
+	        RE.REAL_ESTATE_ID,
+	        RE.NEIGHBORHOOD_ID,
+	        RE.COMPLEX_NAME,
+	        RE.ADDRESS,
+	        RE.ADDRESS_STREET,
+	        RE.CONSTRUCTION_YEAR,
+	        RE.LAT,
+	        RE.LNG,
+	        RS.SALE_PRICE,
+	        SUBSTR(RS.CONTRACT_DATE, 1, 4) || '-' || SUBSTR(RS.CONTRACT_DATE, 5, 2) || '-' || SUBSTR(RS.CONTRACT_DATE, 7, 2) AS CONTRACT_DATE, 
+	        NVL(TO_CHAR(RS.REGISTRATION_DATE, 'YYYY-MM-DD'), ' - ') AS REGISTRATION_DATE,
+	        RS.BUILDING_NAME,
+	        RS.FLOOR,
+	        RS.EXCLUSIVE_AREA
+	    FROM 
+	        REAL_ESTATE_SALE RS
+	        JOIN REAL_ESTATE RE ON RS.REAL_ESTATE_ID = RE.REAL_ESTATE_ID
+	    WHERE 
+	        RS.SALES_ID = #{salesId}
+	</select>
+	
+	<select id="getRealEstatePrice" parameterType="int" resultType="RealEstateSaleDTO">
+	    <![CDATA[
+	        SELECT
+	            SALES_ID AS salesId,
+	            REAL_ESTATE_ID AS realEstateId,
+	            SALE_PRICE AS salePrice,
+	            SUBSTR(CONTRACT_DATE, 1, 4) || '-' || SUBSTR(CONTRACT_DATE, 5, 2) || '-' || SUBSTR(CONTRACT_DATE, 7, 2) AS contractDate,
+	            NVL(TO_CHAR(REGISTRATION_DATE, 'YYYY-MM-DD'), ' - ') AS registrationDate,
+	            BUILDING_NAME AS buildingName,
+	            FLOOR AS floor,
+	            EXCLUSIVE_AREA AS exclusiveArea
+	        FROM (
+	            SELECT
+	                SALES_ID,
+	                REAL_ESTATE_ID,
+	                SALE_PRICE,
+	                CONTRACT_DATE,
+	                REGISTRATION_DATE,
+	                BUILDING_NAME,
+	                FLOOR,
+	                EXCLUSIVE_AREA
+	            FROM REAL_ESTATE_SALE
+	            WHERE REAL_ESTATE_ID = (
+	                SELECT REAL_ESTATE_ID
+	                FROM REAL_ESTATE_SALE
+	                WHERE SALES_ID = #{salesId}
+	            )
+	            AND EXCLUSIVE_AREA = (
+	                SELECT EXCLUSIVE_AREA
+	                FROM REAL_ESTATE_SALE
+	                WHERE SALES_ID = #{salesId}
+	            )
+	            ORDER BY CONTRACT_DATE DESC
+	        )
+	    ]]>
+	</select>
 
 
 </mapper>

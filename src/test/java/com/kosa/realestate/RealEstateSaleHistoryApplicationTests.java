@@ -7,8 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.kosa.realestate.realestates.model.RealEstateWithSale;
+import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 import com.kosa.realestate.realestates.service.IRealEstateSaleService;
 
 @SpringBootTest
@@ -19,7 +18,7 @@ class RealEstateSaleHistoryApplicationTests {
   
   @Test
   void selectList() {
-    List<RealEstateWithSale> list = estateSaleService.selectRealEstateWithSales(1, 7, 10);
+    List<RealEstateWithSaleDTO> list = estateSaleService.selectRealEstateWithSales(1, 7, 10);
     System.out.println(list);
     int result = list.size();
     assertEquals(2, result);

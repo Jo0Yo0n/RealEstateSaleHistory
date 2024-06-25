@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kosa.realestate.realestates.repository.IRealEstateDetailRepository">
+<mapper namespace="com.kosa.realestate.realestates.repository.RealEstateDetailRepository">
 	   
-	<resultMap type="RealEstateWithSale" id="RealEstateWithSaleMap">
-		<association property="realEstate" javaType="RealEstate">
+	<resultMap type="RealEstateWithSaleDTO" id="RealEstateWithSaleMapDTO">
+		<association property="realEstate" javaType="RealEstateDTO">
 	        <id property="realEstateId" column="REAL_ESTATE_ID"/>
 	        <result property="neighborhoodId" column="NEIGHBORHOOD_ID"/>
 	        <result property="complexName" column="COMPLEX_NAME"/>
@@ -15,7 +15,7 @@
 	        <result property="lng" column="LNG"/>
 	        <!-- <result property="buildingFlag" column="BUILDING_FLAG"/> -->
 	    </association>
-	    <association property="realEstateSale" javaType="RealEstateSale">
+	    <association property="realEstateSale" javaType="RealEstateSaleDTO">
 	        <id property="salesId" column="SALES_ID"/>
 	        <result property="realEstateId" column="REAL_ESTATE_ID"/>
 	        <result property="salePrice" column="SALE_PRICE"/>
@@ -27,7 +27,7 @@
 	    </association>
 	</resultMap>
 	
-	<select id="getRealEstateDetail" parameterType="int" resultMap="RealEstateWithSaleMap">
+	<select id="getRealEstateDetail" parameterType="int" resultMap="RealEstateWithSaleMapDTO">
 	    SELECT 
 	        RS.SALES_ID,
 	        RE.REAL_ESTATE_ID,
@@ -39,7 +39,7 @@
 	        RE.LAT,
 	        RE.LNG,
 	        RS.SALE_PRICE,
-	        RS.CONTRACT_DATE, 
+	        SUBSTR(RS.CONTRACT_DATE, 1, 4) || '-' || SUBSTR(RS.CONTRACT_DATE, 5, 2) || '-' || SUBSTR(RS.CONTRACT_DATE, 7, 2) AS CONTRACT_DATE, 
 	        NVL(TO_CHAR(RS.REGISTRATION_DATE, 'YYYY-MM-DD'), ' - ') AS REGISTRATION_DATE,
 	        RS.BUILDING_NAME,
 	        RS.FLOOR,
@@ -51,13 +51,13 @@
 	        RS.SALES_ID = #{salesId}
 	</select>
 	
-	<select id="getRealEstatePrice" parameterType="int" resultType="RealEstateSale">
+	<select id="getRealEstatePrice" parameterType="int" resultType="RealEstateSaleDTO">
 	    <![CDATA[
 	        SELECT
 	            SALES_ID AS salesId,
 	            REAL_ESTATE_ID AS realEstateId,
 	            SALE_PRICE AS salePrice,
-	            CONTRACT_DATE AS contractDate,
+	            SUBSTR(CONTRACT_DATE, 1, 4) || '-' || SUBSTR(CONTRACT_DATE, 5, 2) || '-' || SUBSTR(CONTRACT_DATE, 7, 2) AS contractDate,
 	            NVL(TO_CHAR(REGISTRATION_DATE, 'YYYY-MM-DD'), ' - ') AS registrationDate,
 	            BUILDING_NAME AS buildingName,
 	            FLOOR AS floor,

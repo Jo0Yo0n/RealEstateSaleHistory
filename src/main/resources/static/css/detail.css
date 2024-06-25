@@ -5,62 +5,99 @@ body, html {
   height: 100%;
   display: flex;
   justify-content: center;
-  padding:40px 0px;
+  padding: 40px 0px;
 }
-.detailPageContainer{
-	display:flex;
-	flex-direction:column;
+.detail-page-container {
+	display: flex;
+	flex-direction: column;
 	width: 1024px;
-	align-items:center;
-	height:1400px;
+	align-items: center;
+	height: 1400px;
 }
-.aptContainer{
+.apt-container {
 	width: 1024px;
-	display:flex;
-	flex-direction:row;
+	display: flex;
+	flex-direction: row;
 	justify-content: flex-start;
-	align-items:baseline;
+	align-items: baseline;
 }
-.aptName{
-	font-size:26px;
+.apt-name {
+	font-size: 26px;
 }
-.aptAddress{
-	font-size:22px;
+.apt-address {
+	font-size: 22px;
 	color: #616161;
 	margin-left: 10px;
 }
-.chartContainer{
+.base-date{
+	font-size: 18px;
+	color: #BDBDBD;
+	position: absolute;
+	margin-right: -800px;
+	margin-top: 60px;
+}
+.chart-container {
 	width: 1024px;
-	display:flex;
+	display: flex;
 	flex-direction: row;
 	justify-content: space-between; 
-	margin-top:30px;
-	align-items:center;
+	margin-top: 30px;
+	align-items: center;
 }
-.shoulderKneeChart{
-	width:450px;
-	display:flex;
+.shoulder-knee-chart {
+	width: 450px;
+	display: flex;
 	flex-direction: row;
 }
-.person{
+.person {
 	height: 300px;
 	position: absolute;
-	margin-top:-5px;
+	margin-top: 30px;
 	margin-left: -100px;
 }
-.priceDetailContainer{
-	display:flex;
-	flex-direction:column;
+table {
+    width: 350px;
+    height: 300px;
+    border-collapse: collapse;
+    border-top: 1px solid #d4d4d4;
+    margin-left: -50px;
+    margin-top: 50px;
+}
+
+tr {
+    border-bottom: 1px solid #d4d4d4;
+}
+
+td {
+    height: calc(390px / 6); /* 각 행의 높이를 300px / 5로 설정 */
+    text-align: center;
+}
+.none-border{
+	border-bottom: 0px;
+}
+.shoulder-knee-price{
+	width: 120px;
+	text-align: end;
+	position: absolute;
+	margin-left: 170px;
+	margin-top: -45px;
+}
+.text-gray{
+	color: #bdbdbd;
+}
+.price-detail-container {
+	display: flex;
+	flex-direction: column;
 	width: 1024px;
-	align-items:center; 
-	margin-top:30px;
-	justify-content:flex-start;
+	align-items: center; 
+	margin-top: 30px;
+	justify-content: flex-start;
 }
-.priceTitle{
-	font-size:22px;
-	width:1024px;
+.price-title {
+	font-size: 22px;
+	width: 1024px;
 }
-.priceContentContainer{
+.price-content-container {
 	width: 1024px;
 	height: 150px;
 	display: flex;
@@ -68,70 +105,71 @@ body, html {
 	justify-content: space-between;
 	font-size: 18px;
 }
-.PriceContent{
+.price-content {
 	width: 500px;
 	height: 150px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 }
-.priceInnerContent{
+.price-inner-content {
 	display: flex;
 	flex-direction: column;
-	height:90px;
+	height: 90px;
 	justify-content: space-around;
 }
-.priceHighRow{
+.price-high-row {
 	display: flex;
 	flex-direction: column;
-	color:#616161;
+	color: #616161;
 }
-.MaxMinPrice {
+.max-min-price {
 	margin-left: 10px;
 }
-.tradeListContainer{
+.trade-list-container {
 	width: 1024px;
 	display: flex;
 	flex-direction: column;
-	margin-top:30px;
+	margin-top: 30px;
 	margin-bottom: 20px;
 }
-.tradeTitle{
-	font-size:22px;
+.trade-title {
+	font-size: 22px;
 }
-.tradeList{
-	display:flex;
-	flex-direction:column;
-	width:1024px;
-	margin-top:20px;
+.trade-list {
+	display: flex;
+	flex-direction: column;
+	width: 1024px;
+	margin-top: 20px;
 	padding-bottom: 50px;
 }
-.tradeListTitle{
+.trade-list-title {
 	width: 964px;
 	height: 50px;
 	border-bottom: 1px solid #616161;
 	padding: 0 30px;
-	display:flex;
-	flex-direction:row;
-	justify-content:space-around;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
 }
-.tradeListColumn{
+.trade-list-column {
 	width: 100px;
-	margin-top:20px;
-	text-align:center;
+	margin-top: 20px;
+	text-align: center;
 }
-.tradeListContent{
+.trade-list-content {
 	width: 964px;
 	height: 50px;
 	border-bottom: 1px solid #616161;
 	padding: 0 30px;
-	display:flex;
-	flex-direction:row;
-	justify-content:space-around;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
 	margin-top: 10px;
 }
-.tradeListValue{
+.trade-list-value {
 	width: 100px;
-	margin-top:20px;
-	text-align:center;
+	margin-top: 20px;
+	text-align: center;
 }
+

@@ -3,19 +3,17 @@ package com.kosa.realestate.realestates.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Service;
-
-import com.kosa.realestate.realestates.model.RealEstateWithSale;
-import com.kosa.realestate.realestates.repository.IRealEstateSaleRepository;
-
+import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
+import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
+import com.kosa.realestate.realestates.repository.RealEstateSaleRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class RealEstateSaleService implements IRealEstateSaleService {
 
-  private final IRealEstateSaleRepository estateSaleRepository; 
+  private final RealEstateSaleRepository estateSaleRepository; 
   
   @Override
   public int getRealEstateSaleCount() {
@@ -28,7 +26,7 @@ public class RealEstateSaleService implements IRealEstateSaleService {
   }
 
   @Override
-  public List<RealEstateWithSale> selectRealEstateWithSales(int realEstateId, int pageNum,
+  public List<RealEstateWithSaleDTO> selectRealEstateWithSales(int realEstateId, int pageNum,
       int pageSize) {
     int offset = (pageNum - 1) * pageSize;
     int limit = pageSize;
@@ -46,7 +44,20 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.getAllDestrictId();
   }
 
+  @Override
+  public List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId) {
+    return estateSaleRepository.getRealEstateDetail(salesId);
+  }
 
+  @Override
+  public List<RealEstateSaleDTO> getRealEstatePrice(int salesId) {
+    return estateSaleRepository.getRealEstatePrice(salesId);
+  }
+
+  @Override
+  public List<Map<String, Object>> getAllNeighborhood(int destrictId) {
+    return estateSaleRepository.getAllNeighborhood(destrictId);
+  }
 
   
 }

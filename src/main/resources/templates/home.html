@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:fragment="content">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="content">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
 	crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/js/home.js}"></script>
 <link rel='stylesheet' th:href='@{/css/home.css}' type='text/css' />
 </head>
 <body>
-	<div class="homeMenuInnerContainer">
+	<div class="home-menu-inner-container">
 		<div class="search">
-			<input class="searchBox" type='text' placeholder='검색어 입력' /> <img
-				th:src="@{/assets/images/search.png}" />
+			<input class="search-box" type='text' placeholder='검색어 입력' /> 
+			<img th:src="@{/assets/images/search.png}" />
 		</div>
-		<div class='searchFilter'>
-			<span class='filterId' id='apt'>아파트</span> <span class='filterId'
-				id='mf'>연립/다세대</span> <span class='filterId' id='sf'>단독/다가구</span> <span
-				class='filterId' id='op'>오피스텔</span>
+		<div class='search-filter'>
+			<span class='filter-id' id='apt'>아파트</span> 
+			<span class='filter-id' id='mf'>연립/다세대</span> 
+			<span class='filter-id' id='sf'>단독/다가구</span> 
+			<span class='filter-id' id='op'>오피스텔</span>
 		</div>
-		<div class="searchSelectContainer">
+		<div class="search-select-container">
 			<select name='city' id='city'>
-				<option value='selectCity' disabled='true' selected>행정구역</option>
+				<option value='select-city' disabled='true' selected>행정구역</option>
 				<option value='seoul'>서울</option>
 			</select> 
 			<select th:field="*{districtList}">
-				<option value='selectDistrict' disabled='true' selected>자치구</option>
-				<option value='allDistrict'>전체</option>
+				<option value='select-district' disabled='true' selected>자치구</option>
+				<option value='all-district'>전체</option>
 				<!-- 리스트의 각 항목에 대해 옵션을 생성하고, 'selectedDistrictId'가 일치하면 선택됩니다. -->
   				<option th:each="district : ${districtList}" 
 		          th:value="${district.districtId}" 
@@ -35,38 +36,22 @@
 		          th:selected="${district.districtId} == ${selectedDistrictId}" />
 			</select> 
 			<select name='price' id='price'>
-				<option value='selectPrice' disabled='true' selected>가격대</option>
-				<option value='allPrice'>전체</option>
+				<option value='select-price' disabled='true' selected>가격대</option>
+				<option value='all-price'>전체</option>
 				<option>데이터 필요</option>
-			</select> <select name='area' id='area'>
-				<option value='selectArea' disabled='true' selected>면적</option>
-				<option value='allArea'>전체</option>
+			</select> 
+			<select name='area' id='area'>
+				<option value='select-area' disabled='true' selected>면적</option>
+				<option value='all-area'>전체</option>
 				<option>데이터 필요</option>
 			</select>
 		</div>
 
-	    <div class="districtListContainer">
-	        <!-- 기존의 부동산 목록이 표시되는 곳 -->
+	    <div class="district-list-container">
+        <!-- 기존의 부동산 목록이 표시되는 곳 -->
 	    </div>
         <!-- 페이지네이션을 위한 컨테이너 -->
         <div class="pagination"></div>
 	</div>
-	<script>
-		$(document).ready(function() {
-			$('.filterId').click(function() {
-				// 모든 필터의 색상을 초기화
-				$('.filterId').removeClass('selectedFlag');
-	
-				// 클릭된 요소에 클래스 추가
-				$(this).addClass('selectedFlag');
-	
-				// 클릭된 요소의 id 추출
-				var selectedId = $(this).attr('id');
-				console.log(selectedId);
-	
-				// id를 이용한 추가 작업을 여기에 작성
-			});
-		});
-	</script>
 </body>
 </html>

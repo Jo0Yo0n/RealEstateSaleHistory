@@ -1,194 +1,164 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-<title>budongsan</title>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-	crossorigin="anonymous"></script>
-<script type="text/javascript"
-	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0rm45zpj5b"></script>
-<script type="text/javascript" th:src="@{/js/MarkerClustering.js}"></script>
-<script type="text/javascript" th:src="@{/js/map_data.js}"></script>
-<link rel='stylesheet' th:href='@{/css/map.css}' type='text/css' />
-<script th:inline="javascript">
-    var clusterMarkerImagePath = /*[[@{/assets/images/}]]*/ '../static/assets/images/';
-</script>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <title>budongsan</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0rm45zpj5b"></script>
+    <script type="text/javascript" th:src="@{/js/MarkerClustering.js}"></script>
+    <script type="text/javascript" th:src="@{/js/map_data.js}"></script>
+    <script type="text/javascript" th:src="@{/js/map.js}"></script>
+    <script type="text/javascript" th:src="@{/js/menu.js}"></script>
+    <link rel='stylesheet' th:href='@{/css/map.css}' type='text/css' />
+    <script th:inline="javascript">
+        var clusterMarkerImagePath = /*[[@{/assets/images/}]]*/ '../static/assets/images/';
+    </script>
 </head>
+
 <body>
-	<div class="navbar">
-		<div class="navContent" id="homeIcon">
-			<img th:src="@{/assets/images/home.png}" />
-		</div>
-		<div class="navContent" id="commIcon">
+    <div class="navbar">
+        <div class="nav-content" id="home-icon">
+            <img th:src="@{/assets/images/home.png}" />
+        </div>
+        <div class="nav-content" id="comm-icon">
             <img th:src="@{/assets/images/comm.png}" />
         </div>
-        <div class="navContent" id="userIcon">
+        <div class="nav-content" id="user-icon">
             <img th:src="@{/assets/images/user.png}" />
         </div>
-	</div>
-	<div id="map"></div>
-	<div class="menu" id="homeMenu">
-		<div class="closeMenu"><img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg'/></div>
-		<!-- <div th:include="home :: content"></div> -->
-	</div>
-	<div class="menu" id="commMenu">
-        <div class="closeMenu">
-            <img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg'/>
+    </div>
+    <div id="map"></div>
+    <div class="menu" id="home-menu">
+        <div class="close-menu"><img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' /></div>
+        <div th:insert="~{home :: content}"></div>
+    </div>
+    <div class="menu" id="comm-menu">
+        <div class="close-menu">
+            <img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' />
         </div>
     </div>
-    <div class="menu" id="userMenu">
+    <div class="menu" id="user-menu">
         User Menu Content
-        <div class="closeMenu">
-            <img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg'/>
+        <div class="close-menu">
+            <img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' />
         </div>
     </div>
-    <div class="menu" id="aptInfo"></div>
+    <div class="menu" id="apt-info"></div>
+
+    <div id="close-btn-template" style="display:none;">
+        <div class="close-menu">
+            <img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' />
+        </div>
+    </div>
+
+    <script>
     
-    <div id="closeBtnTemplate" style="display:none;">
-        <div class="closeMenu">
-            <img th:src="@{/assets/images/close_menu.png}" class='closeMenuImg' />
-        </div>
-    </div>
+        var map = new naver.maps.Map("map", {
+            zoom: 11,
+            center: new naver.maps.LatLng(37.5664056, 126.9778222),
+            zoomControl: true,
+            zoomControlOptions: {
+                position: naver.maps.Position.TOP_RIGHT,
+                style: naver.maps.ZoomControlStyle.SMALL,
+            },
+        });
 
-	<script>
-		var map = new naver.maps.Map("map", {
-			zoom : 11,
-			center : new naver.maps.LatLng(37.5664056, 126.9778222),
-			zoomControl : true,
-			zoomControlOptions : {
-				position : naver.maps.Position.TOP_RIGHT,
-				style : naver.maps.ZoomControlStyle.SMALL,
-			},
-		});
+        var markers = [], data = mapData.mapData2;
 
-		var markers = [], data = mapData.mapData2;
+        for (var i = 0, ii = data.length; i < ii; i++) {
+            var spot = data[i];
 
-		for (var i = 0, ii = data.length; i < ii; i++) {
-			var spot = data[i];
+            if (spot.grd_la !== null && spot.grd_lo !== null) {
+                var latlng = new naver.maps.LatLng(spot.LAT, spot.LNG);
+                var apt = spot.COMPLEX_NAME;
+                var price = spot.SALE_PRICE;
+                var estateId = spot.REAL_ESTATE_ID;
+                var marker = new naver.maps.Marker({
+                    position: latlng,
+                    draggable: false,
+                    clickable: true,
+                    icon: {
+                        content: [`<div class="marker-container">
+                                <span><strong>${apt}</strong>(${price}억)</span>
+                                <div class="disabled" style="display:none;">${estateId}</div>
+                                </div>`].join(''),
+                        size: new naver.maps.Size(40, 40),
+                        anchor: new naver.maps.Point(20, 20)
+                    }
+                });
 
-			if (spot.grd_la !== null && spot.grd_lo !== null) {
-				var latlng = new naver.maps.LatLng(spot.LAT, spot.LNG);
-				var apt = spot.COMPLEX_NAME;
-				var price = spot.SALE_PRICE;
-				var estateId = spot.REAL_ESTATE_ID;
-				var marker = new naver.maps.Marker({
-					position : latlng,
-					draggable : false,
-					clickable : true,
-					icon : {
-						content : [ '<div class="marker_container">',
-								'<span><strong>' + apt + '</strong>('+price+'억)</span>',
-								'<div class="disabled" style="display:none;">'+estateId+'</div>',
-								'</div>' ].join(''),
-						size : new naver.maps.Size(40, 40),
-						anchor : new naver.maps.Point(20, 20)
-					}
-				});
+                markers.push(marker);
 
-				markers.push(marker);
+                // 마커 클릭 이벤트 핸들러 추가
+                naver.maps.Event.addListener(marker, 'click', function (e) {
+                    var clickedMarker = e.overlay;
+                    var clickedApt = $(clickedMarker.getIcon().content).find('strong').text();
+                    var clickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
 
-				// 마커 클릭 이벤트 핸들러 추가
-				// 마커 클릭 이벤트 핸들러 추가
-				naver.maps.Event.addListener(marker, 'click', function(e) {
-				    var clickedMarker = e.overlay;
-				    var clickedApt = $(clickedMarker.getIcon().content).find('strong').text();
-				    var ClickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
-				    
-				    // 아파트 이름을 기준으로 REAL_ESTATE_ID를 찾는 함수 호출
-				    /* var realEstateId = getRealEstateId(clickedApt); */ 
+                    // 메뉴 내용을 클릭된 마커 정보로 업데이트 (clickedId를 사용하도록 수정)
+                    $('#apt-info').html(
+                        `<p>Clicked Marker Information</p><p>Apt: ${clickedApt}</p><p>Real Estate ID: ${clickedId}</p>`);
 
-				    // 메뉴 내용을 클릭된 마커 정보로 업데이트 (realEstateId를 사용하도록 수정)
-				    $('#aptInfo').html(
-				        '<p>Clicked Marker Information</p><p>Apt: ' + clickedApt + '</p><p>Real Estate ID: ' + ClickedId + '</p>');
+                    // 모든 메뉴를 닫고 apt-info 메뉴를 열기
+                    $('.menu').removeClass('active');
+                    $('#apt-info').addClass('active');
 
-				    // 모든 메뉴를 닫고 aptInfo 메뉴를 열기
-				    $('.menu').removeClass('active');
-				    $('#aptInfo').addClass('active');
+                    // 닫기 버튼 추가 
+                    var closeBtn = $('#close-btn-template').html();
+                    $('#apt-info').prepend(closeBtn);
 
-				    // 닫기 버튼 추가 
-				    var closeBtn = $('#closeBtnTemplate').html();
-				    $('#aptInfo').prepend(closeBtn);
+                    // 닫기 버튼에 클릭 이벤트 추가
+                    $('.close-menu-img').click(function () {
+                        $('#apt-info').removeClass('active');
+                        $(this).remove(); // 닫기 버튼 제거
+                    });
+                });
+            }
+        }
 
-				    // 닫기 버튼에 클릭 이벤트 추가
-				    $('.closeMenuImg').click(function() {
-				        $('#aptInfo').removeClass('active');
-				        $(this).remove(); // 닫기 버튼 제거
-				    });
-				});
+        var htmlMarker1 = {
+            content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-1.png);background-size:contain;"></div>`,
+            size: N.Size(50, 50),
+            anchor: N.Point(25, 25)
+        }, htmlMarker2 = {
+            content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-2.png);background-size:contain;"></div>`,
+            size: N.Size(50, 50),
+            anchor: N.Point(25, 25)
+        }, htmlMarker3 = {
+            content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-3.png);background-size:contain;"></div>`,
+            size: N.Size(50, 50),
+            anchor: N.Point(25, 25)
+        }, htmlMarker4 = {
+            content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-4.png);background-size:contain;"></div>`,
+            size: N.Size(50, 50),
+            anchor: N.Point(25, 25)
+        }, htmlMarker5 = {
+            content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-5.png);background-size:contain;"></div>`,
+            size: N.Size(50, 50),
+            anchor: N.Point(25, 25)
+        };
 
-
-			}
-		}
-
-		var htmlMarker1 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-1.png);background-size:contain;"></div>',
-			    size: N.Size(50, 50),
-			    anchor: N.Point(25, 25)
-			}, htmlMarker2 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-2.png);background-size:contain;"></div>',
-			    size: N.Size(50, 50),
-			    anchor: N.Point(25, 25)
-			}, htmlMarker3 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-3.png);background-size:contain;"></div>',
-			    size: N.Size(50, 50),
-			    anchor: N.Point(25, 25)
-			}, htmlMarker4 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-4.png);background-size:contain;"></div>',
-			    size: N.Size(50, 50),
-			    anchor: N.Point(25, 25)
-			}, htmlMarker5 = {
-			    content: '<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(' + clusterMarkerImagePath + 'cluster-marker-5.png);background-size:contain;"></div>',
-			    size: N.Size(50, 50),
-			    anchor: N.Point(25, 25)
-			};
-
-		var markerClustering = new MarkerClustering({
-			minClusterSize : 2,
-			maxZoom : 18,
-			map : map,
-			markers : markers,
-			disableClickZoom : false,
-			gridSize : 250,
-			icons : [ htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4,
-					htmlMarker5 ],
-			indexGenerator : [ 10, 100, 200, 500, 1000 ],
-			stylingFunction : function(clusterMarker, count) {
-				$(clusterMarker.getElement()).find("div:first-child").text(
-						count);
-			}
-		});
-
-		$(document).ready(function() {
-		    function toggleMenu(iconId, menuId) {
-		        $("#" + iconId).click(function() {
-		            var isActive = $("#" + menuId).hasClass("active");
-
-		            $(".menu").removeClass("active");
-		            $(".closeMenu").removeClass("active");
-
-		            if (!isActive) {
-		                $("#" + menuId).addClass("active");
-		                $("#" + menuId).find(".closeMenu").addClass("active"); // 메뉴가 열릴 때 closeMenu 버튼 활성화
-		            }
-		        });
-
-		        // closeMenu 버튼에 클릭 이벤트 추가
-		        $("#" + menuId).find(".closeMenu").click(function() {
-		            $("#" + menuId).removeClass("active"); // 메뉴 닫기
-		            $(this).removeClass("active"); // closeMenu 버튼 비활성화
-		        });
-		    }
-
-		    toggleMenu("homeIcon", "homeMenu");
-		    toggleMenu("commIcon", "commMenu");
-		    toggleMenu("userIcon", "userMenu");
-		});
-
-
+        var markerClustering = new MarkerClustering({
+            minClusterSize: 2,
+            maxZoom: 18,
+            map: map,
+            markers: markers,
+            disableClickZoom: false,
+            gridSize: 250,
+            icons: [htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4,
+                htmlMarker5],
+            indexGenerator: [10, 100, 200, 500, 1000],
+            stylingFunction: function (clusterMarker, count) {
+                $(clusterMarker.getElement()).find("div:first-child").text(
+                    count);
+            }
+        });
 
 	</script>
 </body>
+
 </html>
