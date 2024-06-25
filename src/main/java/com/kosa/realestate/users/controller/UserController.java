@@ -1,6 +1,6 @@
 package com.kosa.realestate.users.controller;
 
-import com.kosa.realestate.favorites.dto.FavoriteListDto;
+import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
 import com.kosa.realestate.favorites.service.FavoriteService;
 import com.kosa.realestate.users.DuplicateUserException;
 import com.kosa.realestate.users.model.UserCreateForm;
@@ -92,7 +92,7 @@ public class UserController {
     UserDTO userDTO = userService.findUserByEmail(email);
     model.addAttribute("user", userDTO);
 
-    List<FavoriteListDto> favoriteListDtoList = favoriteService.findFavoriteList(0, email);
+    List<FavoriteListDTO> favoriteListDtoList = favoriteService.findFavoriteList(0, email);
     model.addAttribute("favoriteListDtoList", favoriteListDtoList);
 
     return "my_page_temp";
