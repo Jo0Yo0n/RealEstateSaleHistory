@@ -81,20 +81,27 @@
 		WHERE A.DISTRICT_ID = #{destrictId}
 	</select>
 	
-<!-- 	<select id="selectRealEstateWithSalesByCondition" resultType="RealEstateWithSaleMapDTO">
-    SELECT * FROM your_table
-    <where>
-        <if test="param1 != null">
-            AND column1 = #{param1}
-        </if>
-        <if test="param2 != null">
-            AND column2 = #{param2}
-        </if>
-        <if test="param3 != null">
-            AND column3 = #{param3}
-        </if>
-    </where>
-</select> -->
+ 	<select id="selectRealEstateWithSalesByCondition" resultMap="RealEstateWithSaleMapDTO">
+    	SELECT A.*, B.*
+		FROM REAL_ESTATE_SALE A
+		JOIN REAL_ESTATE B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID
+		JOIN NEIGHBORHOOD C ON B.NEIGHBORHOOD_ID = C.NEIGHBORHOOD_ID
+		JOIN DISTRICT D ON C.DISTRICT_ID = D.DISTRICT_ID
+    	<where>
+        	<if test="districtName != null">
+            	AND D.DISTRICT_NAME = #{districtName}
+        	</if>
+        	<if test="neighborhoodName != null">
+            	AND C.NEIGHBORHOOD_NAME= #{neighborhoodName}
+        	</if>
+        	<if test="salePrice != null">
+            	AND A.SALE_PRICE BETWEEN #{salePrice.min} AND (#{salePrice.max} + 1)
+        	</if>
+        	<if test="exclusiveArea != null">
+        		AND A.EXCLUSIVE_AREA BETWEEN #{exclusiveArea.min} AND (#{exclusiveArea.max} +1)
+        	</if>
+    	</where>
+	</select> 
 	
 	
 	<select id="getRealEstateDetail" parameterType="int" resultMap="RealEstateWithSaleMapDTO">
