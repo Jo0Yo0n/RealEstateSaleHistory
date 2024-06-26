@@ -142,7 +142,7 @@ public class UserController {
       success.put("message", "회원정보가 성공적으로 수정되었습니다.");
       return ResponseEntity.ok(success);
     } else {
-      error.put("message", "회원정보 수정에 실패하였습니다.");
+      error.put("message", "원인 불명");
       return ResponseEntity.status(500).body(error);
     }
   }
