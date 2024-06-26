@@ -11,6 +11,12 @@
   </div>
   <div sec:authorize="isAuthenticated()">
     <a th:href="@{/users/logout}">로그아웃</a>
+    <a th:href="@{/users/me}">마이페이지</a>
+
+    <p th:text="'email: ' + ${#authentication.name}"></p>
+    <p th:text="'UserID: ' + ${#authentication.principal.userId}"></p>
+    <p th:text="'Nickname: ' + ${#authentication.principal.nickname}"></p>
+    <p th:text="'CreatedAt: ' + ${#authentication.principal.createdAt}"></p>
   </div>
 </body>
 </html>

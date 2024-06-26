@@ -1,6 +1,5 @@
-package com.kosa.realestate.favorites.dto;
+package com.kosa.realestate.favorites.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class FavoriteListDto {
+public class FavoriteListDTO {
 
   private Long favoriteId;
   private Long realEstateId;

@@ -1,11 +1,11 @@
-<!-- signup_form.html -->
+<!-- login_form.html -->
 <!-- 작성자: 이주윤 -->
 <html>
 <div>
 	<h2>로그인</h2>
 	<form th:action="@{/users/login}" method="post">
 		<div th:if="${param.error}">
-			<div>사용자ID 또는 비밀번호를 확인해 주세요.</div>
+			<div>이메일 또는 비밀번호를 확인해 주세요.</div>
 		</div>
 		<div>
 			<input type="text" name="username" id="username"
@@ -21,7 +21,7 @@
 	</form>
 
 	<div>
-		<a href="/users/signup">회원가입
+		<a href="/users/signup">회원가입</a>
 	</div>
 </div>
 </html>

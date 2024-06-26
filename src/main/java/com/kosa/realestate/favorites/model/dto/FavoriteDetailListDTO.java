@@ -1,4 +1,4 @@
-package com.kosa.realestate.favorites.dto;
+package com.kosa.realestate.favorites.model.dto;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class FavoriteDetailListDto {
+public class FavoriteDetailListDTO {
 
   private Long real_estate_id;
   private String complex_name;

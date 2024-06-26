@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kosa.realestate.favorites.repository.FavoriteDao">
+<mapper namespace="com.kosa.realestate.favorites.repository.FavoriteRepostiory">
 
 	<!-- 즐겨찾기 아파트 리스트 조회 -->
-	<select id="selectFavoriteList" resultType="FavoriteListDto">
+	<select id="selectFavoriteList" resultType="FavoriteListDTO">
 		select fa.favorite_id
          	 , re.real_estate_id
          	 , re.complex_name
@@ -60,7 +60,7 @@
 
 
  	<!-- 즐겨찾기 아파트 상세 조회 -->
-	<select id="selectFavoriteDetailList" resultType="FavoriteDetailListDto">
+	<select id="selectFavoriteDetailList" resultType="FavoriteDetailListDTO">
 		select re.real_estate_id
 			 , re.complex_name
 			 , res.sales_id
@@ -77,5 +77,24 @@
 		offset #{offset} rows fetch next #{pageSize} rows only
 	</select>
 	
+	
+	<!-- 즐겨찾기 저장 -->
+	<insert id="insertFavorite">
+		insert
+		  into favorite
+		  	 ( user_id
+		  	 , real_estate_id)
+		values
+			 ( #{userId}
+			 , #{realEstateId})
+	</insert>
+	
+	
+	<!-- 즐겨찾기 삭제 -->
+	<delete id="removeFavorite" parameterType="Long">
+		delete
+		  from favorite
+		 where favorite_id = #{favoriteId}
+	</delete>
 	
 </mapper>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원정보 수정</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div>
+  <div>
+    <div>
+      <h4>회원정보 수정</h4>
+    </div>
+  </div>
+  <form id="updateForm" method="post">
+    <div>
+      <label for="password1">비밀번호</label>
+      <input type="password" id="password1" name="password1">
+    </div>
+
+    <div>
+      <label for="password2">비밀번호 확인</label>
+      <input type="password" id="password2" name="password2">
+    </div>
+
+    <button type="submit">회원정보 수정</button>
+  </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resultModalLabel">회원정보 수정 결과</h5>
+      </div>
+      <div class="modal-body" id="resultModalBody">
+        <!-- 결과 메시지가 여기에 표시 -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close"
+                id="closeModalButton">닫기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#updateForm').on('submit', function (event) {
+      event.preventDefault();
+      var password1 = $('#password1').val();
+      var password2 = $('#password2').val();
+
+      if (password1 !== password2) {
+        $('#resultModalBody').text('비밀번호가 일치하지 않습니다.');
+        $('#resultModal').modal('show');
+        return;
+      }
+      console.log("Sending data:", JSON.stringify({password1: password1, password2: password2}));
+      $.ajax({
+        url: '/users/me',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          password1: password1,
+          password2: password2
+        }),
+        success: function (response) {
+          $('#resultModalBody').text("회원정보가 수정되었습니다.");
+          $('#resultModal').modal('show');
+        },
+        error: function (xhr) {
+          let errorMsg = xhr.status + " " + xhr.statusText;
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errorMsg += ": " + xhr.responseJSON.message;
+          }
+          $('#resultModalBody').text(errorMsg);
+          $('#resultModal').modal('show');
+        }
+      });
+    });
+  });
+
+  $('#closeModalButton').click(function () {
+    window.location.href = '/users/me';
+  })
+</script>
+</body>
+</html>
