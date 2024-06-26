@@ -65,8 +65,16 @@ public class UserService implements IUserService {
   }
 
   // User 업데이트
-  public boolean updateUser(String email, String password) {
-    int rowsAffected = userRepository.updateUser(email, password);
+  public boolean updateUser(String email, String password) throws UsernameNotFoundException {
+    Optional<Users> _user = userRepository.findUserByEmail(email);
+    if(_user.isEmpty()) {
+      throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+    }
+    Users user = _user.get();
+    user.setPassword(passwordEncoder.encode(password));
+
+    int rowsAffected = userRepository.updateUser(user);
+
     return rowsAffected > 0;
   }
 

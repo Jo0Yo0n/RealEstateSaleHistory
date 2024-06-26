@@ -3,6 +3,7 @@ package com.kosa.realestate.users;
 import com.kosa.realestate.users.model.Users;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
  *
  * @author 이주윤
  */
+@Getter
 public class UserContext extends User {
 
   private final Long userId;

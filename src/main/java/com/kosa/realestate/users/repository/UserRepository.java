@@ -25,7 +25,7 @@ public interface UserRepository {
 
   List<Users> getUserList();
 
-  int updateUser(String email, String password);
+  int updateUser(Users user);
 
   void deleteUser(Long id);
 }

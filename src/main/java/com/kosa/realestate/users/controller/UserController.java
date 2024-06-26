@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -109,35 +111,30 @@ public class UserController {
   }
 
   // 회원 정보 수정 폼 저장
-//  @PutMapping("/me")
-//  @ResponseBody
-//  public ResponseEntity<?> updateUser(@Valid UserUpdateForm userUpdateForm, BindingResult bindingResult,
-//      Principal principal) {
-//    Map<String, String> response = new HashMap<>();
-//
-//    // 유효하지 않은 데이터
-//    if (bindingResult.hasErrors()) {
-//      response.put("message", "폼 데이터가 유효하지 않습니다.");
-//      return ResponseEntity.badRequest().body(response);
-//    }
-//
-//    // 확인 비밀번호 불일치
-//    if (!userUpdateForm.getPassword1().equals(userUpdateForm.getPassword2())) {
-//      response.put("message", "패스워드가 일치하지 않습니다.");
-//      return ResponseEntity.badRequest().body(response);
-//    }
-//
-//    String email = principal.getName();
-//    boolean success = userService.updateUser(email, userUpdateForm.getPassword1());
-//
-//    if (success) {
-//      response.put("message", "회원정보가 성공적으로 수정되었습니다.");
-//      return ResponseEntity.ok(response);
-//    } else {
-//      response.put("message", "회원정보 수정에 실패하였습니다.");
-//      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//    }
-//  }
+  @PutMapping("/me")
+  @ResponseBody
+  public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateForm userUpdateForm, BindingResult bindingResult,
+      Principal principal) {
+    if(bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body("Validation 실패");
+    }
+
+    if(!userUpdateForm.getPassword1().equals(userUpdateForm.getPassword2())) {
+      return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
+    }
+
+    System.out.println("Received update request with: " + userUpdateForm);
+
+    String email = principal.getName();
+
+    boolean isUpdated = userService.updateUser(email, userUpdateForm.getPassword1());
+
+    if(isUpdated) {
+      return ResponseEntity.ok("회원정보가 성공적으로 수정되었습니다.");
+    } else {
+      return ResponseEntity.status(500).body("회원정보 수정에 실패하였습니다.");
+    }
+  }
 
   // 회원 탈퇴
   @DeleteMapping("/me")
