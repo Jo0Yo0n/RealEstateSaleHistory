@@ -59,5 +59,18 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.getAllNeighborhood(destrictId);
   }
 
+  @Override
+  public List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(String districtName,
+      String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize) {
+
+    Map<String, Object> salePrice = new HashMap();
+    salePrice.put("min", minPrice);
+    salePrice.put("max", maxPrice);
+    Map<String, Object> exclusiveArea = new HashMap();
+    exclusiveArea.put("min", minExclusiveSize);
+    exclusiveArea.put("max", maxExclusiveSize);
+    return estateSaleRepository.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, salePrice, exclusiveArea);
+  }
+
   
 }

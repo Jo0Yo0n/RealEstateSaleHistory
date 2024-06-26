@@ -28,7 +28,7 @@
 			</select> 
 			<select th:field="*{districtList}">
 				<option value='select-district' disabled='true' selected>자치구</option>
-				<option value='all-district'>전체</option>
+				<option value='all'>전체</option>
 				<!-- 리스트의 각 항목에 대해 옵션을 생성하고, 'selectedDistrictId'가 일치하면 선택됩니다. -->
   				<option th:each="district : ${districtList}" 
 		          th:value="${district.districtId}" 
@@ -37,12 +37,12 @@
 			</select> 
 			<select name='price' id='price'>
 				<option value='select-price' disabled='true' selected>가격대</option>
-				<option value='all-price'>전체</option>
+				<option value='all'>전체</option>
 				<option>데이터 필요</option>
 			</select> 
 			<select name='area' id='area'>
 				<option value='select-area' disabled='true' selected>면적</option>
-				<option value='all-area'>전체</option>
+				<option value='all'>전체</option>
 				<option>데이터 필요</option>
 			</select>
 		</div>
@@ -53,5 +53,41 @@
         <!-- 페이지네이션을 위한 컨테이너 -->
         <div class="pagination"></div>
 	</div>
+
+	<script>
+		//검색 조건을 서버에 전송하는 함수
+function sendSearchCriteria() {
+	// 선택된 도시, 자치구, 가격대, 면적을 가져옵니다.
+	var district = $('select[name="districtList"]').val() === 'all' ? null : $('select[name="districtList"]').val();
+	var price = $('#price').val() === 'all' ? null : $('#price').val();
+	var area = $('#area').val() === 'all' ? null : $('#area').val();
+	// AJAX 요청을 설정합니다.
+	$.ajax({
+		url: '/realestate/search/byCriteria', // 컨트롤러의 URL
+		type: 'POST',
+		contentType: 'application/json',
+		data: JSON.stringify({
+			districtName: '종로구',
+			neighborhoodName: '청운동',
+			PriceMin: 1,
+			PriceMax: 10,
+			ExclusiveSizeMin: 1,
+			ExclusiveSizeMax:100
+		}),
+		dataType: 'json',
+		success: function (response) {
+			// 서버로부터 응답을 받으면 실행되는 함수
+			console.log('검색 결과:', response);
+			// TODO: 검색 결과를 화면에 표시하는 로직을 여기에 작성합니다.
+		},
+		error: function (xhr, status, error) {
+			// 요청이 실패하면 실행되는 함수
+			console.error('검색 에러:', error);
+		}
+	});
+}
+// 각 셀렉트 박스의 변경 이벤트에 함수를 연결합니다.
+$('select[name="districtList"], #price, #area').change(sendSearchCriteria);
+	</script>
 </body>
 </html>
