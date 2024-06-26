@@ -61,7 +61,6 @@
         $('#resultModal').modal('show');
         return;
       }
-      console.log("Sending data:", JSON.stringify({password1: password1, password2: password2}));
       $.ajax({
         url: '/users/me',
         type: 'PUT',

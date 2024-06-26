@@ -13,7 +13,7 @@ public interface IUserService {
 
   boolean updateUser(String email, String password);
 
-  void deleteUser(Long id);
+  boolean deleteUser(String email, String password);
 
   UserDTO findUserByEmail(String email) throws UsernameNotFoundException;
 }
