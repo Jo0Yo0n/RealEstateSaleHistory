@@ -1,21 +1,19 @@
 package com.kosa.realestate.users.service;
 
+import com.kosa.realestate.users.DuplicateUserException;
+import com.kosa.realestate.users.InvalidPasswordException;
+import com.kosa.realestate.users.UserMapper;
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.model.Users;
+import com.kosa.realestate.users.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.model.UserDTO;
-import com.kosa.realestate.users.UserMapper;
-import com.kosa.realestate.users.model.Users;
-import com.kosa.realestate.users.repository.UserRepository;
-
-import lombok.RequiredArgsConstructor;
 
 
 /**
@@ -79,8 +77,19 @@ public class UserService implements IUserService {
   }
 
   // User 삭제 (soft delete)
-  public void deleteUser(Long id) {
-    userRepository.deleteUser(id);
+  public boolean deleteUser(String email, String password) throws UsernameNotFoundException {
+    Optional<Users> _user = userRepository.findUserByEmail(email);
+    if(_user.isEmpty()) {
+      throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+    }
+    Users user = _user.get();
+
+    if(!passwordEncoder.matches(password, user.getPassword())) {
+      throw new InvalidPasswordException("비밀번호가 잘못되었습니다.");
+    }
+
+    int rowsAffected = userRepository.deleteUser(email);
+    return rowsAffected > 0;
   }
 
   // 이메일 기준 사용자 정보 조회 (MyBatis)

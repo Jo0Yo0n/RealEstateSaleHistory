@@ -3,17 +3,22 @@ package com.kosa.realestate.users.controller;
 import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
 import com.kosa.realestate.favorites.service.FavoriteService;
 import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.model.UserCreateForm;
+import com.kosa.realestate.users.InvalidPasswordException;
+import com.kosa.realestate.users.form.UserCreateForm;
+import com.kosa.realestate.users.form.UserUpdateForm;
 import com.kosa.realestate.users.model.UserDTO;
-import com.kosa.realestate.users.model.UserUpdateForm;
 import com.kosa.realestate.users.service.IUserService;
 import jakarta.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -115,36 +120,60 @@ public class UserController {
   @ResponseBody
   public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateForm userUpdateForm, BindingResult bindingResult,
       Principal principal) {
+
+    Map<String, String> error = new HashMap<>();
+    Map<String, String> success = new HashMap<>();
+
     if(bindingResult.hasErrors()) {
-      return ResponseEntity.badRequest().body("Validation 실패");
+      error.put("message", "Validation 실패");
+      return ResponseEntity.badRequest().body(error);
     }
 
     if(!userUpdateForm.getPassword1().equals(userUpdateForm.getPassword2())) {
-      return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
+      error.put("message", "비밀번호가 일치하지 않습니다.");
+      return ResponseEntity.badRequest().body(error);
     }
-
-    System.out.println("Received update request with: " + userUpdateForm);
 
     String email = principal.getName();
 
     boolean isUpdated = userService.updateUser(email, userUpdateForm.getPassword1());
 
     if(isUpdated) {
-      return ResponseEntity.ok("회원정보가 성공적으로 수정되었습니다.");
+      success.put("message", "회원정보가 성공적으로 수정되었습니다.");
+      return ResponseEntity.ok(success);
     } else {
-      return ResponseEntity.status(500).body("회원정보 수정에 실패하였습니다.");
+      error.put("message", "회원정보 수정에 실패하였습니다.");
+      return ResponseEntity.status(500).body(error);
     }
   }
 
   // 회원 탈퇴
   @DeleteMapping("/me")
-  public ResponseEntity<Void> deleteUser(Principal principal) {
+  @ResponseBody
+  public ResponseEntity<?> deleteUser(Principal principal, @RequestBody UserDTO userDTO) {
     String email = principal.getName();
-    UserDTO userDTO = userService.findUserByEmail(email);
-    Long userId = userDTO.getUserId();
+    String password = userDTO.getPassword();
 
-    userService.deleteUser(userId);
-    return ResponseEntity.ok().build();
+    Map<String, String> response = new HashMap<>();
+
+    try {
+      boolean isDeleted = userService.deleteUser(email, password);
+
+
+      if(isDeleted) {
+        response.put("message", "계정이 삭제되었습니다.");
+        return ResponseEntity.ok(response);
+      } else {
+        response.put("message", "원인 불명");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+      }
+    } catch (UsernameNotFoundException e) {
+      response.put("message", e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    } catch (InvalidPasswordException e) {
+      response.put("message", e.getMessage());
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
   }
 
   // id로 회원조회(테스트)

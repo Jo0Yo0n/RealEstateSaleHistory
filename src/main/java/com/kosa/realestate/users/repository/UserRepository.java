@@ -27,5 +27,5 @@ public interface UserRepository {
 
   int updateUser(Users user);
 
-  void deleteUser(Long id);
+  int deleteUser(String email);
 }
