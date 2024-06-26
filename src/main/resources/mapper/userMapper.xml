@@ -49,8 +49,7 @@
 	<update id="updateUser">
 		update users
 		set password = #{password}
-		where
-		email = #{email}
+		where email = #{email}
 	</update>
 
 	<update id="deleteUser">
