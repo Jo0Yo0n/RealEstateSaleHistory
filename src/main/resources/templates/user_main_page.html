@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/user_main_page.js}"></script>
+    
+
+	<title>부동산사조</title>
+</head>
+<body>
+
+    <a th:href="@{/users/login}">로그인</a>
+    <a th:href="@{/users/signup}">회원가입</a>    
+                    
+	<div class='chart1' style="width: 400px; height: 200px">
+        <canvas id="chart1" width="400" height="200"></canvas>
+    </div>
+    <div class='chart2' style="width: 400px; height: 200px">
+        <canvas id="chart2" width="400" height="200"></canvas>
+    </div>
+    <div class='chart3' style="width: 400px; height: 200px">
+        <canvas id="chart3" width="400" height="200"></canvas>
+    </div>
+    <div class='chart4' style="width: 400px; height: 200px">
+        <canvas id="chart4" width="400px" height="200"></canvas>
+    </div>
+</body>
+</html>
