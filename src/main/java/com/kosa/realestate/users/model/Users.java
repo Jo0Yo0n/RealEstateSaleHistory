@@ -32,4 +32,6 @@ public class Users {
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
+
+  private String accountType;
 }

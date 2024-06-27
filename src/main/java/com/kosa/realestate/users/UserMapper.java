@@ -21,6 +21,7 @@ public class UserMapper {
         .isDeleted(userDTO.getIsDeleted())
         .createdAt(userDTO.getCreatedAt())
         .updatedAt(userDTO.getUpdatedAt())
+        .accountType(userDTO.getAccountType())
         .build();
   }
   
@@ -36,6 +37,7 @@ public class UserMapper {
         .isDeleted(user.getIsDeleted())
         .createdAt(user.getCreatedAt())
         .updatedAt(user.getUpdatedAt())
+        .accountType(user.getAccountType())
         .build();
   }
 }

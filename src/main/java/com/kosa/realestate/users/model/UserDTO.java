@@ -26,4 +26,5 @@ public class UserDTO {
   private char isDeleted;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  private String accountType;
 }
