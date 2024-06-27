@@ -13,14 +13,14 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
-                        <div class="nickname">홀란스텝네</div>
+                        <div class="nickname"><span th:text ="${commuCard.nickname}"></th:text></span></div>
                         <div class="time"></div>
                         <div class="status"></div>
-                        <div class="view-count">조회 644</div>
+                        <div class="view-count">조회 <span th:text ="${commuCard.postView}"></div>
                     </div>
-                    <div class="card-title">게시글 제목</div>
+                    <div class="card-title"><span th:text ="${commuCard.title}"></div>
                     <div class="card-text">
-                        게시글 내용
+                        <span th:text ="${commuCard.content}">
                     </div>
                     <div class="comment-header">
                         <span class="likes">좋아요 27</span>
@@ -34,7 +34,7 @@
                     <div class="comment-section">
                         <div class="comment">
                             <div class="comment-nickname">쾰남</div>
-                            <div class="comment-location">성내동 위치인증</div>
+                            <div class="comment-location"><span th:text ="${commuCard.districtName}"></div>
                             <div class="comment-text">좋은 정보 감사합니다</div>
                             <div class="comment-meta">
                                 <span class="comment-reply">대댓글 달기 0</span>

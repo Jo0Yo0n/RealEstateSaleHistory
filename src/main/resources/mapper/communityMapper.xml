@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosa.realestate.community.repository.CommunityRepository">
+
+	
+<select id="postList" resultType="PostDTO">
+    SELECT 
+        p.post_id AS "postId",
+        p.content,
+        p.user_id AS "userId",
+        p.district_id,
+        p.title,
+        p.createdat,
+        p.updatedat,
+        p.post_view,
+        u.user_id AS "user.userId",
+        u.nickname AS "nickname",
+        d.district_id AS "districtId",
+        d.district_name AS "districtName"
+    FROM 
+        post p
+    INNER JOIN 
+        users u ON p.user_id = u.user_id
+    INNER JOIN 
+        district d ON p.district_id = d.district_id
+</select>
+
+
+    
+
+<insert id="insertPost" parameterType="PostDTO">
+    <selectKey keyProperty="postId" resultType="int" order="BEFORE">
+        SELECT TB_POST_SEQ.NEXTVAL AS postId FROM DUAL
+    </selectKey>
+    INSERT INTO Post
+    (post_id, user_id, district_id, title, content)
+    VALUES
+    (#{postId}, #{userId}, #{districtId}, #{title}, #{content})
+</insert>
+
+
+
+<insert id="fileUpload" parameterType="FileMetaDataDTO">
+    INSERT INTO FILE_META_DATA
+    (post_id, file_name, file_path, file_type, file_size,file_origin_name)
+        VALUES
+    (#{postId}, #{fileName}, #{filePath}, #{fileType}, #{fileSize}, #{fileOriginName})
+</insert>
+
+<select id="communityCard" resultType="PostDTO" parameterType="int">
+    SELECT 
+        p.post_id AS "postId",
+        p.content,
+        p.user_id AS "userId",
+        p.district_id,
+        p.title,
+        p.createdat,
+        p.updatedat,
+        p.post_view,
+        u.user_id AS "user.userId",
+        u.nickname AS "nickname",
+        d.district_id AS "districtId",
+        d.district_name AS "districtName"
+    FROM 
+        post p
+    INNER JOIN 
+        users u ON p.user_id = u.user_id
+    INNER JOIN 
+        district d ON p.district_id = d.district_id
+        where post_id = #{pdstId)
+</select>
+
+
+</mapper>
