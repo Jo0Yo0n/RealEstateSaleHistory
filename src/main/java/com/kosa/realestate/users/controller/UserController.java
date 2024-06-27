@@ -60,14 +60,14 @@ public class UserController {
     }
 
     // 확인 비밀번호 불일치
-    if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
-      bindingResult.rejectValue("password2", "passwordInCorrect", "패스워드가 일치하지 않습니다.");
+    if (!userCreateForm.getPassword().equals(userCreateForm.getPasswordConfirm())) {
+      bindingResult.rejectValue("passwordConfirm", "passwordInCorrect", "패스워드가 일치하지 않습니다.");
       return "signup_form";
     }
 
     // 중복 가입 방지
     try {
-      userService.createUser(userCreateForm.getEmail(), userCreateForm.getPassword1(),
+      userService.createUser(userCreateForm.getEmail(), userCreateForm.getPassword(),
           userCreateForm.getNickname());
     } catch (DuplicateUserException e) {
       if (e.getMessage().contains("Email")) {
@@ -129,14 +129,14 @@ public class UserController {
       return ResponseEntity.badRequest().body(error);
     }
 
-    if(!userUpdateForm.getPassword1().equals(userUpdateForm.getPassword2())) {
+    if(!userUpdateForm.getPassword().equals(userUpdateForm.getPasswordConfirm())) {
       error.put("message", "비밀번호가 일치하지 않습니다.");
       return ResponseEntity.badRequest().body(error);
     }
 
     String email = principal.getName();
 
-    boolean isUpdated = userService.updateUser(email, userUpdateForm.getPassword1());
+    boolean isUpdated = userService.updateUser(email, userUpdateForm.getPassword());
 
     if(isUpdated) {
       success.put("message", "회원정보가 성공적으로 수정되었습니다.");
