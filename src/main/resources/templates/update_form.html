@@ -74,11 +74,11 @@
           $('#resultModal').modal('show');
         },
         error: function (xhr) {
-          let errorMsg = xhr.status + " " + xhr.statusText;
+          let errorMessage = "회원수정 실패: 서버에서 에러 메시지를 받지 못했습니다.";
           if (xhr.responseJSON && xhr.responseJSON.message) {
-            errorMsg += ": " + xhr.responseJSON.message;
+            errorMessage = "회원수정 실패: " + xhr.responseJSON.message;
           }
-          $('#resultModalBody').text(errorMsg);
+          $('#resultModalBody').text(errorMessage);
           $('#resultModal').modal('show');
         }
       });
