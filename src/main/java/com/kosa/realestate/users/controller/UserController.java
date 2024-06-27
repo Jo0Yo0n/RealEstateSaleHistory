@@ -100,9 +100,9 @@ public class UserController {
     model.addAttribute("user", userDTO);
 
     List<FavoriteListDTO> favoriteListDtoList = favoriteService.findFavoriteList(0, email);
-    model.addAttribute("favoriteListDtoList", favoriteListDtoList);
+    model.addAttribute("favoriteList", favoriteListDtoList);
 
-    return "my_page_temp";
+    return "my_page";
   }
 
   // 회원 정보 수정 페이지로 이동
@@ -118,18 +118,19 @@ public class UserController {
   // 회원 정보 수정 폼 저장
   @PutMapping("/me")
   @ResponseBody
-  public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateForm userUpdateForm, BindingResult bindingResult,
+  public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateForm userUpdateForm,
+      BindingResult bindingResult,
       Principal principal) {
 
     Map<String, String> error = new HashMap<>();
     Map<String, String> success = new HashMap<>();
 
-    if(bindingResult.hasErrors()) {
+    if (bindingResult.hasErrors()) {
       error.put("message", "Validation 실패");
       return ResponseEntity.badRequest().body(error);
     }
 
-    if(!userUpdateForm.getPassword().equals(userUpdateForm.getPasswordConfirm())) {
+    if (!userUpdateForm.getPassword().equals(userUpdateForm.getPasswordConfirm())) {
       error.put("message", "비밀번호가 일치하지 않습니다.");
       return ResponseEntity.badRequest().body(error);
     }
@@ -138,7 +139,7 @@ public class UserController {
 
     boolean isUpdated = userService.updateUser(email, userUpdateForm.getPassword());
 
-    if(isUpdated) {
+    if (isUpdated) {
       success.put("message", "회원정보가 성공적으로 수정되었습니다.");
       return ResponseEntity.ok(success);
     } else {
@@ -159,8 +160,7 @@ public class UserController {
     try {
       boolean isDeleted = userService.deleteUser(email, password);
 
-
-      if(isDeleted) {
+      if (isDeleted) {
         response.put("message", "계정이 삭제되었습니다.");
         return ResponseEntity.ok(response);
       } else {
