@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosa.realestate.agent.repository.AgentRepository">
+	<select id="getRealEstateId" resultType="int" parameterType="String">
+		select 
+			real_estate_id as realEstateId
+		from real_estate
+		where address_street = #{addressStreet}
+	</select>
+	
+	<!-- AgentMapper.xml -->
+	<insert id="insertRealEstate" parameterType="AgentCreateFormDTO">
+	    <!-- Oracle 시퀀스를 사용하여 REAL_ESTATE_ID 생성 -->
+	    <selectKey keyProperty="realEstateId" resultType="INTEGER" order="BEFORE">
+	        SELECT ISEQ$$_REAL_ESTATE.NEXTVAL AS realEstateId FROM DUAL
+	    </selectKey>
+	    
+	    <!-- 실제 데이터 삽입 -->
+	    INSERT INTO real_estate (
+	        REAL_ESTATE_ID,
+	        NEIGHBORHOOD_ID, 
+	        COMPLEX_NAME, 
+	        ADDRESS, 
+	        ADDRESS_STREET, 
+	        CONSTRUCTION_YEAR, 
+	        BUILDING_TYPE_ID
+	    )
+	    VALUES (
+	        #{realEstateId, jdbcType=INTEGER},
+	        (SELECT neighborhood_id FROM neighborhood WHERE neighborhood_name = #{neighborhoodName, jdbcType=VARCHAR}), 
+	        #{complexName, jdbcType=VARCHAR}, 
+	        #{address, jdbcType=VARCHAR}, 
+	        #{addressStreet, jdbcType=VARCHAR}, 
+	        #{constructionYear, jdbcType=INTEGER},
+	        #{buildingType, jdbcType=INTEGER}
+	    )
+	</insert>
+	
+	<insert id="insertRealEstateSale" parameterType="AgentCreateFormDTO">
+		<selectKey keyProperty="salesId" resultType="INTEGER" order="BEFORE">
+			SELECT ISEQ$$_REAL_ESTATE_SALE.NEXTVAL AS salesId FROM DUAL
+		</selectKey>
+		INSERT INTO REAL_ESTATE_SALE (
+			SALES_ID,
+			REAL_ESTATE_ID,
+			CONTRACT_DATE,
+			BUILDING_NAME,
+			FLOOR,
+			EXCLUSIVE_AREA,
+			SALE_PRICE
+		)
+		VALUES(
+			#{salesId},
+			#{realEstateId},
+			#{contractDate, jdbcType=VARCHAR},
+			#{buildingName},
+			#{floor},
+			#{exclusiveArea},
+			#{salePrice}
+			
+		)
+	</insert>
+	
+	<update id="updateRealEstateSale" parameterType="AgentCreateFormDTO">
+        UPDATE real_estate_sale
+        SET 
+			CONTRACT_DATE = #{contractDate, jdbcType=VARCHAR},
+			BUILDING_NAME = #{buildingName},
+			FLOOR = #{floor},
+			EXCLUSIVE_AREA = #{exclusiveArea},
+			SALE_PRICE = #{salePrice}
+        WHERE sales_id = #{salesId}
+    </update>
+    
+    <delete id = "deleteRealEstateSale" parameterType="int">
+    	DELETE 
+    	FROM REAL_ESTATE_SALE
+    	WHERE SALES_ID = #{salesId}
+    </delete>
+
+	
+</mapper>

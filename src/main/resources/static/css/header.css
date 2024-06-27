@@ -1,0 +1,6 @@
+@charset "UTF-8";
+body{
+	height: 100px;
+	width: 100%;
+	border-bottom: 1px solid #616161;
+}
