@@ -23,16 +23,19 @@ public class FavoriteController {
 
 
   // 즐겨찾기 아파트 리스트 조회
+  // TODO: ResponseBody 통해서 JSON 반환하도록 변경하기
   @GetMapping
   public String favoriteList(
-      Model model, Principal principal, @RequestParam(value="page", defaultValue = "0") int page) {
-//    principal.getName()
-    List<FavoriteListDTO> favoriteListDto = favoriteService.findFavoriteList(page, "tot0119@naver.com");
+      Model model, Principal principal,
+      @RequestParam(value = "page", defaultValue = "0") int page) {
+
+    List<FavoriteListDTO> favoriteListDto = favoriteService.findFavoriteList(page,
+        principal.getName());
 
     model.addAttribute("favoriteCount", favoriteListDto.size());
     model.addAttribute("favoriteList", favoriteListDto);
 
-    return "favorite_list";
+    return "redirect:/users/me";
   }
 
 
@@ -41,8 +44,8 @@ public class FavoriteController {
   public String favoriteDetailList(
       Model model,
       @PathVariable("realEstateId") Long realEstateId,
-      @RequestParam(value="page", defaultValue = "0") int page) {
-   
+      @RequestParam(value = "page", defaultValue = "0") int page) {
+
     favoriteService.findFavoriteDetailLst(page, realEstateId);
 
     return "favorite_list";
@@ -52,9 +55,9 @@ public class FavoriteController {
   // 즐겨찾기 추가
   @PostMapping("/{realEstateId}")
   public String favoriteAdd(Principal principal, @PathVariable("realEstateId") Long realEstateId) {
-    
+
     favoriteService.addFavorite(realEstateId, "tot0119@naver.com");
-    
+
     return "favorite_list";
   }
 
@@ -64,7 +67,7 @@ public class FavoriteController {
   public String favoriteRemove(Principal principal, @PathVariable("favoriteId") Long favoriteId) {
 
     favoriteService.removeFavorite(favoriteId);
-    
+
     return "favorite_list";
   }
 }

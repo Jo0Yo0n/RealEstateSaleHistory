@@ -16,6 +16,7 @@
 
 <button class="update btn btn-primary">회원 정보 수정</button>
 <button class="delete btn btn-danger">회원 탈퇴</button>
+<button class="agent btn btn-secondary">중개인 신청</button>
 
 <!-- Password Modal -->
 <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel"
@@ -54,7 +55,7 @@
         정말 탈퇴하시겠습니까?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+        <button type="button" class="close btn btn-secondary" data-bs-dismiss="modal">아니오</button>
         <button type="button" class="btn btn-danger" id="confirmDelete">네</button>
       </div>
     </div>
@@ -73,7 +74,7 @@
         <!-- 결과 메시지가 여기에 표시 -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="closeModalButton"
+        <button type="button" class="close btn btn-secondary" id="closeModalButton"
                 data-bs-dismiss="modal">닫기
         </button>
       </div>
@@ -126,7 +127,7 @@
     });
 
     // 확인 모달의 "아니요" 버튼 클릭 이벤트
-    $('.btn-secondary').on('click', function () {
+    $('.close').on('click', function () {
       $('#passwordModal').modal('hide');
       $('#confirmModal').modal('hide');
     })
@@ -200,6 +201,11 @@
       passwordConfirmField.val('');
       $('.submit').removeClass('btn-primary btn-danger');
     });
+  });
+
+  // 중개사 요청 버튼 동작 처리
+  $('agent').on('click' function () {
+
   });
 </script>
 </body>

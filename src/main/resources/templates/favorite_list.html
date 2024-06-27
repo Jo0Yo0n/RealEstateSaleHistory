@@ -1,6 +1,6 @@
-<html layout:decorate="~{my_page}">
-<div layout:fragment="content">
-  <div th:each="favorite, loop : ${favorites}">
+<html th:decorate="~{my_page}">
+<div th:fragment="content">
+  <div th:each="favorite, loop : ${favoriteList}">
     <div class="building" th:classappend="${loop.index % 2 == 0} ? '' : 'building-background'">
 
       <div class="building-header">
