@@ -4,19 +4,27 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" th:src="@{/js/user_main_page.js}"></script>
-    
+
 
 	<title>부동산사조</title>
 </head>
 <body>
-
+  <div sec:authorize="isAnonymous()">
     <a th:href="@{/users/login}">로그인</a>
-    <a th:href="@{/users/signup}">회원가입</a>    
-                    
+    <a th:href="@{/users/signup}">회원가입</a>
+  </div>
+  <div sec:authorize="isAuthenticated()">
+    <a th:href="@{/users/logout}">로그아웃</a>
+    <a th:href="@{/users/me}">마이페이지</a>
+  </div>
+
+  <a th:href="@{/realestate/select}">매물 검색</a>
+  <a th:href="@{/communityList}">게시판</a>
+
 	<div class='chart1' style="width: 400px; height: 200px">
         <canvas id="chart1" width="400" height="200"></canvas>
     </div>
