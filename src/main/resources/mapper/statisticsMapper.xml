@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosa.realestate.statistics.repository.StatisticsRepository">
+
+	<!-- 각 지역구 기준으로 전체 매매 평균 순위 -->
+	<select id="selectAvgSaleDistrict" resultType="DistrictAvgSaleDTO">
+		select ci.city_id
+             , ci.city_name
+             , di.district_id 
+             , di.district_name
+             , round(avg(res.sale_price), 2) avg_price
+          from district             di
+    inner join city                 ci
+            on ci.city_id           = di.city_id
+    inner join neighborhood         ne
+            on ne.district_id       = di.district_id
+    inner join real_estate          re
+            on re.neighborhood_id   = ne.neighborhood_id
+    inner join real_estate_sale     res
+            on res.real_estate_id   = re.real_estate_id 
+      group by ci.city_id
+             , ci.city_name
+             , di.district_id 
+             , di.district_name
+      order by avg_price desc
+         fetch first 10 rows only
+	</select>
+	
+	
+	<!-- 즐겨찾기가 많이 된 동 순위 (시, 구, 동) -->
+	<select id="selectMostFavoriteNeighborhood" resultType="NeighborhoodMostFavoriteDTO">
+        select ci.city_id
+             , ci.city_name
+             , di.district_id
+             , di.district_name
+             , ne.neighborhood_id
+             , ne.neighborhood_name
+             , count(fa.favorite_id) favorite_cnt
+          from favorite             fa
+    inner join real_estate          re
+            on re.real_estate_id    = fa.real_estate_id
+    inner join neighborhood         ne
+            on ne.neighborhood_id   = re.neighborhood_id
+    inner join district             di
+            on di.district_id       = ne.district_id
+    inner join city                 ci
+            on ci.city_id           = di.city_id
+      group by ci.city_id
+             , ci.city_name
+             , di.district_id
+             , di.district_name
+             , ne.neighborhood_id
+             , ne.neighborhood_name
+      order by favorite_cnt desc
+         fetch first 10 rows only
+	</select>
+	
+	
+	<!-- 5년간 부동산 등락 -->
+	<select id="selectRealEstateChangeFive" parameterType="String" resultType="RealEstateChangeFiveYearDTO">
+   		<![CDATA[
+        select ci.city_id
+             , ci.city_name
+             , di.district_id
+             , di.district_name
+             , ne.neighborhood_id
+             , ne.neighborhood_name
+             , df.complex_name
+             , df.min_price
+             , df.max_price
+             , abs(df.max_price - df.min_price)  diff_price
+          from (select re.neighborhood_id
+                     , re.complex_name
+                     , min(res.sale_price)  min_price
+                     , max(res.sale_price)  max_price
+                  from real_estate          re
+            inner join real_estate_sale     res
+                    on res.real_estate_id   = re.real_estate_id
+                 where to_date(res.contract_date, 'yyyymmdd') >= trunc(add_months(sysdate, -60), 'year')
+              group by re.neighborhood_id
+                     , re.complex_name) df
+    inner join neighborhood             ne
+            on ne.neighborhood_id       = df.neighborhood_id
+    inner join district                 di
+            on di.district_id           = ne.district_id
+    inner join city                     ci
+            on ci.city_id               = di.city_id
+         where df.max_price - df.min_price <> 0
+		]]> 
+	  order by diff_price 
+	  		<if test="orderBy != null and (orderBy == 'asc' or orderBy == 'desc')">
+	  			${orderBy}
+	  		</if>
+         fetch first 10 rows only
+	</select>
+
+</mapper>
