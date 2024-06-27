@@ -23,15 +23,19 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="passwordModalLabel">회원 탈퇴</h5>
+        <h5 class="modal-name modal-title" id="passwordModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="deleteForm">
+        <form id="form">
           <div class="mb-3">
             <label for="password" class="form-label">비밀번호 입력</label>
             <input type="password" class="form-control" id="password" required>
+
+            <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+            <input type="password" class="form-control" id="passwordConfirm" required>
           </div>
-          <button type="submit" class="btn btn-danger">회원 탈퇴</button>
+          <button type="submit" class="btn btn-danger submit">/button>
         </form>
       </div>
     </div>
@@ -63,7 +67,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="resultModalLabel">회원 탈퇴 결과</h5>
+        <h5 class="modal-title" id="resultModalLabel"></h5>
       </div>
       <div class="modal-body" id="resultModalBody">
         <!-- 결과 메시지가 여기에 표시 -->
@@ -79,41 +83,122 @@
 
 <script>
   $(document).ready(function () {
-    $('.delete').on('click', function () {
+    const updateButton = $('.update');
+    const deleteButton = $('.delete');
+    const passwordField = $('#password');
+    const passwordConfirmField = $('#passwordConfirm');
+    const passwordConfirmLabel = $('label[for="passwordConfirm"]');
+    let savedPassword = '';
+    let savedPasswordConfirm = '';
+
+    // 회원 정보 수정 버튼 기능
+    updateButton.on('click', function () {
+      $('.modal-name').text('회원 정보 수정');
+      passwordConfirmField.prop('required', true).show();
+      passwordConfirmLabel.show();
+      $('.submit').text('정보 수정').removeClass('btn-danger').addClass('btn-primary');
       $('#passwordModal').modal('show');
     });
 
-    $('#deleteForm').on('submit', function (event) {
-      event.preventDefault();
-      $('#passwordModal').modal('hide');
-      $('#confirmModal').modal('show');
+    // 회원 탈퇴 버튼 기능
+    deleteButton.on('click', function () {
+      $('.modal-name').text('회원 탈퇴');
+      passwordConfirmField.prop('required', false).hide();
+      passwordConfirmLabel.hide();
+      $('.submit').text('회원 탈퇴').removeClass('btn-primary').addClass('btn-danger');
+      $('#passwordModal').modal('show');
     });
 
-    $('#confirmDelete').on('click', function () {
-      let password = $('#password').val();
+    // 폼 제출 이벤트 핸들러
+    $('#form').on('submit', function (event) {
+      event.preventDefault();
+      savedPassword = passwordField.val();
+      savedPasswordConfirm = passwordConfirmField.val();
+
+      if ($('.modal-name').text() === '회원 탈퇴') {
+        // 회원 탈퇴 요청이면 확인 모달 표시
+        $('#passwordModal').modal('hide');
+        $('#confirmModal').modal('show');
+      } else {
+        // 회원 정보 수정 요청
+        sendUpdateRequest();
+      }
+    });
+
+    // 확인 모달의 "아니요" 버튼 클릭 이벤트
+    $('.btn-secondary').on('click', function () {
+      $('#passwordModal').modal('hide');
+      $('#confirmModal').modal('hide');
+    })
+
+    // 회원 정보 수정 요청 처리
+    function sendUpdateRequest() {
       $.ajax({
         url: '/users/me',
-        type: 'DELETE',
+        type: 'PUT',
         contentType: 'application/json',
-        data: JSON.stringify({password: password}),
+        data: JSON.stringify({
+          password: savedPassword,
+          passwordConfirm: passwordConfirmField.val()
+        }),
         success: function (response) {
-          $('#resultModalBody').text('계정이 삭제되었습니다.');
+          $('#resultModalLabel').text('회원 정보 수정 결과');
+          $('#resultModalBody').text('성공적으로 수정되었습니다.');
           $('#resultModal').modal('show');
           $('#closeModalButton').click(function () {
             window.location.href = '/users/logout';
           });
         },
         error: function (xhr) {
-          let errorMessage = "회원탈퇴 실패: 서버에서 에러 메시지를 받지 못했습니다.";
+          let errorMessage = "오류 발생: 서버에서 에러 메시지를 받지 못했습니다.";
           if (xhr.responseJSON && xhr.responseJSON.message) {
-            errorMessage = "회원탈퇴 실패: " + xhr.responseJSON.message;
+            errorMessage = xhr.responseJSON.message;
           }
+          $('#resultModalLabel').text('회원 정보 수정 결과');
           $('#resultModalBody').text(errorMessage);
           $('#resultModal').modal('show');
         }
       });
-      $('#confirmModal').modal('hide'); // 사용자가 '아니요' 선택하면 모달창 닫고 입력 필드 초기화
-      $('#password').val('');
+      $('#confirmModal').modal('hide');
+      $('#passwordModal').modal('hide');
+    }
+
+    // 회원 탈퇴 요청 처리
+    $('#confirmDelete').on('click', function () {
+      $.ajax({
+        url: '/users/me',
+        type: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          password: savedPassword
+        }),
+        success: function (response) {
+          $('#resultModalLabel').text('회원 탈퇴 결과');
+          $('#resultModalBody').text('탈퇴되었습니다.');
+          $('#resultModal').modal('show');
+          $('#closeModalButton').click(function () {
+            window.location.href = '/users/logout';
+          });
+        },
+        error: function (xhr) {
+          let errorMessage = "오류 발생: 서버에서 에러 메시지를 받지 못했습니다.";
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errorMessage = xhr.responseJSON.message;
+          }
+          $('#resultModalLabel').text('회원 탈퇴 결과');
+          $('#resultModalBody').text(errorMessage);
+          $('#resultModal').modal('show');
+        }
+      });
+      $('#confirmModal').modal('hide');
+    });
+
+
+    // 모달 닫힘 이벤트 처리
+    $('#passwordModal').on('hidden.bs.modal', function () {
+      passwordField.val('');
+      passwordConfirmField.val('');
+      $('.submit').removeClass('btn-primary btn-danger');
     });
   });
 </script>
