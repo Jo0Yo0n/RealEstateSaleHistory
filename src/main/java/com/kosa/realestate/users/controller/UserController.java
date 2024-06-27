@@ -102,6 +102,7 @@ public class UserController {
     List<FavoriteListDTO> favoriteListDtoList = favoriteService.findFavoriteList(0, email);
     model.addAttribute("favoriteList", favoriteListDtoList);
 
+    // TODO: my_page.html에서 AJAX 도입해서 페이지네이션
     return "my_page";
   }
 
