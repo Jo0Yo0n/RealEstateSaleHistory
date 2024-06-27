@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="headerFragment">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link rel='stylesheet' th:href='@{/css/agent-page-tab.css}' type='text/css' />
+</head>
+<body>
+	<div th:replace="header :: headerFragment"></div>
+	<div class="agent-page-outer-conatiner">
+		<div class="agent-page-container">
+			<div class="agent-page-user-outer-container">
+				<div class="agent-page-user-container">
+					<div class="user-nickname"><strong>사용자</strong></div>
+					<div class="user-email">test@gmail.com</div>
+				</div>
+				<div class="resgisterd-sales-container">
+					<span>등록한 매물</span>
+				</div>
+			</div>
+			<div class="agent-page-menu-button-container">
+				<div class="agent-page-menu-container">
+					<span>menu1</span>
+					<span>menu2</span>
+					<span>menu3</span>
+				</div>
+				<div class="register-button-container">
+					<button>매물 작성</button>
+				</div>
+			</div>
+			<div class="resgistered-sales-list-container">
+				<div class="registerd-sales-list">
+					<div class="registered-sales-list-contents">
+						<span class="sales-name"><strong>아파트 이름</strong></span>
+						<div>
+							<span class="sale-type">매물</span>
+							<span class="sale-price">10억</span>
+						</div>
+						<div>
+							아파트 · 평수 · 층 · 동
+						</div>
+					</div>
+					<div class="kebab-button-container">
+						<img th:src="@{/assets/images/kebab.png}" class="kebab-button"/>
+					</div>
+				</div>
+				<div class="registerd-sales-list"></div>
+				<div class="registerd-sales-list"></div>
+				<div class="registerd-sales-list"></div>
+				<div class="registerd-sales-list"></div>
+				<div class="registerd-sales-list"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

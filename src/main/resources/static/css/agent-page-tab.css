@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+.agent-page-outer-conatiner{
+	height: 100%;
+	min-width: 1400px;
+	margin:0;
+	display: flex;
+	flex-direction: column;
+	align-items:center;
+}
+
+.agent-page-container{
+	margin-top: 100px;
+	height: 680px;
+	width: 1080px;
+	border: 1px solid black;
+	display: flex;
+	flex-direction: column;
+}
+.agent-page-user-outer-container{
+	width: 1080px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	border: 1px solid black;
+}
+
+.agent-page-user-container{
+}
+
+.resgisterd-sales{
+	width: 100px;
+	height: 100px;
+	border: 1px solid black;
+}
+
+.agent-page-menu-button-container{
+	width: 1040px;
+	padding: 0 20px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.agent-page-menu-container{
+	width: 250px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.resgistered-sales-list-container{
+	width:1080px;
+	height: 450px;
+	border: 1px solid black;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr); /* 2열 생성 */
+    grid-template-rows: repeat(3, 1fr);    /* 3행 생성 */
+    gap: 20px; /* 그리드 아이템 사이의 간격 설정 */
+    box-sizing: border-box;
+}
+
+.registerd-sales-list{
+	width: 100%;
+	height: 100%;
+	border: 1px solid black;
+	box-sizing: border-box;
+	padding: 20px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.registered-sales-list-contents{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 90px;
+}
+
+.kebab-button{
+	height: 25px;
+}

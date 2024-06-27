@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="headerFragment">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel='stylesheet' th:href='@{/css/create-sales-form.css}' type='text/css' />
+</head>
+<meta charset="UTF-8">
+<body>
+	<div th:replace="header :: headerFragment"></div>
+	<div class="create-form-outer-container">
+		<div class="create-form-container">
+			<div class="form-name"><strong>매물정보 입력</strong></div>
+			<div class="create-form-content-container">
+				<div class="create-form-content-title">매물유형</div>
+				<select name="building-type" id="building-type">
+					<option value=1>아파트</option>
+					<option value=2>연립</option>
+					<option value=3>단독</option>
+					<option value=4>오피스텔</option>
+				</select>
+			</div>
+			<div class="create-form-content-container">
+				<div class="create-form-content-title">매물이름</div>
+				<input class="create-form-input" />
+			</div>
+			<div class="create-form-multi-content-container">
+				<div class="create-form-content-inner-container">
+					<div class="create-form-content-title">시</div>
+					<select name="city" id="city">
+						<option value="">시를 선택하세요</option>
+					</select>
+				</div>
+				<div class="create-form-content-inner-container">
+					<div class="create-form-content-title">구</div>
+					<select name="district" id="district">
+						<option value="">구를 선택하세요</option>
+					</select>
+				</div>
+				<div class="create-form-content-inner-container">
+					<div class="create-form-content-title">동</div>
+					<select name="neighborhood" id="neighborhood">
+						<option value="">동을 선택하세요</option>
+					</select>
+				</div>
+			</div>
+			<div class="create-form-content-container">
+				<div class="create-form-content-title">번지주소</div>
+				<input class="create-form-input" />
+			</div>
+			<div class="create-form-content-container">
+				<div class="create-form-content-title">도로명주소</div>
+				<input class="create-form-input" />
+			</div>
+			<div class="create-form-multi-content-container">
+				<div class="create-form-content-inner-container">
+					<div class="create-form-content-title">매물가격</div>
+					<input class="create-form-small-input" />
+				</div>
+				<div class="create-form-content-inner-container">
+					<div class="create-form-content-title">건축년도</div>
+					<input class="create-form-small-input" />
+				</div>
+
+			</div>
+			<div class="create-form-multi-content-container">
+				<div class="create-form-content-inner-container">
+					<div class="create-form-content-title">동</div>
+					<input class="create-form-small-input" />
+				</div>
+				<div class="create-form-content-inner-container">
+					<div class="create-form-content-title">층</div>
+					<input class="create-form-small-input" />
+				</div>
+				<div class="create-form-content-inner-container">
+					<div class="create-form-content-title">전용면적</div>
+					<input class="create-form-small-input" />
+				</div>
+			</div>
+			<button>등록하기</button>
+		</div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const citySelect = document.getElementById('city');
+			const districtSelect = document.getElementById('district');
+			const neighborhoodSelect = document.getElementById('neighborhood');
+
+			// Fetch cities and populate city select box
+			fetch('/agent/cities')
+				.then(response => response.json())
+				.then(data => {
+					data.forEach(city => {
+						const option = document.createElement('option');
+						option.value = city.cityId;
+						option.text = city.cityName;
+						citySelect.appendChild(option);
+					});
+				});
+
+			// Event listener for city select change
+			citySelect.addEventListener('change', function() {
+				const cityId = this.value;
+				districtSelect.innerHTML = '<option value="">시를 선택하세요</option>';
+				neighborhoodSelect.innerHTML = '<option value="">동을 선택하세요</option>';
+				
+				if (cityId) {
+					fetch(`/agent/cities/districts?cityId=${cityId}`)
+						.then(response => response.json())
+						.then(data => {
+							data.forEach(district => {
+								const option = document.createElement('option');
+								option.value = district.districtId;
+								option.text = district.districtName;
+								districtSelect.appendChild(option);
+							});
+						});
+				}
+			});
+
+			// Event listener for district select change
+			districtSelect.addEventListener('change', function() {
+				const districtId = this.value;
+				neighborhoodSelect.innerHTML = '<option value="">동을 선택하세요</option>';
+				
+				if (districtId) {
+					fetch(`/agent/districts/neighborhoods?districtId=${districtId}`)
+						.then(response => response.json())
+						.then(data => {
+							data.forEach(neighborhood => {
+								const option = document.createElement('option');
+								option.value = neighborhood.neighborhoodId;
+								option.text = neighborhood.neighborhoodName;
+								neighborhoodSelect.appendChild(option);
+							});
+						});
+				}
+			});
+		});
+	</script>
+</body>
+</html>

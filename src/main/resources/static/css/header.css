@@ -1,6 +1,48 @@
 @charset "UTF-8";
-body{
+body, html {
+	margin: 0;
+}
+
+.header-container{
 	height: 100px;
-	width: 100%;
-	border-bottom: 1px solid #616161;
+	min-width: 1400px;
+	border-bottom: 2px solid #bdbdbd;
+	margin:0;
+	display: flex;
+	justify-content:center;
+}
+
+.header-inner-container{
+	width: 1080px;
+	height: 100px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.header-left-inner-container{
+	display: flex;
+	flex-direction: row;
+	width: 400px;
+	justify-content: space-between;
+}
+
+.menu-container{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 250px;
+}
+
+.header-right-inner-container{
+	display: flex;
+	flex-direction: row;
+}
+
+.user-container{
+	width: 100px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
