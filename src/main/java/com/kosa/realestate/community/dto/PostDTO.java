@@ -30,13 +30,8 @@ public class PostDTO {
 
     private String nickname;
     private String districtName;
-	public PostDTO(int postId, int userId, String title, String content) {
-		super();
-		this.postId = postId;
-		this.userId = userId;
-		this.title = title;
-		this.content = content;
-	}
+    
+
     
     // 모든 필드를 초기화하는 생성자
     public PostDTO(int postId, int userId, int districtId, String title, String content,
@@ -54,6 +49,14 @@ public class PostDTO {
         this.nickname = nickname;
         this.districtName = districtName;
     }
+
+	public PostDTO(int userId, int districtId, String title, String content) {
+		super();
+		this.userId = userId;
+		this.districtId = districtId;
+		this.title = title;
+		this.content = content;
+	}
     
 
 }

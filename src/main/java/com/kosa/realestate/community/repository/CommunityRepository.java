@@ -20,8 +20,14 @@ public interface CommunityRepository {
 	public List<PostDTO> postList();
 
 	public PostDTO communityCard(int postId);
-	
-	
+
 	// 게시글 조회
 	PostInfoDTO selectPostInfo(Long postId);
+
+	public List<FileMetaDataDTO> selectFiles(int postId);
+
+	public void deleteFile(int fileId);
+
+	public void postUpdate(PostDTO pdto);
+
 }

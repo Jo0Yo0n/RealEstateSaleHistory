@@ -24,6 +24,7 @@
         users u ON p.user_id = u.user_id
     INNER JOIN 
         district d ON p.district_id = d.district_id
+ order by created_at desc
 </select>
 
 
@@ -68,9 +69,34 @@
         users u ON p.user_id = u.user_id
     INNER JOIN 
         district d ON p.district_id = d.district_id
-        where post_id = #{pdstId)
+    WHERE 
+        post_id = #{postId}
 </select>
 
+<select id="selectFiles" parameterType="int" resultType="FileMetaDataDTO">
+	select file_name		fileName
+		 , file_id          fileId
+		 , file_path		filePath
+		 , file_type		fileType
+		 , file_size		fileSize
+		 , file_origin_name	fileOriginName
+		 , upload_date		uploadDate
+	  from file_meta_data 
+	 where post_id = #{postId}
+</select>
+
+<delete id="deleteFile" parameterType="int">
+DELETE FROM FILE_META_DATA WHERE file_id = #{fileId}
+</delete>
+
+<update id="postUpdate" parameterType="PostDTO">
+		update post
+		set
+		title = #{title},
+		content = #{content},
+		district_id = #{districtId}
+		where post_id=#{postId}
+</update>
 
     <select id="selectPostInfo" parameterType="Long" resultType="PostInfoDTO">
         select post_id  postId

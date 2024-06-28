@@ -13,15 +13,29 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-header">
-                        <div class="nickname"><span th:text ="${commuCard.nickname}"></th:text></span></div>
+                        <div class="nickname"><span th:text ="${commuCard.nickname}"></span></div>
                         <div class="time"></div>
                         <div class="status"></div>
-                        <div class="view-count">조회 <span th:text ="${commuCard.postView}"></div>
+                        <div class="view-count">
+                        
+                           <div th:if="${isAuthor}">
+							<a th:href="@{/commuUpdate(postId=${commuCard.postId})}">수정</a>
+
+                       	 	<span>  |  </span>
+                        	<span> 삭제</span>
+							</div>
+						    <div th:unless="${isAuthor}">
+						    </div>
+                     </div>
                     </div>
                     <div class="card-title"><span th:text ="${commuCard.title}"></div>
                     <div class="card-text">
                         <span th:text ="${commuCard.content}">
                     </div>
+                    <div>
+					<div th:each="file : ${files}">
+					   <img th:src="@{'/uploads/' + ${file.filePath} + ${file.fileName}}" th:alt="${file.fileOriginName}" style="max-width: 450px; max-height: 450px;"/>
+					</div>
                     <div class="comment-header">
                         <span class="likes">좋아요 27</span>
                         <span class="comments">댓글 20</span>
