@@ -22,7 +22,7 @@
 							<a th:href="@{/commuUpdate(postId=${commuCard.postId})}">수정</a>
 
                        	 	<span>  |  </span>
-                        	<span> 삭제</span>
+                        	<a th:href="@{/postDelete(postId=${commuCard.postId})}">삭제</a>
 							</div>
 						    <div th:unless="${isAuthor}">
 						    </div>

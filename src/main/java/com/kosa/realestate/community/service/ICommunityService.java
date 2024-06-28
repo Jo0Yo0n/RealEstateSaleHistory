@@ -30,4 +30,6 @@ public interface ICommunityService {
 
 	void postUpdate(PostDTO pdto);
 
+	void postDelete(int postId);
+
 }

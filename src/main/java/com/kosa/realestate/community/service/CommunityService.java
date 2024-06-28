@@ -147,5 +147,12 @@ public class CommunityService implements ICommunityService {
 		communityRepository.postUpdate(pdto);
 		
 	}
+	
+	//게시글 삭제
+	@Override
+	public void postDelete(int postId) {
+		communityRepository.postDelete(postId);
+		
+	}
     
 }

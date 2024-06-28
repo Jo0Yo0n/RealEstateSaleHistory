@@ -206,18 +206,19 @@ $(document).ready(function() {
 						class="form-control pt-1 mt-4"
 						style="height: 33px; width: 40%; vertical-align: middle;">
 						<option value="" disabled selected>서울특별시</option>
-					</select> <select id="selectbox2" name="selectbox"
-						class="form-control pt-1 mt-4"
-						style="height: 33px; width: 40%; vertical-align: middle;">
-						<option disabled selected th:if="${update}"
-							th:value="${commuCard.districtName}"
-							th:text="${commuCard.districtName}">자치구</option>
-						<!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
-						<th:block th:each="district : ${districts}">
-							<option th:id="${district.districtId}"
-								th:value="${district.districtId}" th:text="${district.districtName}"></option>
-						</th:block>
+					</select> 
+					
+					<select id="selectbox2" name="selectbox"
+					    class="form-control pt-1 mt-4"
+					    style="height: 33px; width: 40%; vertical-align: middle;">
+					    <option disabled selected>자치구</option>
+					    <!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
+					    <th:block th:each="district : ${districts}">
+					        <option th:id="${district.districtId}"
+					            th:value="${district.districtId}" th:text="${district.districtName}"></option>
+					    </th:block>
 					</select>
+					
 				</div>
 				<hr>
 				<div class="textbox">
