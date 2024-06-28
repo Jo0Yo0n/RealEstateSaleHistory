@@ -72,4 +72,13 @@
 </select>
 
 
+    <select id="selectPostInfo" parameterType="Long" resultType="PostInfoDTO">
+        select post_id  postId
+             , title
+             , content
+          from post
+         where post_id = #{postId}
+    </select>
+
+
 </mapper>

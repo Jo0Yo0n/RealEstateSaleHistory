@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosa.realestate.comments.repository.CommentRepository">
+
+  	<!-- 댓글 아이디 기준 조회 -->
+	<select id="selectCommentByCommentId" parameterType="Long" resultType="CommentDTO">
+		select comment_id
+         	 , upper_comment_id
+         	 , post_id
+         	 , user_id
+         	 , comments
+         	 , to_char(created_at, 'yyyy-mm-dd hh24:mi:ss') created_at
+		  from comments
+		 where comment_id      = #{commentId}
+		   and is_deleted   = UPPER('N')
+	</select>
+
+
+	<!-- 게시물 기준 조회 -->
+	<select id="selectCommentByPostId" parameterType="Long" resultType="CommentDTO">
+		select comment_id
+         	 , upper_comment_id
+         	 , post_id
+         	 , user_id
+         	 , comments
+         	 , to_char(created_at, 'yyyy-mm-dd hh24:mi:ss') created_at
+		  from comments
+		 where post_id      = #{postId}
+		   and is_deleted   = UPPER('N')
+	  order by created_at desc
+	</select>
+	
+
+	<!-- 댓글 등록 -->
+	<insert id="insertComment" parameterType="map">
+        insert
+          into comments 
+             ( upper_comment_id
+             , post_id
+             , user_id
+             , comments
+             )
+        values 
+             ( #{commentForm.upperCommentId, jdbcType=NUMERIC}
+             , #{postId, jdbcType=NUMERIC}
+             , #{userId, jdbcType=NUMERIC}
+             , #{commentForm.comments, jdbcType=VARCHAR}
+             )	
+	</insert>
+
+
+ 	<!-- 댓글 수정 -->
+ 	<update id="modifyComment" parameterType="map">
+ 		update comments
+       	   set comments     = #{commentForm.comments, jdbcType=VARCHAR}
+             , updated_at   = current_date
+		 where comment_id   = #{commentId}
+ 	</update>
+
+
+	<!-- 댓글 삭제 수정 -->
+	<update id="modifyCommentDelete" parameterType="Long">
+		update comments
+		   set is_deleted	= 'Y'
+		 where comment_id 	= #{commentId} 
+	</update>
+
+</mapper>

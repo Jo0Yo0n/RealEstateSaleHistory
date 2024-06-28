@@ -17,5 +17,7 @@ public interface ICommunityService {
 
 	PostDTO communityCard(int postId);
 	
-    
+	
+	// 게시글 조회
+	void findPostInfo(Long postId);
 }
