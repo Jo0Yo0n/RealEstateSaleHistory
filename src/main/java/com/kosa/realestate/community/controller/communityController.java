@@ -25,6 +25,8 @@ import com.kosa.realestate.community.service.ICommunityService;
 import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
 
+import net.bytebuddy.asm.Advice.Return;
+
 @Controller
 public class communityController {
 
@@ -175,5 +177,13 @@ public class communityController {
 		//피일 업로드
 		communityService.fileTest(postId,files);
 
+	}
+	
+	@GetMapping("/loadPostsByDistrict")
+	@ResponseBody
+	private List<PostDTO> loadPostsByDistrict(@RequestParam("userId") int districtId) {
+		List<PostDTO> postList = communityService.loadPostsByDistrict(districtId);
+		
+		return postList;
 	}
 }
