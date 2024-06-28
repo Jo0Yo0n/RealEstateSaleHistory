@@ -106,7 +106,7 @@ public class UserController {
     model.addAttribute("favoriteList", favoriteListDtoList);
 
     // TODO: my_page.html에서 AJAX 도입해서 페이지네이션
-    return "my_page_temp";
+    return "my_page_t";
   }
 
   // 회원 정보 수정 페이지로 이동
