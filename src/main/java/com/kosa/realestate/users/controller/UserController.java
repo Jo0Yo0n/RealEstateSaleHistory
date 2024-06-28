@@ -1,19 +1,9 @@
 package com.kosa.realestate.users.controller;
 
-import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
-import com.kosa.realestate.favorites.service.FavoriteService;
-import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.InvalidPasswordException;
-import com.kosa.realestate.users.form.UserCreateForm;
-import com.kosa.realestate.users.form.UserUpdateForm;
-import com.kosa.realestate.users.model.UserDTO;
-import com.kosa.realestate.users.service.IUserService;
-import jakarta.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,7 +19,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
+import com.kosa.realestate.favorites.service.FavoriteService;
+import com.kosa.realestate.users.DuplicateUserException;
+import com.kosa.realestate.users.InvalidPasswordException;
+import com.kosa.realestate.users.form.UserCreateForm;
+import com.kosa.realestate.users.form.UserUpdateForm;
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.service.IUserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 /**
  * UserController 클래스
@@ -189,4 +191,48 @@ public class UserController {
   public List<UserDTO> getUserList() {
     return userService.getUserList();
   }
+  
+
+    //사용자 중개자 권한 요청
+    @PostMapping("/me/permission")
+    public String requestPermission(Principal principal, RedirectAttributes redirectAttributes){
+      if(principal == null) {
+        return "access_denied";
+      }
+        String email = principal.getName();
+        UserDTO target = userService.findUserByEmail(email);
+         boolean result =  userService.requestPermission(target.getUserId());
+        if(result) {
+            redirectAttributes.addFlashAttribute("message", "중개자 권한 요청이 완료되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "중개자 권한 요청이 반려되었습니다. .");
+        }
+        return "redirect:/users/me";
+    }
+    
+    //관리자가 권한요청 리스트를 조회
+    @GetMapping("/admin/requestlist/{startPage}")
+    @ResponseBody //테스트용
+    public String selectUpgradeRequests(@PathVariable("startPage") int startPage, Model model) {
+      List<Map<String, Object>> list = userService.selectUpgradeRequests(startPage, 10);
+      model.addAttribute("list",list);
+      return ""; // 뷰페이지 생성하기
+    }
+    
+    //중개자 리시트 조회
+    @GetMapping("/admin/search")
+    @ResponseBody //테스트용
+    public String searchAgentList(@RequestParam(value="nickname", required = false) String nickname,
+                                  @RequestParam(value="startNum", defaultValue = "1") int startNum, Model model) {
+      List<UserDTO> list = userService.searchAgentList(nickname, startNum);
+      model.addAttribute("list",list);
+     // model.addAttribute("startNum",startNum); 향후 필요할 수도 있음
+      return list.toString(); // 뷰페이지 생성하기
+    }
+    //중개자 권한 UPDATE
+    @PostMapping("/updateUserType")
+    public ResponseEntity<?> updateUserType(@RequestBody List<Long> userIds) {
+        int updatedCount = userService.updateUserAccountType(userIds);
+        return ResponseEntity.ok("성공적으로 업데이트된 사용자 수: " + updatedCount);
+    }
 }

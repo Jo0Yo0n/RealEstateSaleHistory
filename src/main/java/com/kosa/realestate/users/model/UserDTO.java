@@ -17,6 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@lombok.ToString
 public class UserDTO {
   
   private Long userId;

@@ -1,19 +1,23 @@
 package com.kosa.realestate.users.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.apache.ibatis.exceptions.PersistenceException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.kosa.realestate.users.DuplicateUserException;
 import com.kosa.realestate.users.InvalidPasswordException;
 import com.kosa.realestate.users.UserMapper;
 import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.model.Users;
 import com.kosa.realestate.users.repository.UserRepository;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService implements IUserService {
 
   private final UserRepository userRepository;
@@ -101,5 +106,50 @@ public class UserService implements IUserService {
 
     return UserMapper.toDTO(_user.get()); // Users 객체를 UserDTO 로 변환 후 반환
   }
-
+  
+  //사용자 중개자 권한 요청
+  public boolean requestPermission(Long userId) {
+      try{
+          int result = userRepository.requestPermission(userId);
+          return result > 0;
+      } catch (PersistenceException e) {
+          log.error("Error requesting permission for user with ID {}: ", userId, e);
+          return false;
+      }
+  }
+  
+  //관리자가 권한요청 리스트를 조회
+  @Override
+  public List<Map<String, Object>> selectUpgradeRequests(int startPage, int limit) {
+    int offset = (startPage - 1) * limit;
+    try {
+      List<Map<String,Object>> resultList = userRepository.selectUpgradeRequests(offset, limit);
+      return resultList;
+    } catch (PersistenceException e) {
+      // 로그에 예외 정보 기록
+      log.error("Error accessing the database", e);
+    }
+    return null;
+  }
+  //중개자 리시트 조회
+  @Override
+  public List<UserDTO> searchAgentList(String nickname, int startNum) {
+      int limit = 10;
+      int offset = (startNum-1) * limit;
+    return userRepository.searchAgentList(nickname, offset, limit);
+  }
+  //권한 UDATE
+  @Override
+  @Transactional(rollbackFor = PersistenceException.class)
+  public int updateUserAccountType(List<Long> userId) {
+    int requestCount = userId.size();
+    int resultCount = userRepository.updateUserAccountType(userId);
+ 
+    if (requestCount != resultCount) {
+      String errorMessage = String.format("요청된 개수(%d)와 업데이트된 개수(%d)가 일치하지 않습니다.", requestCount, resultCount);
+      throw new PersistenceException(errorMessage);
+    }
+    return resultCount;
+  }
+  
 }
