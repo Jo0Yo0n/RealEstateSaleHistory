@@ -57,4 +57,56 @@
 		set is_deleted = 'Y'
 		where email = #{email}
 	</update>
+	
+	<!-- 사용자가 중개자 권한을 요청 -->
+	<insert id="requestPermission" parameterType="Long">
+		INSERT INTO UPGRADE_REQUEST (user_id, request_time) VALUES (#{userId} ,SYSDATE)
+	</insert>
+	
+	<!-- 관리자가 권한요청 리스트를 조회 -->
+	<select id="selectUpgradeRequests" resultType="hashmap" >
+	  SELECT 
+	    ROW_NUMBER() OVER (ORDER BY A.request_time DESC) AS "row_num",
+	    B.nickname AS "nickname",
+	    B.email AS "email",
+	    TO_CHAR(A.request_time, 'YYYY-MM-DD HH24:MI') AS "requestTime"
+	  FROM UPGRADE_REQUEST A
+	  JOIN USERS B ON A.USER_ID = B.USER_ID
+	  ORDER BY A.request_time DESC
+	  OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+	</select>
+	
+	<!-- 관리자가 중개자 리스트 조회 -->
+	<select id="searchAgentList" parameterType="String" resultType="com.kosa.realestate.users.model.UserDTO">
+		SELECT A.user_id AS "userId",
+			   A.email,
+			   A.nickname,
+			   A.is_deleted AS "isDeleted",
+			   TO_CHAR(A.created_at, 'YYYY-MM-DD HH24:MI:SS') AS "createdAt",
+			   <!-- TO_CHAR(A.updated_at, 'YYYY-MM-DD HH24:MI:SS') AS "updatedAt", -->
+			   A.account_type AS "accountType" 
+  		FROM USERS A
+  		<where>
+  			A.account_type = 'agent'
+  			<if test="nickname != null">
+  				AND A.nickname = #{nickname}
+  			</if>
+  		</where>
+        ORDER BY A.updated_at DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+	</select>
+	
+	<!-- 관리자가 중개자 권한 요청을 수락 또는 거절 했을 경우 -->
+	<!-- UPDATE 권한 agend -->
+	<update id="updateUserAccountType" parameterType="list">
+	    UPDATE USER
+	    SET account_type = 'agent'
+	    WHERE user_id IN
+	    <foreach item="userId" collection="list" open="(" separator="," close=")">
+	        #{userId}
+	    </foreach>
+	</update>
+	
+	<!-- update 이후 권한요청 테이블에서 삭제 -->
+	
 </mapper>
