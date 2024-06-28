@@ -57,6 +57,7 @@
 
     <script>
     
+    	// 시작 위치 - 서울 시청
         var map = new naver.maps.Map("map", {
             zoom: 11,
             center: new naver.maps.LatLng(37.5664056, 126.9778222),
@@ -67,6 +68,7 @@
             },
         });
 
+    	// 좌표 데이터 -> map_data.js
         var markers = [], data = mapData.mapData2;
 
         for (var i = 0, ii = data.length; i < ii; i++) {
@@ -120,6 +122,7 @@
             }
         }
 
+        // 마커 클러스터링 html 
         var htmlMarker1 = {
             content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-1.png);background-size:contain;"></div>`,
             size: N.Size(50, 50),
@@ -142,6 +145,7 @@
             anchor: N.Point(25, 25)
         };
 
+        // 클러스터링 함수 -> markerClustering.js
         var markerClustering = new MarkerClustering({
             minClusterSize: 2,
             maxZoom: 18,
