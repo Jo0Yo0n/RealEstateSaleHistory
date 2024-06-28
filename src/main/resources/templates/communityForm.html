@@ -4,52 +4,100 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>게시판 폼 예제</title>
-<link rel='stylesheet' href='../css/communityForm.css' type='text/css'/>
+<link rel='stylesheet' href='../css/communityForm.css' type='text/css' />
 <!-- 부트스트랩 CSS 링크 -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
 <!-- Select2 CSS 링크 -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link
+	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+	rel="stylesheet" />
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Select2 JS 링크 -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- 부트스트랩 JS 링크 -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Bootstrap JavaScript 파일 포함 -->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 초기화 스크립트 -->
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('select').select2();
-	});
+// 허용할 파일 확장자 리스트(화이트리스트)
+var allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+var maxSize = 5242880; // 5MB
 
-	// 허용할 파일 확장자 리스트(화이트리스트)
-	var allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-	var maxSize = 5242880; // 5MB
+function checkExtension(fileName, fileSize) {
+    var fileExtension = fileName.split('.').pop().toLowerCase(); //.을 기준으로 나눠 마지막 값(확장자)를 소문자로 변환함
 
-	function checkExtension(fileName, fileSize) {
-		var fileExtension = fileName.split('.').pop().toLowerCase(); //.을 기준으로 나눠 마지막 값(확장자)를 소문자로 변환함
+    if (fileSize >= maxSize) {
+        alert("파일 사이즈가 초과되었습니다.");
+        return false;
+    }
 
-		if (fileSize >= maxSize) {
-			alert("파일 사이즈가 초과되었습니다.");
-			return false;
-		}
+    if (allowedExtensions.indexOf(fileExtension) === -1) {
+        alert("해당 파일은 허용된 확장자가 아닙니다.");
+        return false;
+    }
+    return true;
+}
 
-		if (allowedExtensions.indexOf(fileExtension) === -1) {
-			alert("해당 파일은 허용된 확장자가 아닙니다.");
-			return false;
-		}
-		return true;
-	}
+// 게시글 업로드 (Ajax로 구현)
 
- 	// 게시글 업로드 (Ajax로 구현)
- 	
 $(document).ready(function() {
 	
-    var districtId; 
+    $('select').select2();
+    
+    
+    var orginDistrictId= $("#districtId").val();
+    districtId = orginDistrictId;
+    
+    var districtId;
 
     $('#selectbox2').change(function() {
+
         districtId = $(this).children('option:selected').attr('id'); // 구 아이디 저장
     });
-
+	
+    // 게시글 업데이트
+    $("#updateBtn").on("click", function(e) {
+						
+        e.preventDefault();
+        
+        var inputFile = $("input[name='uploadFile']");
+        var files = inputFile[0].files;
+        
+ 
+        var formData = new FormData();
+        formData.append("userId", $("#uploadUserId").val());
+        formData.append("title", $("#title").val());
+        formData.append("content", $("#content").val());
+        formData.append("postId", $("#postId").val());
+        formData.append("districtId", districtId); 
+        
+        for (var i = 0; i < files.length; i++) {
+            if (!checkExtension(files[i].name, files[i].size)) {
+                return false;
+            }
+            formData.append("uploadFile", files[i]);
+        }
+        
+        
+        $.ajax({
+            url: '/updateCommu',
+            type: 'POST',
+            data: formData, // FormData 객체를 전송
+            processData: false,
+            contentType: false,
+            success: function(result) {
+                alert("update");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("update failed: " + textStatus + " - " + errorThrown);
+            }
+        });
+    });
 
     $("#uploadBtn").on("click", function(e) {
         e.preventDefault(); // 폼의 기본 제출을 막음
@@ -69,7 +117,7 @@ $(document).ready(function() {
             userId: $("#userId").val(),
             title: $("#title").val(),
             content: $("#content").val(),
-            districtId : districtId
+            districtId: districtId
         };
         formData.append("userId", postInfo.userId);
         formData.append("title", postInfo.title);
@@ -90,64 +138,160 @@ $(document).ready(function() {
             }
         });
     });
-});
 
+    $(".delsub").click(function() {
+        var fileId = $(this).val();
+        var postId = $(this).data('postid');
+
+        $.ajax({
+            url: '/deleteFile',
+            type: 'POST',
+            data: {
+                fileId: fileId,
+                postId: postId
+            },
+            success: function(files) {
+                console.log(files);
+                $('#deleteFileModal').modal('hide');
+                // 삭제된 파일 목록을 화면에 출력               
+                displayDeletedFiles(files);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("파일 삭제 실패: " + textStatus + " - " + errorThrown);
+            }
+        });
+    });
+
+    // 업데이트된 파일 리스트를 화면에 출력하는 함수
+    function displayDeletedFiles(files) {
+    	
+        var filesContainer = $('.reloadFiles'); // 기존 파일 목록이 들어가는 부분
+        
+        filesContainer.empty(); // 기존 파일 목록을 비움
+
+        files.forEach(function(file) {
+            var fileElement = $('<div class="file-item"></div>');
+            fileElement.append('<img src="/uploads/' + file.filePath + file.fileName + '" alt="' + file.fileOriginName + '" style="max-width: 80px; max-height: 80px;" />');
+            fileElement.append('<button type="button" class="btn btn-primary delbtn" style="background-color: #FAEBAC; color: black; border: none;" data-bs-toggle="modal" data-bs-target="#deleteFileModal">삭제</button>');
+
+            filesContainer.append(fileElement);
+        });
+    }
+});
 </script>
 </head>
 <body>
-<div class="container">
-	<div class="menu">
-		<div class="commutop">
-			<button class="btn btn-custom">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short custom-svg" viewBox="0 0 16 16">
-					<path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-				</svg>
-			</button>
-			<div class="commutoptext">
-				<h3>커뮤니티 작성</h3>
+	<div class="container">
+		<div class="menu">
+			<div class="commutop">
+				<button class="btn btn-custom">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short custom-svg" viewBox="0 0 16 16">
+					<path fill-rule="evenodd"
+							d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" /></svg>
+				</button>
+				<div class="commutoptext">
+					 <h3><span th:text="${update != null} ? '게시글 수정' : '커뮤니티 작성'"></span></h3>
+				</div>
 			</div>
-		</div>
-		<hr>
-        <form action="#" id="commuForm" method="post">
-            <input type="hidden" id="userId"  th:value="${userId}">
-            <div class="selectboxes">
-                <select id="selectbox" name="selectbox" class="form-control pt-1 mt-4" style="height: 33px; width: 40%; vertical-align: middle;">
-                    <option value="" disabled selected>서울특별시 </option>
-                </select>
-				<select id="selectbox2" name="selectbox" class="form-control pt-1 mt-4" style="height: 33px; width: 40%; vertical-align: middle;">
-				    <option value="" disabled selected>자치구</option>
-				    <!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
-				    <th:block th:each="name : ${districts}">
-				        <option th:id="${name.districtId}" th:value="${name.districtName}" th:text="${name.districtName}"></option>
-				    </th:block>
-				</select>
-            </div>
-            <hr>
-            <div class="textbox">
-                <h3 class="commutext2">게시글 작성</h3>
-            </div>
-            <div class="col-md-12">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="title">제목</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
-                    </div>
-                    <div class="form-group">
-                        <label for="content">내용</label>
-                        <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
-                    </div>
-                    <div class="uploadDiv">
-                        <input type="file" name="uploadFile" multiple>
-                    </div>
-                    <br>                
-                    <div class="d-flex">
-                        <button type="button" class="btn" style="background-color: #FAEBAC; margin-right: 10px;">Cancel</button>
-                        <button id="uploadBtn"class="btn" style="background-color: #F9DE7B; margin-right: 10px;">Submit!</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-	</div>
+			<hr>
+
+			<form action="" id="commuForm">
+				<input type="hidden" id="userId" th:value="${userId}">
+				<input type="hidden" id="uploadUserId" th:attr="value=${commuCard != null ? commuCard.userId : ''}">
+				<input type="hidden" id="districtId" th:attr="value=${commuCard != null ? commuCard.districtId : ''}">
+				<input type="hidden" id="postId"  th:attr="value=${commuCard != null ? commuCard.postId : ''}"> 
+				
+				<div class="selectboxes">
+					<select id="selectbox" name="selectbox"
+						class="form-control pt-1 mt-4"
+						style="height: 33px; width: 40%; vertical-align: middle;">
+						<option value="" disabled selected>서울특별시</option>
+					</select> 
+					
+					<select id="selectbox2" name="selectbox"
+					    class="form-control pt-1 mt-4"
+					    style="height: 33px; width: 40%; vertical-align: middle;">
+					    <option disabled selected>자치구</option>
+					    <!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
+					    <th:block th:each="district : ${districts}">
+					        <option th:id="${district.districtId}"
+					            th:value="${district.districtId}" th:text="${district.districtName}"></option>
+					    </th:block>
+					</select>
+					
+				</div>
+				<hr>
+				<div class="textbox">
+					<h3 class="commutext2">게시글 작성</h3>
+				</div>
+				<div class="col-md-12">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="title">제목</label> 
+							<input type="text" class="form-control" id="title" name="title"
+							       placeholder="제목을 입력하세요" th:value="${update != null ? commuCard.title : ''}">
+						</div>
+						<div class="form-group">
+							<label for="content">내용</label>
+							<textarea class="form-control" id="content" name="content"
+							          placeholder="내용을 입력하세요" th:text="${update != null ? commuCard.content : ''}">
+							</textarea>
+
+							<div th:if="${update}">
+							<div class="reloadFiles">
+								<div  th:each="file : ${files}">
+								<div  class="updateFileList">
+									<img
+										th:src="@{'/uploads/' + ${file.filePath} + ${file.fileName}}"
+										th:alt="${file.fileOriginName}"
+										style="max-width: 80px; max-height: 80px;" />
+										
+										<button type="button" class="btn btn-primary delbtn" style="background-color: #FAEBAC; color: black; border: none;"
+										 data-bs-toggle="modal"
+										 data-bs-target="#deleteFileModal">삭제</button>
+								</div>
+										<!-- 파일 삭제 모달-->
+											<div class="modal fade" id="deleteFileModal" tabindex="-1" aria-labelledby="deleteFileModalLabel" aria-hidden="true">
+											    <div class="modal-dialog">
+											        <div class="modal-content">
+											            <div class="modal-header">
+											                <h5 class="modal-title" id="deleteFileModalLabel">파일을 삭제하시겠습니까?</h5>
+											            </div>
+											            <div class="modal-body">
+											                파일은 바로 삭제됩니다.
+											            </div>
+											            <div class="modal-footer">
+											                <button type="button" class="btn btn-primary delsub" th:value="${file.fileId}" th:data-postId="${commuCard.postId}">적용</button>
+											                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+											            </div>
+											        </div>
+											    </div>
+											</div>
+										<!-- 모달 끝 -->
+									</div>								
+								</div>																	
+								</div>
+							</div>
+
+						<div class="uploadDiv">
+							<input type="file" name="uploadFile" multiple>
+						</div>
+						<br>
+<div class="d-flex">
+    <button type="button" class="btn" style="background-color: #FAEBAC; margin-right: 10px;">Cancel</button>
+    <th:block th:if="${update}">
+            <button id="updateBtn" class="btn" style="background-color: #F9DE7B; margin-right: 10px;">수정</button>
+    </th:block>
+    <th:block th:unless="${update}">
+        <button id="uploadBtn" class="btn" style="background-color: #F9DE7B; margin-right: 10px;">Submit!<span th:text="${update}"></span></button>
+    </th:block>
 </div>
+
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
 </body>
 </html>
