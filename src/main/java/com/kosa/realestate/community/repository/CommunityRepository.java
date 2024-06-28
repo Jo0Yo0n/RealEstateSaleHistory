@@ -30,4 +30,6 @@ public interface CommunityRepository {
 
 	public void postUpdate(PostDTO pdto);
 
+	public void postDelete(int postId);
+
 }

@@ -1,110 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kosa.realestate.community.repository.CommunityRepository">
-
-	
-<select id="postList" resultType="PostDTO">
-    SELECT 
-        p.post_id AS "postId",
-        p.content,
-        p.user_id AS "userId",
-        p.district_id,
-        p.title,
-        p.createdat,
-        p.updatedat,
-        p.post_view,
-        u.user_id AS "user.userId",
-        u.nickname AS "nickname",
-        d.district_id AS "districtId",
-        d.district_name AS "districtName"
-    FROM 
-        post p
-    INNER JOIN 
-        users u ON p.user_id = u.user_id
-    INNER JOIN 
-        district d ON p.district_id = d.district_id
- order by created_at desc
-</select>
+<mapper
+	namespace="com.kosa.realestate.community.repository.CommunityRepository">
 
 
-    
+	<select id="postList" resultType="PostDTO">
+		SELECT
+		p.post_id AS "postId",
+		p.content,
+		p.user_id AS "userId",
+		p.district_id,
+		p.title,
+		p.createdat,
+		p.updatedat,
+		p.post_view,
+		u.user_id AS "user.userId",
+		u.nickname AS "nickname",
+		d.district_id AS "districtId",
+		d.district_name AS "districtName"
+		FROM
+		post p
+		INNER JOIN
+		users u ON p.user_id = u.user_id
+		INNER JOIN
+		district d ON p.district_id = d.district_id
+		where p.isdeleted = 'N'
+		order by created_at desc
+	</select>
 
-<insert id="insertPost" parameterType="PostDTO">
-    <selectKey keyProperty="postId" resultType="int" order="BEFORE">
-        SELECT TB_POST_SEQ.NEXTVAL AS postId FROM DUAL
-    </selectKey>
-    INSERT INTO Post
-    (post_id, user_id, district_id, title, content)
-    VALUES
-    (#{postId}, #{userId}, #{districtId}, #{title}, #{content})
-</insert>
+
+	<insert id="insertPost" parameterType="PostDTO">
+		<selectKey keyProperty="postId" resultType="int"
+			order="BEFORE">
+			SELECT TB_POST_SEQ.NEXTVAL AS postId FROM DUAL
+		</selectKey>
+		INSERT INTO Post
+		(post_id, user_id, district_id, title, content)
+		VALUES
+		(#{postId}, #{userId}, #{districtId}, #{title}, #{content})
+	</insert>
 
 
 
-<insert id="fileUpload" parameterType="FileMetaDataDTO">
-    INSERT INTO FILE_META_DATA
-    (post_id, file_name, file_path, file_type, file_size,file_origin_name)
-        VALUES
-    (#{postId}, #{fileName}, #{filePath}, #{fileType}, #{fileSize}, #{fileOriginName})
-</insert>
+	<insert id="fileUpload" parameterType="FileMetaDataDTO">
+		INSERT INTO FILE_META_DATA
+		(post_id, file_name, file_path, file_type, file_size,file_origin_name)
+		VALUES
+		(#{postId}, #{fileName}, #{filePath}, #{fileType}, #{fileSize},
+		#{fileOriginName})
+	</insert>
 
-<select id="communityCard" resultType="PostDTO" parameterType="int">
-    SELECT 
-        p.post_id AS "postId",
-        p.content,
-        p.user_id AS "userId",
-        p.district_id,
-        p.title,
-        p.createdat,
-        p.updatedat,
-        p.post_view,
-        u.user_id AS "user.userId",
-        u.nickname AS "nickname",
-        d.district_id AS "districtId",
-        d.district_name AS "districtName"
-    FROM 
-        post p
-    INNER JOIN 
-        users u ON p.user_id = u.user_id
-    INNER JOIN 
-        district d ON p.district_id = d.district_id
-    WHERE 
-        post_id = #{postId}
-</select>
+	<select id="communityCard" resultType="PostDTO"
+		parameterType="int">
+		SELECT
+		p.post_id AS "postId",
+		p.content,
+		p.user_id AS "userId",
+		p.district_id,
+		p.title,
+		p.createdat,
+		p.updatedat,
+		p.post_view,
+		u.user_id AS "user.userId",
+		u.nickname AS "nickname",
+		d.district_id AS "districtId",
+		d.district_name AS "districtName"
+		FROM
+		post p
+		INNER JOIN
+		users u ON p.user_id = u.user_id
+		INNER JOIN
+		district d ON p.district_id = d.district_id
+		WHERE
+		post_id = #{postId}
+	</select>
 
-<select id="selectFiles" parameterType="int" resultType="FileMetaDataDTO">
-	select file_name		fileName
-		 , file_id          fileId
-		 , file_path		filePath
-		 , file_type		fileType
-		 , file_size		fileSize
-		 , file_origin_name	fileOriginName
-		 , upload_date		uploadDate
-	  from file_meta_data 
-	 where post_id = #{postId}
-</select>
+	<select id="selectFiles" parameterType="int"
+		resultType="FileMetaDataDTO">
+		select file_name fileName
+		, file_id fileId
+		, file_path filePath
+		, file_type fileType
+		, file_size fileSize
+		, file_origin_name fileOriginName
+		, upload_date uploadDate
+		from file_meta_data
+		where post_id = #{postId}
+	</select>
 
-<delete id="deleteFile" parameterType="int">
-DELETE FROM FILE_META_DATA WHERE file_id = #{fileId}
-</delete>
+	<delete id="deleteFile" parameterType="int">
+		DELETE FROM FILE_META_DATA WHERE file_id = #{fileId}
+	</delete>
 
-<update id="postUpdate" parameterType="PostDTO">
+	<update id="postUpdate" parameterType="PostDTO">
 		update post
 		set
-		title = #{title},
+		title =
+		#{title},
 		content = #{content},
 		district_id = #{districtId}
-		where post_id=#{postId}
-</update>
+		where
+		post_id=#{postId}
+	</update>
 
-    <select id="selectPostInfo" parameterType="Long" resultType="PostInfoDTO">
-        select post_id  postId
-             , title
-             , content
-          from post
-         where post_id = #{postId}
-    </select>
-
+	<select id="selectPostInfo" parameterType="Long"
+		resultType="PostInfoDTO">
+		select post_id postId
+		, title
+		, content
+		from post
+		where post_id = #{postId}
+	</select>
+	
+	<update id="postDelete" parameterType="int">
+	 update post set isdeleted = 'Y'
+	 where post_id = #{postId}
+	</update>
 
 </mapper>

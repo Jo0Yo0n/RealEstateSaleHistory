@@ -78,6 +78,7 @@ public class communityController {
 		model.addAttribute("districts", districts);
 		
 		List<PostDTO> postList = communityService.postList();
+		System.out.println(postList);
 
 		model.addAttribute("postList", postList);
 
@@ -133,17 +134,24 @@ public class communityController {
 		return "communityForm";
 	}
 	
-	//커뮤니티 파일 삭제
+	//커뮤니티 파일 삭제 
 	@ResponseBody
 	@PostMapping("/deleteFile")
 	private List<FileMetaDataDTO> deleteFile(@RequestParam("fileId") int fileId, @RequestParam("postId") int postId) {
 		
-		System.out.println("fileId!"+fileId);
 		communityService.deleteFile(fileId);
         List<FileMetaDataDTO> files = communityService.selectFiles(postId);
-		System.out.println(postId);
 		
 		return files;
+	}
+	
+	//게시글 삭제 => 'Y'로 변경
+	@ResponseBody
+	@GetMapping("/postDelete") 
+	private void postDelete(@RequestParam("postId") int postId) {
+
+		communityService.postDelete(postId);
+
 	}
 	
 	//게시글 수정 등록 
