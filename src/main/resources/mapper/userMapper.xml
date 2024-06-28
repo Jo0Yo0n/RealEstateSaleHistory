@@ -97,16 +97,29 @@
 	</select>
 	
 	<!-- 관리자가 중개자 권한 요청을 수락 또는 거절 했을 경우 -->
-	<!-- UPDATE 권한 agend -->
-	<update id="updateUserAccountType" parameterType="list">
-	    UPDATE USER
-	    SET account_type = 'agent'
-	    WHERE user_id IN
-	    <foreach item="userId" collection="list" open="(" separator="," close=")">
+		<!-- UPDATE 권한 agend -->
+		<update id="updateUserAccountType" parameterType="list">
+		    UPDATE USERS
+		    SET account_type = 'agent'
+		    WHERE user_id IN
+		    <foreach item="userId" collection="userId" open="(" separator="," close=")">
+		        #{userId}
+		    </foreach>
+		</update>
+		
+		<!-- update 이후 권한요청 테이블에서 삭제 -->
+		<delete id="deleteUpgradeRequest">
+			DELETE FROM UPGRADE_REQUEST
+			WHERE user_id = #{userId}
+		</delete>
+
+	<!-- 유저타입 UPDATE (agent -> nomal) -->
+	<update id="updateRoleToNormal" parameterType="list">
+		UPDATE USERS
+		SET  account_type = 'normal'
+		WHERE user_id IN
+	    <foreach item="userId" collection="userId" open="(" separator="," close=")">
 	        #{userId}
 	    </foreach>
 	</update>
-	
-	<!-- update 이후 권한요청 테이블에서 삭제 -->
-	
 </mapper>

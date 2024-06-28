@@ -22,10 +22,19 @@ public interface IUserService {
   
   //사용자 중개자 권한 요청
   boolean requestPermission(Long userId);
+  
   //관리자가 권한요청 리스트를 조회
   List<Map<String, Object>> selectUpgradeRequests(int startPage, int limit);
+  
   //중개자 리시트 조회
   List<UserDTO> searchAgentList(String nickname, int startNum);
+  
   //권한 UDATE
   int updateUserAccountType(List<Long> userId);
+  
+  //권한 요청 거절 
+  boolean rejectUserAccountType(List<Long> userId);
+  
+  //권한 UPDATE agent -> nomal
+  int updateRoleToNormal(List<Long> userId);
 }

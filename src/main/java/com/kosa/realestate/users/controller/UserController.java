@@ -31,7 +31,10 @@ import com.kosa.realestate.users.form.UserUpdateForm;
 import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * UserController 클래스
@@ -217,7 +220,7 @@ public class UserController {
     public String selectUpgradeRequests(@PathVariable("startPage") int startPage, Model model) {
       List<Map<String, Object>> list = userService.selectUpgradeRequests(startPage, 10);
       model.addAttribute("list",list);
-      return ""; // 뷰페이지 생성하기
+      return list.toString(); // 뷰페이지 생성하기
     }
     
     //중개자 리시트 조회
@@ -230,10 +233,33 @@ public class UserController {
      // model.addAttribute("startNum",startNum); 향후 필요할 수도 있음
       return list.toString(); // 뷰페이지 생성하기
     }
+    
     //중개자 권한 UPDATE
     @PostMapping("/updateUserType")
     public ResponseEntity<?> updateUserType(@RequestBody List<Long> userIds) {
         int updatedCount = userService.updateUserAccountType(userIds);
         return ResponseEntity.ok("성공적으로 업데이트된 사용자 수: " + updatedCount);
+    }
+    
+    //권한 요청 거절 
+    @PostMapping("/rejectPermission")
+    public ResponseEntity<?> rejectPermission(@RequestBody List<Long> userId) {
+      
+      boolean success = userService.rejectUserAccountType(userId);
+     
+      if (success) {
+        return ResponseEntity.ok("사용자 권한 요청이 성공적으로 거절되었습니다.");
+      } else {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("권한 요청 거절 처리 중 오류가 발생했습니다.");
+      }
+    }
+    
+    //권한 UPDATE agent -> nomal
+    @PostMapping("/roleToNomal")
+    public ResponseEntity<?> updateRoleToNormal(@RequestBody List<Long> userIds){
+      
+      int updatedCount = userService.updateRoleToNormal(userIds);
+      return ResponseEntity.ok("성공적으로 업데이트된 사용자 수: " + updatedCount);
     }
 }
