@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kosa.realestate.users.DuplicateUserException;
 import com.kosa.realestate.users.InvalidPasswordException;
 import com.kosa.realestate.users.UserMapper;
+import com.kosa.realestate.users.common.CustomExceptionHandler;
 import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.model.Users;
 import com.kosa.realestate.users.repository.UserRepository;
@@ -113,7 +114,7 @@ public class UserService implements IUserService {
           int result = userRepository.requestPermission(userId);
           return result > 0;
       } catch (PersistenceException e) {
-          log.error("Error requesting permission for user with ID {}: ", userId, e);
+          log.error("Error requesting permission for user with ID {}: {}", userId, e.getMessage());
           return false;
       }
   }
@@ -138,6 +139,7 @@ public class UserService implements IUserService {
       int offset = (startNum-1) * limit;
     return userRepository.searchAgentList(nickname, offset, limit);
   }
+  
   //권한 UDATE
   @Override
   @Transactional(rollbackFor = PersistenceException.class)
@@ -147,9 +149,34 @@ public class UserService implements IUserService {
  
     if (requestCount != resultCount) {
       String errorMessage = String.format("요청된 개수(%d)와 업데이트된 개수(%d)가 일치하지 않습니다.", requestCount, resultCount);
-      throw new PersistenceException(errorMessage);
+      throw new CustomExceptionHandler(errorMessage);
+    }
+    
+    // 업데이트 성공 후, 사용자 목록에서 삭제
+    for (Long Id: userId) {
+      userRepository.deleteUpgradeRequest(Id);
     }
     return resultCount;
+  }
+  
+  //권한 요청 거절 
+  @Override
+  @Transactional(rollbackFor = PersistenceException.class)
+  public boolean rejectUserAccountType(List<Long> userId) {
+    try {
+      userId.forEach(user -> userRepository.deleteUpgradeRequest(user));
+      return true; // 성공적으로 처리되었음을 나타내는 true 반환
+    } catch (PersistenceException e) {
+      log.error("업그레이드 요청 삭제 중 오류 발생", e);
+      return false; // 오류가 발생했음을 나타내는 false 반환
+    }
+    
+  }
+  
+  //권한 UPDATE agent -> nomal
+  @Override
+  public int updateRoleToNormal(List<Long> userId) {
+    return userRepository.updateRoleToNormal(userId);
   }
   
 }
