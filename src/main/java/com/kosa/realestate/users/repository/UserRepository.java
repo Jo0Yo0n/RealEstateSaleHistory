@@ -40,9 +40,12 @@ public interface UserRepository {
   //중개자 리시트 조회
   List<UserDTO> searchAgentList(@Param("nickname") String nickname , @Param("offset") int offset, @Param("limit") int limit) throws PersistenceException;
   
-  //권한 UDATE
+  //권한 UPDATE nomal -> agent
   int updateUserAccountType(@Param("userId")List<Long> userId) throws PersistenceException ;
   
   // 권한요청 삭제
   void deleteUpgradeRequest(@Param("userId") Long userId) throws PersistenceException;
+  
+  //권한 UPDATE agent -> nomal
+  int updateRoleToNormal(@Param("userId") List<Long> userId)throws PersistenceException;
 }

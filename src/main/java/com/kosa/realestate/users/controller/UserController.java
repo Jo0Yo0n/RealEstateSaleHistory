@@ -32,7 +32,10 @@ import com.kosa.realestate.users.form.UserUpdateForm;
 import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * UserController 클래스
@@ -194,6 +197,7 @@ public class UserController {
   }
 
 
+
   //사용자 중개자 권한 요청
   @PostMapping("/me/permission")
   @ResponseBody
@@ -251,4 +255,28 @@ public class UserController {
     int updatedCount = userService.updateUserAccountType(userIds);
     return ResponseEntity.ok("성공적으로 업데이트된 사용자 수: " + updatedCount);
   }
+  
+    
+  //권한 요청 거절 
+    @PostMapping("/rejectPermission")
+    public ResponseEntity<?> rejectPermission(@RequestBody List<Long> userId) {
+      
+      boolean success = userService.rejectUserAccountType(userId);
+     
+      if (success) {
+        return ResponseEntity.ok("사용자 권한 요청이 성공적으로 거절되었습니다.");
+      } else {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("권한 요청 거절 처리 중 오류가 발생했습니다.");
+      }
+    }
+    
+    //권한 UPDATE agent -> nomal
+    @PostMapping("/roleToNomal")
+    public ResponseEntity<?> updateRoleToNormal(@RequestBody List<Long> userIds){
+      
+      int updatedCount = userService.updateRoleToNormal(userIds);
+      return ResponseEntity.ok("성공적으로 업데이트된 사용자 수: " + updatedCount);
+    }
+
 }
