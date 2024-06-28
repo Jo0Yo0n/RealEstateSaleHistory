@@ -17,131 +17,105 @@
 
 <button class="update btn btn-primary">회원 정보 수정</button>
 <button class="delete btn btn-danger">회원 탈퇴</button>
-<button class="agent btn btn-secondary">중개인 신청</button>
+<button class="agent btn btn-secondary">중개사 신청</button>
 
-<!-- Password Modal -->
-<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-name modal-title" id="passwordModalLabel"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="form">
-          <div class="mb-3">
-            <label for="password" class="form-label">비밀번호 입력</label>
-            <input type="password" class="form-control" id="password" required>
-
-            <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
-            <input type="password" class="form-control" id="passwordConfirm" required>
-          </div>
-          <button type="submit" class="btn btn-danger submit">/button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Confirm Modal -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmModalLabel">회원 탈퇴</h5>
-      </div>
-      <div class="modal-body">
-        정말 탈퇴하시겠습니까?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="close btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-        <button type="button" class="btn btn-danger" id="confirmDelete">네</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Result Modal -->
-<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="resultModalLabel"></h5>
-      </div>
-      <div class="modal-body" id="resultModalBody">
-        <!-- 결과 메시지가 여기에 표시 -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="close btn btn-secondary" id="closeModalButton"
-                data-bs-dismiss="modal">닫기
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+<div th:replace="~{modals :: modals}"></div>
 
 <script>
   $(document).ready(function () {
-    const updateButton = $('.update');
-    const deleteButton = $('.delete');
-    const passwordField = $('#password');
-    const passwordConfirmField = $('#passwordConfirm');
-    const passwordConfirmLabel = $('label[for="passwordConfirm"]');
     let savedPassword = '';
-    let savedPasswordConfirm = '';
 
     // 회원 정보 수정 버튼 기능
-    updateButton.on('click', function () {
+    $(document).on('click', '.update', function () {
       $('.modal-name').text('회원 정보 수정');
-      passwordConfirmField.prop('required', true).show();
-      passwordConfirmLabel.show();
+      $('#passwordConfirm').prop('required', true).show();
+      $('label[for="passwordConfirm"]').show();
       $('.submit').text('정보 수정').removeClass('btn-danger').addClass('btn-primary');
       $('#passwordModal').modal('show');
     });
 
     // 회원 탈퇴 버튼 기능
-    deleteButton.on('click', function () {
+    $(document).on('click', '.delete', function () {
       $('.modal-name').text('회원 탈퇴');
-      passwordConfirmField.prop('required', false).hide();
-      passwordConfirmLabel.hide();
+      $('#passwordConfirm').prop('required', false).hide();
+      $('label[for="passwordConfirm"]').hide();
       $('.submit').text('회원 탈퇴').removeClass('btn-primary').addClass('btn-danger');
       $('#passwordModal').modal('show');
     });
 
+    // 관리자 신청 버튼 기능
+    $(document).on('click', '.agent', function () {
+      $('#agentModalLabel').text('중개사 신청');
+      $('#agentModal').modal('show');
+    });
+
     // 폼 제출 이벤트 핸들러
-    $('#form').on('submit', function (event) {
+    $(document).on('submit', '#form', function (event) {
       event.preventDefault();
-      savedPassword = passwordField.val();
-      savedPasswordConfirm = passwordConfirmField.val();
+      savedPassword = $('#password').val();
+      let savedPasswordConfirm = $('#passwordConfirm').val();
 
       if ($('.modal-name').text() === '회원 탈퇴') {
-        // 회원 탈퇴 요청이면 확인 모달 표시
         $('#passwordModal').modal('hide');
         $('#confirmModal').modal('show');
       } else {
-        // 회원 정보 수정 요청
-        sendUpdateRequest();
+        sendUpdateRequest(savedPassword, savedPasswordConfirm);
       }
     });
 
-    // 확인 모달의 "아니요" 버튼 클릭 이벤트
-    $('.close').on('click', function () {
+    // 회원탈퇴-확인 모달의 "네" 버튼 클릭 이벤트
+    $(document).on('click', '#confirmDelete', function () {
+      $('#confirmModal').modal('hide');
+      sendDeleteRequest(savedPassword);
+    });
+
+    // 회원탈퇴-확인 모달의 "아니요" 버튼 클릭 이벤트
+    $(document).on('click', '.close', function () {
       $('#passwordModal').modal('hide');
       $('#confirmModal').modal('hide');
-    })
+    });
+
+    // 모달 닫힘 이벤트 처리
+    $('#passwordModal').on('hidden.bs.modal', function () {
+      $('#password').val('');
+      $('#passwordConfirm').val('');
+      $('.submit').removeClass('btn-primary btn-danger');
+    });
+
+    // 중개사 신청 요청 처리
+    $(document).on('click', '#agent-yes', function () {
+      $('#agentModal').modal('hide');
+
+      $.ajax({
+        url: '/users/me/permission',
+        type: 'POST',
+        success: function (response) {
+          $('#resultModalLabel').text('중개사 권한 신청 결과');
+          $('#resultModalBody').text(response.message);
+          $('#resultModal').modal('show');
+        },
+        error: function (xhr) {
+          let errorMessage = "오류 발생: 서버에서 에러 메시지를 받지 못했습니다.";
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errorMessage = xhr.responseJSON.message;
+          }
+
+          $('#resultModalLabel').text('중개사 권한 신청 결과');
+          $('#resultModalBody').text(errorMessage);
+          $('#resultModal').modal('show');
+        }
+      });
+    });
 
     // 회원 정보 수정 요청 처리
-    function sendUpdateRequest() {
+    function sendUpdateRequest(savedPassword, savedPasswordConfirm) {
       $.ajax({
         url: '/users/me',
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({
           password: savedPassword,
-          passwordConfirm: passwordConfirmField.val()
+          passwordConfirm: savedPasswordConfirm
         }),
         success: function (response) {
           $('#resultModalLabel').text('회원 정보 수정 결과');
@@ -166,7 +140,7 @@
     }
 
     // 회원 탈퇴 요청 처리
-    $('#confirmDelete').on('click', function () {
+    function sendDeleteRequest(savedPassword) {
       $.ajax({
         url: '/users/me',
         type: 'DELETE',
@@ -192,21 +166,7 @@
           $('#resultModal').modal('show');
         }
       });
-      $('#confirmModal').modal('hide');
-    });
-
-
-    // 모달 닫힘 이벤트 처리
-    $('#passwordModal').on('hidden.bs.modal', function () {
-      passwordField.val('');
-      passwordConfirmField.val('');
-      $('.submit').removeClass('btn-primary btn-danger');
-    });
-  });
-
-  // 중개사 요청 버튼 동작 처리
-  $('agent').on('click' function () {
-
+    }
   });
 </script>
 </body>

@@ -1,0 +1,85 @@
+<div th:fragment="modals">
+  <!-- Password Modal -->
+  <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-name modal-title" id="passwordModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form">
+            <div class="mb-3">
+              <label for="password" class="form-label">비밀번호 입력</label>
+              <input type="password" class="form-control" id="password" required>
+
+              <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+              <input type="password" class="form-control" id="passwordConfirm" required>
+            </div>
+            <button type="submit" class="btn btn-danger submit">/button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Modal -->
+  <div class="modal fade" id="agentModal" tabindex="-1" aria-labelledby="confirmModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="agentModalLabel">회원 탈퇴</h5>
+        </div>
+        <div class="modal-body">
+          중개사 신청을 하시겠습니까?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="agent-yes">네</button>
+          <button type="button" class="close btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">회원 탈퇴</h5>
+        </div>
+        <div class="modal-body">
+          정말 탈퇴하시겠습니까?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="close btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+          <button type="button" class="btn btn-danger" id="confirmDelete">네</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Modal -->
+  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resultModalLabel"></h5>
+        </div>
+        <div class="modal-body" id="resultModalBody">
+          <!-- 결과 메시지가 여기에 표시 -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="close btn btn-secondary" id="closeModalButton"
+                  data-bs-dismiss="modal">닫기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -60,7 +60,7 @@
 	
 	<!-- 사용자가 중개자 권한을 요청 -->
 	<insert id="requestPermission" parameterType="Long">
-		INSERT INTO UPGRADE_REQUEST (user_id, request_time) VALUES (#{userId} ,SYSDATE)
+		INSERT INTO UPGRADE_REQUEST (user_id) VALUES (#{userId})
 	</insert>
 	
 	<!-- 관리자가 권한요청 리스트를 조회 -->
