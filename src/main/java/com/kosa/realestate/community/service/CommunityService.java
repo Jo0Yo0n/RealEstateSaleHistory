@@ -1,5 +1,6 @@
 package com.kosa.realestate.community.service;
 
+import com.kosa.realestate.community.dto.PostInfoDTO;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -12,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CommunityService implements ICommunityService{
-	
-    private final CommunityRepository communityRepository;
-    
+public class CommunityService implements ICommunityService {
+
+	private final CommunityRepository communityRepository;
+
 	@Override
 	public int insertPost(PostDTO pdto) {
 		int generatedPostId = communityRepository.insertPost(pdto);
@@ -37,7 +38,18 @@ public class CommunityService implements ICommunityService{
 	public PostDTO communityCard(int postId) {
 		PostDTO commuCard = communityRepository.communityCard(postId);
 		return commuCard;
-		
+
 	}
-    
+
+	
+	
+	// 게시글 조회
+	public void findPostInfo(Long postId) {
+
+		PostInfoDTO postInfo = communityRepository.selectPostInfo(postId);
+
+		if (postInfo == null) {
+			throw new RuntimeException("해당 되는 게시판이 없습니다.");
+		}
+	}
 }

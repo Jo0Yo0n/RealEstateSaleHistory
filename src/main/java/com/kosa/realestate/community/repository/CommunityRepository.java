@@ -1,5 +1,6 @@
 package com.kosa.realestate.community.repository;
 
+import com.kosa.realestate.community.dto.PostInfoDTO;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -19,4 +20,8 @@ public interface CommunityRepository {
 	public List<PostDTO> postList();
 
 	public PostDTO communityCard(int postId);
+	
+	
+	// 게시글 조회
+	PostInfoDTO selectPostInfo(Long postId);
 }
