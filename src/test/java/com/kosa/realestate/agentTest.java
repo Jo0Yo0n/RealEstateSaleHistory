@@ -15,20 +15,22 @@ class agentTest {
   @Autowired
   IAgentService agentService;
   
+  // 부동산 id 값이 null이면 0으로 반환
   @Test
   void getRealEstateId() {
-    int realEstateId = agentService.getRealEstateId("양천로 656");
+    int realEstateId = agentService.getRealEstateId("양천로 656123");
     System.out.println(realEstateId);
   }
   
   @Test
   void testProcessRealEstateAndSales() {
       AgentCreateFormDTO dto = new AgentCreateFormDTO();
-      dto.setBuildingType(1);
-      dto.setComplexName("예담주택");
+      dto.setUserId((long)21);
+      dto.setBuildingType("아파트");
+      dto.setComplexName("예담주택더미주택4");
       dto.setCityName("서울시");
       dto.setDistrictName("강남구");
-      dto.setNeighborhoodName("화곡동");
+      dto.setNeighborhoodName("역삼동");
       dto.setAddress("느그집 느그동 18번지");
       dto.setAddressStreet("느그로 18");
       dto.setSalePrice(12);
@@ -56,7 +58,7 @@ class agentTest {
   @Transactional
   void insert1() {
     AgentCreateFormDTO dto = new AgentCreateFormDTO();
-    dto.setBuildingType(1);
+    dto.setBuildingType("아파트");
     dto.setComplexName("예담주택");
     dto.setCityName("서울시");
     dto.setDistrictName("강남구");
@@ -83,7 +85,7 @@ class agentTest {
   void insertTest2() {
     AgentCreateFormDTO dto = new AgentCreateFormDTO();
     dto.setRealEstateId(1112);
-    dto.setBuildingType(1);
+    dto.setBuildingType("아파트");
     dto.setComplexName("예담주택");
     dto.setCityName("서울시");
     dto.setDistrictName("강남구");
@@ -92,10 +94,11 @@ class agentTest {
     dto.setAddressStreet("느그로 18");
     dto.setSalePrice(12);
     dto.setConstructionYear(2020);
-    dto.setContractDate("2020-02-04");
+    dto.setContractDate("20200204");
     dto.setBuildingName("102동");
     dto.setFloor("3층");
     dto.setExclusiveArea(85);
+    dto.setUserId((long)21);
     
     try {
       agentService.insertRealEstateSale(dto);
@@ -124,7 +127,17 @@ class agentTest {
   
   @Test
   void deleteTest() {
-    agentService.deleteRealEstateSale(253732);
+    agentService.deleteRealEstateSale(253745);
+  }
+  
+  @Test
+  void getRegisteredList() {
+    System.out.println(agentService.getRegisteredList((long) 21, 1, 6));
+  }
+  
+  @Test
+  void getResisterdListCount() {
+    System.out.println(agentService.getTotalRegisteredListCount((long) 21));
   }
 
 }
