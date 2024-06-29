@@ -56,9 +56,9 @@ public class UserController {
     return "signup";
   }
 
-  // 회원가입 폼 저장
+  // 회원가입
   @PostMapping("/signup")
-  public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+  public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
       return "signup";
     }
@@ -82,6 +82,7 @@ public class UserController {
       return "signup";
     }
 
+    redirectAttributes.addFlashAttribute("signupSuccess", true);
     return "redirect:/";
   }
 
@@ -106,7 +107,7 @@ public class UserController {
     model.addAttribute("favoriteList", favoriteListDtoList);
 
     // TODO: my_page.html에서 AJAX 도입해서 페이지네이션
-    return "my_page";
+    return "my-page";
   }
 
   // 회원 정보 수정 페이지로 이동 -> 마이페이지에서 모달창으로 띄워주는 방식으로 변경됨
@@ -119,7 +120,7 @@ public class UserController {
 //    return "update_form";
 //  }
 
-  // 회원 정보 수정 폼 저장
+  // 회원 정보 수정
   @PutMapping("/me")
   @ResponseBody
   public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateForm userUpdateForm,
