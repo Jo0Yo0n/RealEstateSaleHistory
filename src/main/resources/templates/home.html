@@ -26,14 +26,17 @@
 				<option value='select-city' disabled='true' selected>행정구역</option>
 				<option value='seoul'>서울</option>
 			</select> 
-			<select th:field="*{districtList}">
+			<select name="district" id="district" th:field="*{districtList}" >
 				<option value='select-district' disabled='true' selected>자치구</option>
 				<option value='all'>전체</option>
 				<!-- 리스트의 각 항목에 대해 옵션을 생성하고, 'selectedDistrictId'가 일치하면 선택됩니다. -->
   				<option th:each="district : ${districtList}" 
-		          th:value="${district.districtId}" 
+		          th:value="${district.districtName}" 
 		          th:text="${district.districtName}"
 		          th:selected="${district.districtId} == ${selectedDistrictId}" />
+			</select>
+			<select name='neighborhood' id='neighborhood'>
+				<option value='select-district' disabled='true' selected>읍/면/동</option>
 			</select>
 			<select name='price' id='price'>
 				<option value='select-price' disabled='true' selected>가격대</option>
@@ -55,10 +58,12 @@
 	</div>
 
 	<script>
+	
+	
 		//검색 조건을 서버에 전송하는 함수
 function sendSearchCriteria() {
 	// 선택된 도시, 자치구, 가격대, 면적을 가져옵니다.
-	var district = $('select[name="districtList"]').val() === 'all' ? null : $('select[name="districtList"]').val();
+	var district = $('#district').val() === 'all' ? null : $('#district').val();
 	var price = $('#price').val() === 'all' ? null : $('#price').val();
 	var area = $('#area').val() === 'all' ? null : $('#area').val();
 	// AJAX 요청을 설정합니다.
@@ -67,8 +72,8 @@ function sendSearchCriteria() {
 		type: 'POST',
 		contentType: 'application/json',
 		data: JSON.stringify({
-			districtName: '종로구',
-			neighborhoodName: '청운동',
+			districtName: district,
+			neighborhoodName: null,
 			PriceMin: 1,
 			PriceMax: 10,
 			ExclusiveSizeMin: 1,
@@ -86,8 +91,33 @@ function sendSearchCriteria() {
 		}
 	});
 }
+		
+		
+		
+		
+		
+		
 // 각 셀렉트 박스의 변경 이벤트에 함수를 연결합니다.
-$('select[name="districtList"], #price, #area').change(sendSearchCriteria);
+$('#district, #price, #area').change(function() {
+	var districtName = $(`#district`).val(); // 선택된 자치구 이름을 가져온다.
+	getneighborhoodList(districtName);
+	sendSearchCriteria();  // 조건에 따른 매물 검색 함수 실행.
+});
+
+
+
+
+function getneighborhoodList(districtName) {
+	//선택된 구 이름을 조건으로 데이터를 검색
+	
+	console.log(`선택된 자치구: `, districtName);
+}
+
+
+
+
 	</script>
+	
+	
 </body>
 </html>
