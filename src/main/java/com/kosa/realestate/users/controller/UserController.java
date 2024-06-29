@@ -32,10 +32,7 @@ import com.kosa.realestate.users.form.UserUpdateForm;
 import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * UserController 클래스
@@ -109,7 +106,7 @@ public class UserController {
     model.addAttribute("favoriteList", favoriteListDtoList);
 
     // TODO: my_page.html에서 AJAX 도입해서 페이지네이션
-    return "my_page_t";
+    return "my_page";
   }
 
   // 회원 정보 수정 페이지로 이동

@@ -1,0 +1,120 @@
+/* 유저 마이페이지, 중개사 마이페이지에 적용되는 css */
+body {
+  margin: 0;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-container {
+  width: 1080px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.nickname {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.user-email {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.user-edit {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.user-edit button {
+  background-color: #ffa500;
+  border: none;
+  color: #fff;
+  padding: 5px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* 회원 탈퇴 버튼 */
+.user-edit span {
+  display: flex;
+  align-items: center;
+  color: red;
+  font-size: 0.9em;
+}
+
+.favorite-count-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fafafa;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+}
+
+.favorite-count-box .count {
+  font-size: 24px;
+  color: #ffa500;
+}
+
+.favorite-count-box .label {
+  font-size: 14px;
+  color: #888;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tab.active {
+  color: #ffa500;
+  font-weight: bold;
+  border-bottom: 2px solid #ffa500;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination span {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.pagination .active {
+  background-color: #ffa500;
+  color: #fff;
+  border-color: #ffa500;
+}
