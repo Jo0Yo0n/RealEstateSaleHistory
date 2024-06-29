@@ -19,10 +19,50 @@
     <!-- Select2 초기화 스크립트 -->
     <script type="text/javascript">
         $(document).ready(function(){
-            // Select2 초기화 (특정 셀렉트 박스에만 적용)
-            $('#selectbox1').select2({
-                minimumResultsForSearch: Infinity // 검색 기능 비활성화
+            $('#districtSelect').change(function() {
+                var districtId = $(this).val();
+
+                // AJAX 요청 설정
+                $.ajax({
+                    url: '/loadPostsByDistrict', // 데이터를 가져올 엔드포인트 URL
+                    type: 'GET', // GET 또는 POST 방식 선택
+                    data: { districtId: districtId }, // 요청에 포함할 데이터
+                    success: function(response) {
+                        // 성공적으로 데이터를 받았을 때 실행할 코드
+                        // 예: 받은 데이터로 게시물 목록을 업데이트
+                        updatePostList(response); 
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 오류 처리 코드
+                        console.error('AJAX Error: ' + textStatus, errorThrown);
+                    }
+                });
             });
+
+            // 받은 데이터로 게시물 목록을 업데이트하는 함수
+            function updatePostList(posts) {
+                // 게시물을 표시할 DOM 요소 선택
+                var postContainer = $('.card-body'); // 실제로는 데이터를 표시할 적절한 DOM 요소 선택
+
+                // 기존 게시물 목록을 비우고 새로운 데이터로 업데이트
+                postContainer.empty();
+                posts.forEach(function(post) {
+                    // 게시물을 표시하는 HTML 코드를 생성하여 추가
+                    var postHTML = '<div class="card">';
+                    postHTML += '<div class="card-body">';
+                    postHTML += '<div class="card-header">' + post.nickname + '</div>';
+                    postHTML += '<div class="card-title">' + post.title + '</div>';
+                    postHTML += '<div class="card-text">' + post.content + '</div>';
+                    postHTML += '<div class="card-footer">';
+                    postHTML += '<div class="interaction">';
+                    postHTML += '<button class="comment">💬 ' + post.comments + '</button>';
+                    postHTML += '<span class="view">👁️ ' + post.views + '</span>';
+                    postHTML += '</div></div></div></div>';
+
+                    // 생성한 HTML을 postContainer에 추가
+                    postContainer.append(postHTML);
+                });
+            }
            
             $('.postcon').click(function() {
                 var postId = $(this).data('postid');
@@ -45,19 +85,16 @@
             <hr>
             <div class="select-row">
                 <select class="form-control pt-1 mt-4 selectbox">
-                    <option selected>행정구역</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option selected>서울특별시</option>
                 </select>
-                <select class="form-control pt-1 mt-4 selectbox">
+                <select class="form-control pt-1 mt-4 selectbox" id="districtSelect">
 					<option value="" disabled selected>자치구</option>
 				    <!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
-				    <option th:each="district : ${districts}" th:value="${district.districtName}" th:text="${district.districtName}"></option>
+				    <option th:each="district : ${districts}" th:value="${district.districtId}" th:text="${district.districtName}"></option>
                 </select>
                 <select class="form-control pt-1 mt-4 selectbox">
-                    <option selected>자치구</option>
-				<option value="" disabled selected>최신순 </option>
+                    <option selected>최신순</option>
+				<option value="" disabled selected>좋아요순 </option>
                 </select>
             </div>
             <hr>            

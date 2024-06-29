@@ -1,6 +1,7 @@
 package com.kosa.realestate.users.service;
 
 import com.kosa.realestate.users.UserContext;
+import com.kosa.realestate.users.UserRole;
 import com.kosa.realestate.users.model.Users;
 import com.kosa.realestate.users.repository.UserRepository;
 import java.util.ArrayList;
@@ -38,9 +39,16 @@ public class UserSecurityService implements UserDetailsService {
     }
 
     Users user = _user.get();
-
+    String accountType = user.getAccountType();
     List<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("USER")); // 현재는 USER 권한만 존재
+
+    if("admin".equals(accountType)) {
+      authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+    } else if ("agent".equals(accountType)) {
+      authorities.add(new SimpleGrantedAuthority(UserRole.AGENT.getValue()));
+    } else {
+      authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
+    }
 
     return new UserContext(user, authorities);
   }

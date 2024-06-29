@@ -24,13 +24,15 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+            // .requestMatchers(new AntPathRequestMatcher("/users/me")).hasAnyRole("USER", "AGENT")
+            // .anyRequest().permitAll())
             .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()) // 모든 URL 패턴에 대해 접근을 허용
         .headers((headers) -> headers
             .addHeaderWriter(new XFrameOptionsHeaderWriter(
                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
         .formLogin((formLogin) -> formLogin
             .loginPage("/users/login")
-            .defaultSuccessUrl("/"))    // TODO: SuccessUrl 메인 화면 url로 바꾸기
+            .defaultSuccessUrl("/"))
         .logout((logout) -> logout    // 로그아웃 설정
             .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout"))
             .logoutSuccessUrl("/")

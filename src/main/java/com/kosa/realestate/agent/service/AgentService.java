@@ -1,9 +1,13 @@
 package com.kosa.realestate.agent.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.kosa.realestate.agent.model.AgentCreateFormDTO;
 import com.kosa.realestate.agent.repository.AgentRepository;
+import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -13,8 +17,9 @@ public class AgentService implements IAgentService {
   private final AgentRepository agentRepository;
   
   @Override
-  public int getRealEstateId(String addressStreet) {
-    return agentRepository.getRealEstateId(addressStreet);
+  public Integer getRealEstateId(String addressStreet) {
+      Integer realEstateId = agentRepository.getRealEstateId(addressStreet);
+      return realEstateId != null ? realEstateId : 0;
   }
   
   @Override
@@ -46,6 +51,18 @@ public class AgentService implements IAgentService {
   @Override
   public void deleteRealEstateSale(int salesId) {
     agentRepository.deleteRealEstateSale(salesId);
+  }
+
+  // 페이징 처리 해야 함
+  @Override
+  public List<AgentCreateFormDTO> getRegisteredList(Long userId, int page, int size) {
+      int offset = (page - 1) * size;
+      return agentRepository.getRegisteredList(userId, offset, size);
+  }
+  
+  @Override
+  public int getTotalRegisteredListCount(Long userId) {
+      return agentRepository.getTotalRegisteredListCount(userId);
   }
 
 }
