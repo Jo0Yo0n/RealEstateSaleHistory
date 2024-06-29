@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/login.css">
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{header :: headerFragment}"></div>
+<div class="container login-container">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">로그인</h2>
+          <div th:if="${param.error}" class="alert alert-danger mb-4">
+            <div>이메일 또는 비밀번호를 확인해 주세요.</div>
+          </div>
+          <form th:action="@{/users/login}" method="post">
+            <div class="mb-4">
+              <input type="email" class="form-control" id="username" name="username" placeholder="아이디(이메일)" required>
+            </div>
+            <div class="mb-4">
+              <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required>
+            </div>
+            <div class="d-grid gap-3 d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary">로그인</button>
+              <a href="/users/signup" class="btn btn-secondary">회원가입</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
