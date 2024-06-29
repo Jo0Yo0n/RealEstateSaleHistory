@@ -13,43 +13,47 @@
   <title>마이페이지</title>
 </head>
 <body>
-<div th:replace="header :: headerFragment"></div>
-<div class="custom-container">
-  <div class="user-info">
-    <span class="nickname">KOSA 님</span>
-    <div>
-      <span class="user-email">이메일: </span>
-      <span class="user-email value">[[${user.email}]]</span>
+<div class="page-wrapper">
+  <div th:replace="header :: headerFragment"></div>
+  <div class="content-wrapper">
+    <div class="custom-container">
+      <div class="user-info">
+        <span class="nickname">KOSA 님</span>
+        <div>
+          <span class="user-email">이메일: </span>
+          <span class="user-email value">[[${user.email}]]</span>
+        </div>
+        <div class="user-edit">
+          <button class="update">내 정보 수정</button>
+          <button class="agent">중개사 신청</button>
+          <span class="delete"><a>회원 탈퇴</a></span>
+        </div>
+      </div>
+
+
+      <div class="tabs">
+        <div class="tab active" onclick="showFavorites()">관심매물</div>
+        <div class="tab" onclick="showPosts()">작성한 글</div>
+      </div>
+
+      <div id="content-container">
+        <div th:replace="favorite_list :: content"></div>
+      </div>
+
+
+      <!-- TODO: 페이징 기능 추가 -->
+      <div class="pagination">
+        <span>&lt;</span>
+        <span class="active">1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>&gt;</span>
+      </div>
     </div>
-    <div class="user-edit">
-      <button class="update">내 정보 수정</button>
-      <button class="agent">중개사 신청</button>
-      <span class="delete"><a>회원 탈퇴</a></span>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <div class="tab active" onclick="showFavorites()">관심매물</div>
-    <div class="tab" onclick="showPosts()">작성한 글</div>
-  </div>
-
-  <div id="content-container">
-    <div th:replace="favorite_list :: content"></div>
-  </div>
-
-
-  <!-- TODO: 페이징 기능 추가 -->
-  <div class="pagination">
-    <span>&lt;</span>
-    <span class="active">1</span>
-    <span>2</span>
-    <span>3</span>
-    <span>4</span>
-    <span>5</span>
-    <span>&gt;</span>
   </div>
 </div>
-
 <!-- 모달 추가 -->
 <div th:replace="~{modals :: modals}"></div>
 
