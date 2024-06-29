@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/css/list.css">
   <script src="/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/js/my_page.js"></script>
 
   <meta charset="UTF-8">
   <title>마이페이지</title>
@@ -16,11 +17,14 @@
 <div class="custom-container">
   <div class="user-info">
     <span class="nickname">KOSA 님</span>
-    <span class="user-email">이메일</span>
+    <div>
+      <span class="user-email">이메일: </span>
+      <span class="user-email value">[[${user.email}]]</span>
+    </div>
     <div class="user-edit">
-      <button>내 정보 수정</button>
-      <button>중개사 신청</button>
-      <span><a>회원 탈퇴</a></span>
+      <button class="update">내 정보 수정</button>
+      <button class="agent">중개사 신청</button>
+      <span class="delete"><a>회원 탈퇴</a></span>
     </div>
   </div>
 
@@ -29,7 +33,7 @@
     <div class="tab" onclick="showPosts()">작성한 글</div>
   </div>
 
-  <div>
+  <div id="content-container">
     <div th:replace="favorite_list :: content"></div>
   </div>
 
@@ -44,7 +48,7 @@
     <span>&gt;</span>
   </div>
 </div>
-
+<div th:replace="~{modals :: modals}"></div>
 <!-- TODO: 탭 선택 시 동작 추가 (관심매물, 작성한 글) -->
 <script>
   function showFavorites() {
