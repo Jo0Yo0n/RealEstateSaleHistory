@@ -32,4 +32,6 @@ public interface ICommunityService {
 
 	void postDelete(int postId);
 
+	List<PostDTO> loadPostsByDistrict(int districtId);
+
 }

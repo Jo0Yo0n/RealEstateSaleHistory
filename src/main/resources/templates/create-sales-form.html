@@ -8,78 +8,94 @@
 <meta charset="UTF-8">
 <body>
 	<div th:replace="header :: headerFragment"></div>
-	<div class="create-form-outer-container">
+	<form class="create-form-outer-container" th:action="@{/agent/createform}" th:object="${AgentCreateFormDTO}" method="post">
 		<div class="create-form-container">
 			<div class="form-name"><strong>매물정보 입력</strong></div>
+			<!-- 매물유형 -->
 			<div class="create-form-content-container">
 				<div class="create-form-content-title">매물유형</div>
-				<select name="building-type" id="building-type">
-					<option value=1>아파트</option>
-					<option value=2>연립</option>
-					<option value=3>단독</option>
-					<option value=4>오피스텔</option>
+				<select th:field="*{buildingType}">
+					<option value="">선택하세요</option>
+					<option value="아파트">아파트</option>
+					<option value="연립/다세대">연립/다세대</option>
+					<option value="단독/다가구">단독/다가구</option>
+					<option value="오피스텔">오피스텔</option>
 				</select>
+				<div th:if="${#fields.hasErrors('buildingType')}" th:errors="*{buildingType}" class="error"></div>
 			</div>
+			<!-- 매물이름 -->
 			<div class="create-form-content-container">
 				<div class="create-form-content-title">매물이름</div>
-				<input class="create-form-input" />
+				<input th:field="*{complexName}" class="create-form-input"/>
+				<div th:if="${#fields.hasErrors('complexName')}" th:errors="*{complexName}" class="error"></div>
 			</div>
+			<!-- 시, 구, 동 -->
 			<div class="create-form-multi-content-container">
 				<div class="create-form-content-inner-container">
 					<div class="create-form-content-title">시</div>
-					<select name="city" id="city">
+					<select name="city" id="city" th:field="*{cityName}">
 						<option value="">시를 선택하세요</option>
 					</select>
+					<div th:if="${#fields.hasErrors('cityName')}" th:errors="*{cityName}" class="error"></div>
 				</div>
 				<div class="create-form-content-inner-container">
 					<div class="create-form-content-title">구</div>
-					<select name="district" id="district">
+					<select name="district" id="district" th:field="*{districtName}">
 						<option value="">구를 선택하세요</option>
 					</select>
+					<div th:if="${#fields.hasErrors('districtName')}" th:errors="*{districtName}" class="error"></div>
 				</div>
 				<div class="create-form-content-inner-container">
 					<div class="create-form-content-title">동</div>
-					<select name="neighborhood" id="neighborhood">
+					<select name="neighborhood" id="neighborhood" th:field="*{neighborhoodName}">
 						<option value="">동을 선택하세요</option>
 					</select>
+					<div th:if="${#fields.hasErrors('neighborhoodName')}" th:errors="*{neighborhoodName}" class="error"></div>
 				</div>
 			</div>
+			<!-- 번지주소 -->
 			<div class="create-form-content-container">
 				<div class="create-form-content-title">번지주소</div>
-				<input class="create-form-input" />
+				<input th:field="*{address}" class="create-form-input"/>
+				<div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
 			</div>
+			<!-- 도로명주소 -->
 			<div class="create-form-content-container">
 				<div class="create-form-content-title">도로명주소</div>
-				<input class="create-form-input" />
+				<input th:field="*{addressStreet}" class="create-form-input"/>
+				<div th:if="${#fields.hasErrors('addressStreet')}" th:errors="*{addressStreet}" class="error"></div>
 			</div>
+			<!-- 매물가격, 건축년도 -->
 			<div class="create-form-multi-content-container">
 				<div class="create-form-content-inner-container">
 					<div class="create-form-content-title">매물가격</div>
-					<input class="create-form-small-input" />
+					<input th:field="*{salePrice}" class="create-form-small-input"/>
+					<div th:if="${#fields.hasErrors('salePrice')}" th:errors="*{salePrice}" class="error"></div>
 				</div>
 				<div class="create-form-content-inner-container">
 					<div class="create-form-content-title">건축년도</div>
-					<input class="create-form-small-input" />
+					<input th:field="*{constructionYear}" class="create-form-small-input"/>
+					<div th:if="${#fields.hasErrors('constructionYear')}" th:errors="*{constructionYear}" class="error"></div>
 				</div>
-
 			</div>
+			<!-- 층, 전용면적 -->
 			<div class="create-form-multi-content-container">
 				<div class="create-form-content-inner-container">
-					<div class="create-form-content-title">동</div>
-					<input class="create-form-small-input" />
-				</div>
-				<div class="create-form-content-inner-container">
 					<div class="create-form-content-title">층</div>
-					<input class="create-form-small-input" />
+					<input th:field="*{floor}" class="create-form-small-input"/>
+					<div th:if="${#fields.hasErrors('floor')}" th:errors="*{floor}" class="error"></div>
 				</div>
 				<div class="create-form-content-inner-container">
 					<div class="create-form-content-title">전용면적</div>
-					<input class="create-form-small-input" />
+					<input th:field="*{exclusiveArea}" class="create-form-small-input"/>
+					<div th:if="${#fields.hasErrors('exclusiveArea')}" th:errors="*{exclusiveArea}" class="error"></div>
 				</div>
 			</div>
-			<button>등록하기</button>
+			<button type="submit">등록하기</button>
+			<!-- 성공 메시지 -->
+			<div th:if="${#strings.isEmpty(#fields.errors())}" class="success">등록이 완료되었습니다.</div>
 		</div>
-	</div>
+	</form>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			const citySelect = document.getElementById('city');

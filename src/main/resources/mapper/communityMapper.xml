@@ -26,7 +26,8 @@
 		INNER JOIN
 		district d ON p.district_id = d.district_id
 		where p.isdeleted = 'N'
-		order by created_at desc
+		ORDER BY
+  	    p.createdat desc
 	</select>
 
 

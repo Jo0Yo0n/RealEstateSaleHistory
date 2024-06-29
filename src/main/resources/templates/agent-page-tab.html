@@ -3,55 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<link rel='stylesheet' th:href='@{/css/home.css}' type='text/css' />
 <link rel='stylesheet' th:href='@{/css/agent-page-tab.css}' type='text/css' />
 </head>
 <body>
-	<div th:replace="header :: headerFragment"></div>
-	<div class="agent-page-outer-conatiner">
-		<div class="agent-page-container">
-			<div class="agent-page-user-outer-container">
-				<div class="agent-page-user-container">
-					<div class="user-nickname"><strong>사용자</strong></div>
-					<div class="user-email">test@gmail.com</div>
-				</div>
-				<div class="resgisterd-sales-container">
-					<span>등록한 매물</span>
-				</div>
-			</div>
-			<div class="agent-page-menu-button-container">
-				<div class="agent-page-menu-container">
-					<span>menu1</span>
-					<span>menu2</span>
-					<span>menu3</span>
-				</div>
-				<div class="register-button-container">
-					<button>매물 작성</button>
-				</div>
-			</div>
-			<div class="resgistered-sales-list-container">
-				<div class="registerd-sales-list">
-					<div class="registered-sales-list-contents">
-						<span class="sales-name"><strong>아파트 이름</strong></span>
-						<div>
-							<span class="sale-type">매물</span>
-							<span class="sale-price">10억</span>
-						</div>
-						<div>
-							아파트 · 평수 · 층 · 동
-						</div>
-					</div>
-					<div class="kebab-button-container">
-						<img th:src="@{/assets/images/kebab.png}" class="kebab-button"/>
-					</div>
-				</div>
-				<div class="registerd-sales-list"></div>
-				<div class="registerd-sales-list"></div>
-				<div class="registerd-sales-list"></div>
-				<div class="registerd-sales-list"></div>
-				<div class="registerd-sales-list"></div>
-			</div>
-		</div>
-	</div>
+    <div th:replace="header :: headerFragment"></div>
+    <div class="agent-page-outer-conatiner">
+        <div class="agent-page-container">
+            <div class="agent-page-user-outer-container">
+                <div class="agent-page-user-container">
+                    <div class="user-nickname"><strong>사용자</strong></div>
+                    <div class="user-email">test@gmail.com</div>
+                </div>
+                <div class="resgisterd-sales-container">
+                    <span>등록한 매물</span>
+                    <span th:text="${totalSalesCount} + '개의 매물이 등록되었습니다.'"></span>
+                </div>
+            </div>
+            <div class="agent-page-menu-button-container">
+                <div class="agent-page-menu-container">
+                    <span>menu1</span>
+                    <span>menu2</span>
+                    <span>menu3</span>
+                </div>
+                <div class="register-button-container">
+                    <button onclick="redirectToCreateForm()">매물 작성</button>
+                </div>
+            </div>
+            <div id="registered-sales-list-container" class="resgistered-sales-list-container">
+                <!-- Sales list will be inserted here by JavaScript -->
+            </div>
+            <div class="pagination-container">
+            </div>
+        </div>
+    </div>
+
+    <!-- `userId` 변수를 Thymeleaf로부터 주입 -->
+    <script th:inline="javascript">
+        const userId = /*[[${userId}]]*/ '21'; // Thymeleaf 변수 주입
+    </script>
+    
+    <script>
+        // 페이지네이션 생성 함수
+        function createPagination(currentPage, totalPages) {
+            var paginationHtml = '<div class="pagination">';
+            var maxPage = 10;
+
+            if (currentPage <= maxPage) {
+                startPage = 1;
+                endPage = Math.min(totalPages, maxPage);
+            } else {
+                var startOffset = (currentPage % maxPage) === 0 ? maxPage : currentPage % maxPage;
+                startPage = currentPage - startOffset + 1;
+                endPage = Math.min(startPage + maxPage - 1, totalPages);
+            }
+
+            if (startPage > 1) {
+                paginationHtml += '<button class="page-item page-link" onclick="changePage(1)">처음</button>';
+            }
+
+            if (startPage > maxPage) {
+                paginationHtml += '<button class="page-item page-link" onclick="changePage(' + (startPage - maxPage) + ')">이전 10페이지</button>';
+            }
+
+            for (var i = startPage; i <= endPage; i++) {
+                paginationHtml += '<button class="page-item page-link' + (i === currentPage ? ' active' : '') + '" onclick="changePage(' + i + ')">' + i + '</button>';
+            }
+
+            if (endPage < totalPages) {
+                paginationHtml += '<button class="page-item page-link" onclick="changePage(' + (endPage + 1) + ')">다음 10페이지</button>';
+            }
+
+            if (endPage < totalPages) {
+                paginationHtml += '<button class="page-item page-link" onclick="changePage(' + totalPages + ')">마지막</button>';
+            }
+
+            paginationHtml += '</div>';
+            document.querySelector('.pagination-container').innerHTML = paginationHtml;
+        }
+
+        function changePage(page) {
+            fetch(`/agent/registeredlist?userId=${userId}&page=${page}&size=6`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('registered-sales-list-container');
+                    container.innerHTML = ''; // 현재 리스트 초기화
+                    data.forEach(sale => {
+                        const saleElement = document.createElement('div');
+                        saleElement.className = 'registerd-sales-list';
+                        saleElement.innerHTML = `
+                            <div class="registered-sales-list-contents">
+                                <span class="sales-name"><strong>${sale.complexName}</strong></span>
+                                <div>
+                                    <span class="sale-type">매물</span>
+                                    <span class="sale-price">${sale.salePrice}억</span>
+                                </div>
+                                <div>
+                                    ${sale.buildingType} · ${sale.exclusiveArea} · ${sale.floor} · ${sale.buildingName}
+                                </div>
+                            </div>
+                            <div class="kebab-button-container">
+                                <img src="/assets/images/kebab.png" class="kebab-button"/>
+                            </div>
+                        `;
+                        container.appendChild(saleElement);
+                    });
+                })
+                .catch(error => console.error('Error fetching sales list:', error));
+        }
+        
+    	 // 매물 작성 버튼 클릭 시 createform 페이지로 이동
+        function redirectToCreateForm() {
+            window.location.href = '/agent/createform';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            changePage(1);
+        });
+    </script>
 </body>
 </html>
