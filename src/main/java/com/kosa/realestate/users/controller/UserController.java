@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
 import com.kosa.realestate.favorites.service.FavoriteService;
-import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.InvalidPasswordException;
+import com.kosa.realestate.DuplicateUserException;
+import com.kosa.realestate.InvalidPasswordException;
 import com.kosa.realestate.users.form.UserCreateForm;
 import com.kosa.realestate.users.form.UserUpdateForm;
 import com.kosa.realestate.users.model.UserDTO;
@@ -101,6 +101,7 @@ public class UserController {
 
     String email = principal.getName();
     UserDTO userDTO = userService.findUserByEmail(email);
+
     model.addAttribute("user", userDTO);
 
     List<FavoriteListDTO> favoriteListDtoList = favoriteService.findFavoriteList(0, email);
@@ -109,16 +110,6 @@ public class UserController {
     // TODO: my_page.html에서 AJAX 도입해서 페이지네이션
     return "my-page";
   }
-
-  // 회원 정보 수정 페이지로 이동 -> 마이페이지에서 모달창으로 띄워주는 방식으로 변경됨
-//  @GetMapping("/me/update")
-//  public String updateUser(Principal principal, UserUpdateForm userUpdateForm) {
-//    if (principal == null) {
-//      return "access_denied";
-//    }
-//
-//    return "update_form";
-//  }
 
   // 회원 정보 수정
   @PutMapping("/me")
