@@ -1,4 +1,4 @@
-package com.kosa.realestate.users;
+package com.kosa.realestate;
 
 /**
  * DuplicateUserException 클래스
