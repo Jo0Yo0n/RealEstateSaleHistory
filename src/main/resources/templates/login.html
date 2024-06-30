@@ -18,7 +18,7 @@
         <div class="card-body">
           <h2 class="card-title text-center mb-4">로그인</h2>
           <div th:if="${param.error}" class="alert alert-danger mb-4">
-            <div>이메일 또는 비밀번호를 확인해 주세요.</div>
+            <div th:text="${session.errorMessage}"></div>
           </div>
           <form th:action="@{/users/login}" method="post">
             <div class="mb-4">
