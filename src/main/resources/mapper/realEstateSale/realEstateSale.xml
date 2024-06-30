@@ -88,19 +88,21 @@
 		JOIN NEIGHBORHOOD C ON B.NEIGHBORHOOD_ID = C.NEIGHBORHOOD_ID
 		JOIN DISTRICT D ON C.DISTRICT_ID = D.DISTRICT_ID
     	<where>
-        	<if test="districtName != null">
-            	AND D.DISTRICT_NAME = #{districtName}
+        	<if test="districtName != 0">
+            	AND D.DISTRICT_ID = #{districtName}
         	</if>
         	<if test="neighborhoodName != null">
             	AND C.NEIGHBORHOOD_NAME= #{neighborhoodName}
         	</if>
         	<if test="salePrice != null">
-            	AND A.SALE_PRICE BETWEEN #{salePrice.min} AND (#{salePrice.max} + 1)
+            	AND A.SALE_PRICE BETWEEN #{salePrice.min} AND #{salePrice.max}
         	</if>
         	<if test="exclusiveArea != null">
         		AND A.EXCLUSIVE_AREA BETWEEN #{exclusiveArea.min} AND (#{exclusiveArea.max} +1)
         	</if>
     	</where>
+    	ORDER BY A.CONTRACT_DATE DESC
+    	OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
 	</select> 
 	
 	
