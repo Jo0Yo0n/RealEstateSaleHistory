@@ -11,6 +11,28 @@
 		</if>
 	</select>
 
+	<select id="estateCountByCriteria"  resultType="int">
+		SELECT COUNT(*) 
+		FROM REAL_ESTATE_SALE A
+		JOIN REAL_ESTATE B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID
+		JOIN NEIGHBORHOOD C ON B.NEIGHBORHOOD_ID = C.NEIGHBORHOOD_ID
+		JOIN DISTRICT D ON C.DISTRICT_ID = D.DISTRICT_ID
+    	<where>
+        	<if test="districtName != 0">
+            	AND D.DISTRICT_ID = #{districtName}
+        	</if>
+        	<if test="neighborhoodName != null">
+            	AND C.NEIGHBORHOOD_NAME= #{neighborhoodName}
+        	</if>
+        	<if test="salePrice != null">
+            	AND A.SALE_PRICE BETWEEN #{salePrice.min} AND #{salePrice.max}
+        	</if>
+        	<if test="exclusiveArea != null">
+        		AND A.EXCLUSIVE_AREA BETWEEN #{exclusiveArea.min} AND (#{exclusiveArea.max} )
+        	</if>
+    	</where>
+	</select>
+
 <resultMap type="RealEstateWithSaleDTO" id="RealEstateWithSaleMapDTO">
 	<association property="realEstate" javaType="RealEstateDTO">
         <id property="realEstateId" column="REAL_ESTATE_ID"/>
@@ -104,6 +126,7 @@
     	ORDER BY A.CONTRACT_DATE DESC
     	OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
 	</select> 
+	
 	
 	
 	<select id="getRealEstateDetail" parameterType="int" resultMap="RealEstateWithSaleMapDTO">

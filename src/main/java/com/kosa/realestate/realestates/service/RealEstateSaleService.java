@@ -25,7 +25,19 @@ public class RealEstateSaleService implements IRealEstateSaleService {
   public int getRealEstateSaleCount(int realEstateId) {
     return estateSaleRepository.getRealEstateSaleCount(realEstateId);
   }
-
+  
+  @Override
+  public int estateCountByCriteria(int districtName, String neighborhoodName, int minPrice,
+      int maxPrice, int minExclusiveSize, int maxExclusiveSize) {
+    Map<String, Object> salePrice = new HashMap();
+    salePrice.put("min", minPrice);
+    salePrice.put("max", maxPrice);
+    Map<String, Object> exclusiveArea = new HashMap();
+    exclusiveArea.put("min", minExclusiveSize);
+    exclusiveArea.put("max", maxExclusiveSize);
+    return estateSaleRepository.estateCountByCriteria(districtName, neighborhoodName, salePrice, exclusiveArea);
+  }
+  
   @Override
   public List<RealEstateWithSaleDTO> selectRealEstateWithSales(int realEstateId, int pageNum,
       int pageSize) {
@@ -79,4 +91,6 @@ public class RealEstateSaleService implements IRealEstateSaleService {
 
     return estateSaleRepository.selectNewRealEstateSale();
   }
+
+
 }

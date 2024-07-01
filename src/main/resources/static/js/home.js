@@ -14,19 +14,12 @@ $(document).ready(function () {
 	});
 });
 
-
-
-
-
-
-
 // 페이지네이션 생성 함수
 function createPagination(currentPage, totalPages) {
-	console.log(totalPages);
 
 	var paginationHtml = '<div class="pagination">';
 	var startPage, endPage;
-	var maxPage = 10;
+	var maxPage = 5;
 
 	// 현재 페이지가 1부터 10 사이인 경우
 	if (currentPage <= maxPage) {
@@ -52,7 +45,7 @@ function createPagination(currentPage, totalPages) {
 
 	// '이전 10페이지' 버튼 생성
 	if (startPage > maxPage) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + (startPage - maxPage) + '">이전 10페이지</button>';
+		paginationHtml += '<button class="page-item page-link" data-page="' + (startPage - maxPage) + '">이전 5페이지</button>';
 	}
 
 	// 페이지 번호 버튼 생성
@@ -62,7 +55,7 @@ function createPagination(currentPage, totalPages) {
 
 	// '다음 10페이지' 버튼 생성
 	if (endPage < totalPages) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + (endPage + 1) + '">다음 10페이지</button>';
+		paginationHtml += '<button class="page-item page-link" data-page="' + (endPage + 1) + '">다음 5페이지</button>';
 	}
 
 	// '마지막' 페이지로 이동하는 버튼
@@ -74,53 +67,37 @@ function createPagination(currentPage, totalPages) {
 	$('.pagination').html(paginationHtml);
 }
 
-// AJAX를 사용하여 부동산 목록 데이터를 가져오는 함수
-function fetchRealEstateData(realEstateId, page, size) {
-	$.ajax({
-		url: '/realestate/search',
-		type: 'GET',
-		data: {
-			realEstateId: realEstateId,
-			page: page,
-			size: size
-		},
-		success: function (data) {
-			if (data && data.length > 0) {
-				//데이터가 존재하는 경우, HTML 생성 및 삽입
-				let realEstateListHtml = '';
-				data.forEach(function (realEstate) {
-					realEstateListHtml += `<div class="real-estate-item"><h4>${realEstate.realEstateSale.salesId}</h4></div>`;
-				});
-
-				$('.district-list-container').html(realEstateListHtml);
-			} else {
-				// 데이터가 없을 경우, 사용자에게 알림
-				$('.district-list-container').html('<p>부동산 목록이 없습니다.</p>')
+	// AJAX를 사용하여 부동산 목록 데이터를 가져오는 함수
+	function fetchRealEstateData(realEstateId, page, size) {
+		$.ajax({
+			url: '/realestate/search',
+			type: 'GET',
+			data: {
+				realEstateId: realEstateId,
+				page: page,
+				size: size
+			},
+			success: function (data) {
+				if (data && data.length > 0) {
+					//데이터가 존재하는 경우, HTML 생성 및 삽입
+					let realEstateListHtml = '';
+					data.forEach(function (realEstate) {
+						realEstateListHtml += `<div class="real-estate-item"><h4>${realEstate.realEstateSale.salesId}</h4></div>`;
+					});
+	
+					$('.district-list-container').html(realEstateListHtml);
+				} else {
+					// 데이터가 없을 경우, 사용자에게 알림
+					$('.district-list-container').html('<p>부동산 목록이 없습니다.</p>')
+				}
+	
+			},
+			error: function (error) {
+				console.error('데이터를 가져오는데 실패했습니다:', error);
 			}
-
-		},
-		error: function (error) {
-			console.error('데이터를 가져오는데 실패했습니다:', error);
-		}
-	});
-}
-
-// 총 데이터 개수를 가져오는 AJAX 요청 함수
-function fetchEstateCount(realEstateId) {
-	$.ajax({
-		url: '/realestate/count',
-		type: 'GET',
-		data: { realEstateId: realEstateId },
-		success: function (count) {
-			totalEstateCount = count;
-			console.log(count);
-			createPagination(1, Math.ceil(count / 10));
-		},
-		error: function (error) {
-			console.error('Error fetching estate count:', error);
-		}
-	});
-}
+		});
+	}
+		
 
 // 총 데이터 개수를 가져오는 AJAX 요청 함수
 function fetchEstateCount(realEstateId) {
@@ -130,7 +107,6 @@ function fetchEstateCount(realEstateId) {
 			type: 'GET',
 			data: { realEstateId: realEstateId },
 			success: function (count) {
-				console.log(count);
 				resolve(count);
 			},
 			error: function (error) {
@@ -140,13 +116,13 @@ function fetchEstateCount(realEstateId) {
 		});
 	});
 }
+
 // 페이지 번호 클릭 이벤트 핸들러
 $(document).on('click', '.page-link', function (e) {
 	e.preventDefault();
 	var selectedPage = parseInt($(this).data('page'));
-	console.log(selectedPage);
 	fetchEstateCount(0).then(allCount => {
-		console.log(allCount);
+
 		fetchRealEstateData(0, selectedPage, 10); // 여기서 0은 realEstateId의 예시 값입니다.
 		createPagination(selectedPage, Math.ceil(allCount / 10));
 	}).catch(error => {
@@ -154,10 +130,11 @@ $(document).on('click', '.page-link', function (e) {
 	});
 });
 
+
+
 // #homeIcon 클릭 시 데이터를 가져오는 함수와 전체 게시물 수를 가져오는 함수를 호출합니다.
 $('#home-icon').click(function () {
 	fetchEstateCount(0).then(allCount => {
-		console.log(allCount);
 		createPagination(1, Math.ceil(allCount / 10));
 	}); // 첫 번째 페이지 데이터와 총 데이터 개수를 가져옵니다.
 	fetchRealEstateData(0, 1, 10); //첫 번째 페이지 
@@ -220,15 +197,32 @@ function confirmAreaRange() {
 }
 
 
-// 면적대 선택 버튼 클릭 이벤트 리스너
-document.getElementById('area-select-btn').addEventListener('click', function() {
-    var popup = document.getElementById('area-range-popup');
-    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-});
+	// 선택된 조건에 따른 데이터 개수를 가져오는 AJAX 요청 함수
+	function getFilteredEstateCount(district, neighborhood, PriceMin, PriceMax, ExclusiveSizeMin, ExclusiveSizeMax) {
+	    return new Promise((resolve, reject) => {
+	        $.ajax({
+	            url: '/realestate/count/byCriteria',
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				districtName: district,
+				neighborhoodName: neighborhood,
+				PriceMin: PriceMin,
+				PriceMax: PriceMax,
+				ExclusiveSizeMin: ExclusiveSizeMin,
+				ExclusiveSizeMax:ExclusiveSizeMax
+			}),
+			dataType: 'json',
+	            success: function (count) {
+	                resolve(count);
+	            },
+	            error: function (error) {
+	                console.error('Error fetching estate count by criteria:', error);
+	                reject(error);
+	            }
+	        });
+	    });
+	}
 
-	// 최소 가격 선택박스 변경 시 최대 가격 옵션 업데이트 및 선택된 가격대 표시 업데이트
-	document.getElementById('min-area').addEventListener('change', function() {
-	    updateMaxAreaOptions();
- 	    updateAreaDisplay();
- 	});
+
 

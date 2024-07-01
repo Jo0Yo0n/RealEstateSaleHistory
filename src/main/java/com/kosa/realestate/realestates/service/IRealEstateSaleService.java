@@ -9,6 +9,8 @@ import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 public interface IRealEstateSaleService {
   int getRealEstateSaleCount();
   int getRealEstateSaleCount(int realEstateId);
+  int estateCountByCriteria(int districtName, String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize);
+  
   List<RealEstateWithSaleDTO> selectRealEstateWithSales(int realEstateId, int pageNum, int pageSize);
   
   List<Map<String, Object>> getAllDestrictId();

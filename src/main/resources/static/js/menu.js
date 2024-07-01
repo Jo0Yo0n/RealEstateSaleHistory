@@ -22,4 +22,9 @@ $(document).ready(function () {
     toggleMenu("home-icon", "home-menu");
     toggleMenu("comm-icon", "comm-menu");
     toggleMenu("user-icon", "user-menu");
+    // 홈 아이콘 클릭 이벤트
+    $("#home-icon").click(function () {
+        // 검색 상자의 표시 상태를 토글
+        $(".global-search").toggle();
+    });
 });

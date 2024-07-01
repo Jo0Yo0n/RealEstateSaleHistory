@@ -11,16 +11,11 @@
 </head>
 <body>
 	<div class="home-menu-inner-container">
-		<div class="search">
+ 		<div class="search">
 			<input class="search-box" type='text' placeholder='검색어 입력' /> 
 			<img th:src="@{/assets/images/search.png}" />
-		</div>
-		<div class='search-filter'>
-			<span class='filter-id' id='apt'>아파트</span> 
-			<span class='filter-id' id='mf'>연립/다세대</span> 
-			<span class='filter-id' id='sf'>단독/다가구</span> 
-			<span class='filter-id' id='op'>오피스텔</span>
-		</div>
+		</div> 
+
 		
 		<div class="search-select-container">
 			<div class="select-box">
@@ -129,8 +124,7 @@
 			    </div>
 			</div>
 
-		    
-		    
+
 		</div>
 
 
@@ -157,7 +151,7 @@
 	    maxPriceSelect.innerHTML = ''; // 기존 옵션 제거
 
 	    // '1억 이하' 선택 시 기본 옵션 추가
-	    if (minPrice === '0') {
+	    if (minPrice === 0) {
 	        var defaultOption = document.createElement('option');
 	        defaultOption.value = '1'; // '1억 이하' 옵션의 value 설정
 	        defaultOption.textContent = '1억 이하';
@@ -235,6 +229,11 @@
 	document.addEventListener('DOMContentLoaded', function() {
 	    updateMaxPriceOptions();
 	    updateMaxAreaOptions();
+	    // 면적대 선택 버튼 클릭 이벤트 리스너
+	    document.getElementById('area-select-btn').addEventListener('click', function() {
+	      var popup = document.getElementById('area-range-popup');
+	      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+	    });
 	}); 
 	
 
@@ -255,9 +254,7 @@
 	    var popup = document.getElementById('price-range-popup');
 	    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
 	});
-	
 
-	
 	
 function sendSearchCriteria() {
 	// 선택된 도시, 자치구, 가격대, 면적을 가져옵니다.
@@ -267,14 +264,23 @@ function sendSearchCriteria() {
     var maxPrice = $('#max-price').val(); // 최대 가격을 가져옵니다. 
 	var minArea = $('#min-area').val();
     var maxArea = $('#max-area').val();
-     // 서버에 전송할 가격대 데이터를 설정합니다.
+ 	// 서버에 전송할 가격대 데이터를 설정합니다.
     var PriceMin = !minPrice ? 0 : parseInt(minPrice);
-    var PriceMax = maxPrice === '180' ? 180 : parseInt(maxPrice); 
-    var PriceMax = maxPrice ? parseInt(maxPrice) : 180;
+    var PriceMax = !maxPrice || maxPrice === '180' ? 180 : parseInt(maxPrice);
+
     var ExclusiveSizeMin = minArea === '0' ? 0 : parseInt(minArea);
     var ExclusiveSizeMax = maxArea === 'max' ? 320 : maxArea === '0' ? 320 : parseInt(maxArea);
+    
+ 	// 사용자가 선택한 가격 범위, 면적 범위, 도시, 구, 동에 따라 부동산 개수를 가져오는 함수
+    getFilteredEstateCount(district, neighborhood, PriceMin, PriceMax, ExclusiveSizeMin, ExclusiveSizeMax)
+		    .then(totalCount => {
+		        // totalCount를 사용하여 페이지네이션을 생성합니다.
+		        createPagination(1, Math.ceil(totalCount / 10)); // 여기서 10은 한 페이지에 표시할 게시물 수입니다.
+		    })
+		    .catch(error => {
+		        console.error('Error fetching total count:', error);
+		    });
 
-	console.log(ExclusiveSizeMax);
 	// AJAX 요청을 설정합니다.
 	$.ajax({
 		url: '/realestate/search/byCriteria', // 컨트롤러의 URL
@@ -291,8 +297,10 @@ function sendSearchCriteria() {
 		dataType: 'json',
 		success: function (response) {
 			// 서버로부터 응답을 받으면 실행되는 함수
-			console.log('검색 결과:', response);
+			console.log('검색 결과:', response.length);
 			// TODO: 검색 결과를 화면에 표시하는 로직을 여기에 작성합니다.
+			//showRealEstate(response);
+			
 		},
 		error: function (xhr, status, error) {
 			// 요청이 실패하면 실행되는 함수
@@ -300,8 +308,7 @@ function sendSearchCriteria() {
 		}
 	});
 }
-		
-		
+	
 // 전용 면적 관려 js
 
 
@@ -354,23 +361,11 @@ function confirmAreaRange() {
 }
 
 
-//면적대 선택 버튼 클릭 이벤트 리스너
-document.getElementById('area-select-btn').addEventListener('click', function() {
- var popup = document.getElementById('area-range-popup');
- popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-});
-
 	// 최소 가격 선택박스 변경 시 최대 가격 옵션 업데이트 및 선택된 가격대 표시 업데이트
 	document.getElementById('min-area').addEventListener('change', function() {
 	    updateMaxAreaOptions();
 	    updateAreaDisplay();
 	});
-
-
-		
-		
-		
-
 
 
 
@@ -469,21 +464,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	    });
 	    
 	    
-	
-	
-
-	    
 	  //각 셀렉트 박스의 변경 이벤트에 함수를 연결합니다.
 	  $('#district, #neighborhood').change(function() {
 	  	sendSearchCriteria();  // 조건에 따른 매물 검색 함수 실행.
 	  });
-	
-	
+
 });
-
-
 	</script>
-	
-	
 </body>
 </html>
