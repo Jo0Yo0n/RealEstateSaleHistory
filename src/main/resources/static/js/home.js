@@ -162,3 +162,8 @@ $('#home-icon').click(function () {
 	}); // 첫 번째 페이지 데이터와 총 데이터 개수를 가져옵니다.
 	fetchRealEstateData(0, 1, 10); //첫 번째 페이지 
 });
+
+
+
+
+

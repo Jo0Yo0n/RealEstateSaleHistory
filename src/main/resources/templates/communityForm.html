@@ -6,16 +6,26 @@
 <title>게시판 폼 예제</title>
 <link rel='stylesheet' href='../css/communityForm.css' type='text/css' />
 <!-- 부트스트랩 CSS 링크 -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
 <!-- Select2 CSS 링크 -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link
+	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+	rel="stylesheet" />
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Select2 JS 링크 -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- 부트스트랩 JS 링크 -->
 <!-- Bootstrap JavaScript 파일 포함 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap JavaScript 파일 포함 -->
+
 <!-- Select2 초기화 스크립트 -->
 <script type="text/javascript">
 // 허용할 파일 확장자 리스트(화이트리스트)
@@ -58,18 +68,18 @@ function validateForm() {
     return true;
 }
 
-
 function showAlert(message,redirect) {
     $('#alertModal .modal-body').text(message);
+																						
     $('#alertModal').modal('show');
 
     // 모달이 닫힐 때 리다이렉트
     $('#alertModal').on('hide.bs.modal', function() {
-			
-    	if(redirect!=null){
-    		
+         
+       if(redirect!=null){
+          
             window.location.href = redirect;
-    	}
+       }
        
     });
 }
@@ -166,10 +176,42 @@ $(document).ready(function() {
         });
     });
 
-    $(".delsub").click(function() {
-        var fileId = $(this).val();
-        var postId = $(this).data('postid');
+ // 삭제 버튼 클릭 이벤트
+    $(document).on('click', '.delbtn', function() {
+        var fileId = $(this).data('fileid');
+        var postId = $("#postId").val();
 
+        var deleteModalHtml = `
+            <div class="modal fade delModal" id="deleteFileModal${fileId}" tabindex="-1" aria-labelledby="deleteFileModalLabel${fileId}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteFileModalLabel${fileId}">파일을 삭제하시겠습니까?</h5>
+                        </div>
+                        <div class="modal-body">
+                            파일은 바로 삭제됩니다.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary confirmDeleteBtn" data-fileid="${fileId}" data-postid="${postId}">적용</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        
+        $('body').append(deleteModalHtml);
+        $('#deleteFileModal' + fileId).modal('show');
+    });
+
+    // 모달의 삭제 버튼 클릭 이벤트
+    $(document).on('click', '.confirmDeleteBtn', function() {
+
+        var fileId = $(this).data('fileid');
+        var postId = $("#postId").val();
+        
+        console.log("여기야2"+fileId);
+        console.log("여기야2"+postId);
+        
         $.ajax({
             url: '/deleteFile',
             type: 'POST',
@@ -178,9 +220,9 @@ $(document).ready(function() {
                 postId: postId
             },
             success: function(files) {
-                console.log(files);
-                $('#deleteFileModal').modal('hide');
-                // 삭제된 파일 목록을 화면에 출력
+															
+                $('.delModal').modal('hide');
+                
                 displayDeletedFiles(files);
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -188,6 +230,7 @@ $(document).ready(function() {
             }
         });
     });
+
 
     // 업데이트된 파일 리스트를 화면에 출력하는 함수
     function displayDeletedFiles(files) {
@@ -197,57 +240,66 @@ $(document).ready(function() {
 
         files.forEach(function(file) {
             var fileElement = $('<div class="file-item"></div>');
-            fileElement.append('<img src="/uploads/' + file.filePath + file.fileName + '" alt="' + file.fileOriginName + '" style="max-width: 80px; max-height: 80px;" />');
-            fileElement.append('<button type="button" class="btn btn-primary delbtn" style="background-color: #FAEBAC; color: black; border: none;" data-bs-toggle="modal" data-bs-target="#deleteFileModal">삭제</button>');
+            var imageElement = $('<img src="/uploads/' + file.filePath + file.fileName + '" alt="' + file.fileOriginName + '" style="max-width: 80px; max-height: 80px;" />');
+            var deleteButton = $('<button type="button" class="btn btn-primary delbtn" style="background-color: #FAEBAC; color: black; border: none;" data-bs-toggle="modal" data-fileid="' + file.fileId + '" data-bs-target="#deleteFileModal">삭제</button>');
 
-            filesContainer.append(fileElement);
+            fileElement.append(imageElement);
+            fileElement.append(deleteButton);
+
+            $('.reloadFiles').append(fileElement);
         });
+
     }
 });
 </script>
 </head>
 <body>
-    <div class="container">
-        <div class="menu">
-            <div class="commutop">
-                <button class="btn btn-custom">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short custom-svg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" /></svg>
-                </button>
-                <div class="commutoptext">
-                    <h3><span th:text="${update != null} ? '게시글 수정' : '커뮤니티 작성'"></span></h3>
-                </div>
-            </div>
-            <hr>
+	<div class="container">
+		<div class="menu">
+			<div class="commutop">
+				<button class="btn btn-custom">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+						fill="currentColor" class="bi bi-arrow-left-short custom-svg"
+						viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+							d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" /></svg>
+				</button>
+				<div class="commutoptext">
+					<h3>
+						<span th:text="${update != null} ? '게시글 수정' : '커뮤니티 작성'"></span>
+					</h3>
+				</div>
+			</div>
+			<hr>
 
-            <form action="" id="commuForm">
-                <input type="hidden" id="userId" th:value="${userId}">
-                <input type="hidden" id="uploadUserId" th:attr="value=${commuCard != null ? commuCard.userId : ''}">
-                <input type="hidden" id="districtId" th:attr="value=${commuCard != null ? commuCard.districtId : ''}">
-                <input type="hidden" id="postId" th:attr="value=${commuCard != null ? commuCard.postId : ''}">
-                <div class="selectboxes">
-                    <select id="selectbox" name="selectbox" class="form-control pt-1 mt-4" style="height: 33px; width: 40%; vertical-align: middle;">
-                        <option value="" disabled selected>서울특별시</option>
-                    </select>
-						
-						<select id="selectbox2" name="selectbox"
-					    class="form-control pt-1 mt-4"
-					    style="height: 33px; width: 40%; vertical-align: middle;"
-					     th:if="${update == null}">
-					    <option disabled selected>자치구</option>
-					    <!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
-					    <th:block th:each="district : ${districts}">
-					        <option th:id="${district.districtId}"
-					            th:value="${district.districtId}" th:text="${district.districtName}"></option>
-					    </th:block>
-					</select>
-						
-						
-						
-						<select id="selectbox2" name="selectbox"
+			<form action="" id="commuForm">
+				<input type="hidden" id="userId" th:value="${userId}"> <input
+					type="hidden" id="uploadUserId"
+					th:attr="value=${commuCard != null ? commuCard.userId : ''}">
+				<input type="hidden" id="districtId"
+					th:attr="value=${commuCard != null ? commuCard.districtId : ''}">
+				<input type="hidden" id="postId"
+					th:attr="value=${commuCard != null ? commuCard.postId : ''}">
+				<div class="selectboxes">
+					<select id="selectbox" name="selectbox"
+						class="form-control pt-1 mt-4"
+						style="height: 33px; width: 40%; vertical-align: middle;">
+						<option value="" disabled selected>서울특별시</option>
+					</select> <select id="selectbox2" name="selectbox"
 						class="form-control pt-1 mt-4"
 						style="height: 33px; width: 40%; vertical-align: middle;"
-						 th:if="${update != null}">
+						th:if="${update == null}">
+						<option disabled selected>자치구</option>
+						<!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
+						<th:block th:each="district : ${districts}">
+							<option th:id="${district.districtId}"
+								th:value="${district.districtId}"
+								th:text="${district.districtName}"></option>
+						</th:block>
+					</select> <select id="selectbox2" name="selectbox"
+						class="form-control pt-1 mt-4"
+						style="height: 33px; width: 40%; vertical-align: middle;"
+						th:if="${update != null}">
 						<option disabled selected th:if="${update}"
 							th:value="${commuCard.districtName}"
 							th:text="${commuCard.districtName}">자치구</option>
@@ -258,92 +310,90 @@ $(document).ready(function() {
 						</th:block>
 					</select>
 
-					
-                </div>
-                <hr>
-                <div class="textbox">
-                    <h3 class="commutext2">게시글 작성</h3>
-                </div>
-                <div class="col-md-12">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="title">제목</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" th:value="${update != null ? commuCard.title : ''}">
-                        </div>
-                        <div class="form-group">
-                            <label for="content">내용</label>
-                            <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요" th:text="${update != null ? commuCard.content : ''}"></textarea>
 
-                            <div th:if="${update}">
-                                <div class="reloadFiles">
-                                    <div th:each="file : ${files}">
-                                        <div class="updateFileList">
-                                            <img th:src="@{'/uploads/' + ${file.filePath} + ${file.fileName}}" th:alt="${file.fileOriginName}" style="max-width: 80px; max-height: 80px;" />
+				</div>
+				<hr>
+				<div class="textbox">
+					<h3 class="commutext2">게시글 작성</h3>
+				</div>
+				<div class="col-md-12">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="title">제목</label> <input type="text"
+								class="form-control" id="title" name="title"
+								placeholder="제목을 입력하세요"
+								th:value="${update != null ? commuCard.title : ''}">
+						</div>
+						<div class="form-group">
+							<label for="content">내용</label>
+							<textarea class="form-control" id="content" name="content"
+								placeholder="내용을 입력하세요"
+								th:text="${update != null ? commuCard.content : ''}"></textarea>
 
-                                            <button type="button" class="btn btn-primary delbtn" style="background-color: #FAEBAC; color: black; border: none;" data-bs-toggle="modal" data-bs-target="#deleteFileModal">삭제</button>
-                                        </div>
-                                        <!-- 파일 삭제 모달-->
-                                        <div class="modal fade" id="deleteFileModal" tabindex="-1" aria-labelledby="deleteFileModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header"  style="border: none;">
-                                                        <h5 class="modal-title" id="deleteFileModalLabel">파일을 삭제하시겠습니까?</h5>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        파일은 바로 삭제됩니다.
-                                                    </div>
-                                                    <div class="modal-footer" style="border: none;">
-                                                        <button type="button" class="btn btn-primary delsub" th:value="${file.fileId}" th:data-postId="${commuCard.postId}"
-                                                        style="background-color: #F9DE7B;border: none; color:black;">적용</button>
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- 모달 끝 -->
-                                    </div>
-                                </div>
-                            </div>
+							<div th:if="${update}">
+								<div class="reloadFiles">
+									<div th:each="file : ${files}">
+										<div class="updateFileList">
+											<img
+												th:src="@{'/uploads/' + ${file.filePath} + ${file.fileName}}"
+												th:alt="${file.fileOriginName}"
+												style="max-width: 80px; max-height: 80px;" />
 
-                            <div class="uploadDiv">
-                                <input type="file" name="uploadFile" multiple>
-                            </div>
-                            <br>
-                            <div class="d-flex">
-                                <button type="button" class="btn" style="background-color: #FAEBAC; margin-right: 10px;">Cancel</button>
-                                <th:block th:if="${update}">
-                                    <button id="updateBtn" class="btn" style="background-color: #F9DE7B; margin-right: 10px;">수정</button>
-                                </th:block>
-                                <th:block th:unless="${update}">
-                                    <button id="uploadBtn" class="btn" style="background-color: #F9DE7B; margin-right: 10px;">Submit!<span th:text="${update}"></span></button>
-                                </th:block>
-                            </div>
+											<button type="button" class="btn btn-primary delbtn"
+												style="background-color: #FAEBAC; color: black; border: none;"
+												data-bs-toggle="modal" th:data-fileId="${file.fileId}">삭제</button>
+										</div>
+									</div>
+								</div>
+								</div>
 
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+								<div class="uploadDiv">
+									<input type="file" name="uploadFile" multiple>
+								</div>
+								<br>
+								<div class="d-flex">
+									<button type="button" class="btn"
+										style="background-color: #FAEBAC; margin-right: 10px;">Cancel</button>
+									<th:block th:if="${update}">
+										<button id="updateBtn" class="btn"
+											style="background-color: #F9DE7B; margin-right: 10px;">수정</button>
+									</th:block>
+									<th:block th:unless="${update}">
+										<button id="uploadBtn" class="btn"
+											style="background-color: #F9DE7B; margin-right: 10px;">
+											Submit!<span th:text="${update}"></span>
+										</button>
+									</th:block>
 
-    <!-- 부트스트랩 모달 -->
-    <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style=" border: none">
-                    <h5 class="modal-title" id="alertModalLabel">알림</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" >
-                    <!-- 알림 메시지가 여기에 표시됩니다 -->
-                </div>
-                <div class="modal-footer" style=" border: none">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #F9DE7B;border: none; color:black;">닫기</button>
-                </div>
-            </div>
-        </div>
-    </div>
+								</div>
+
+							
+						</div>
+					</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- 알림 모달 -->
+	<div class="modal fade" id="alertModal" tabindex="-1" role="dialog"
+		aria-labelledby="alertModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header" style="border: none">
+					<h5 class="modal-title" id="alertModalLabel">알림</h5>
+					<button type="button" class="close" data-bs-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer" style="border: none">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal"
+						style="background-color: #F9DE7B; border: none; color: black;">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
