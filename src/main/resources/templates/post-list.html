@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content" class="list-container">
+  <div th:each="post : ${posts}" th:if="${not #lists.isEmpty(posts)}">
+    <div class="post">
+      <div class="post-header">
+        <div class="post-label" th:text="${post.cityName + ' ' + post.districtName}"></div>
+        <div class="post-title" th:text="${post.title}"></div>
+      </div>
+
+      <div class="post-content">
+        <span th:text="${post.content}"></span>
+      </div>
+
+      <div class="post-footer">
+        <div class="post-info">
+          <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        </div>
+        <div class="view-info">
+          <span class="view-title">조회수</span>
+          <span class="view-count" th:text="${post.postView}"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:if="${#lists.isEmpty(posts)}">
+    <p>작성한 게시글이 없습니다.</p>
+  </div>
+
+  <div id="pagination-info"
+       th:data-current-page="${currentPage}"
+       th:data-total-pages="${totalPages}"
+       style="display: none;"></div>
+</div>
+</html>

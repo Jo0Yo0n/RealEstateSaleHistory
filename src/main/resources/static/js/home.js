@@ -162,3 +162,73 @@ $('#home-icon').click(function () {
 	}); // 첫 번째 페이지 데이터와 총 데이터 개수를 가져옵니다.
 	fetchRealEstateData(0, 1, 10); //첫 번째 페이지 
 });
+
+
+
+
+
+
+  // 전용 면적 관려 js
+
+
+// 최소 면적 선택박스 변경 시 최대 면적 옵션 업데이트 함수
+function updateMaxAreaOptions() {
+    var minArea = parseInt(document.getElementById('min-area').value);
+    var maxAreaSelect = document.getElementById('max-area');
+    maxAreaSelect.innerHTML = ''; // 기존 옵션 제거
+
+    // 최소 면적 선택 시 최대 면적 옵션 생성
+    for (var i = minArea + 10; i <= 100; i += 10) {
+        var option = document.createElement('option');
+        option.value = i;
+        option.textContent = i + '㎡';
+        maxAreaSelect.appendChild(option);
+    }
+    
+    // '최대' 옵션 추가
+    var maxOption = document.createElement('option');
+    maxOption.value = 'max'; // '최대' 옵션의 value 설정
+    maxOption.textContent = '최대';
+    maxAreaSelect.appendChild(maxOption);
+
+    updateAreaDisplay(); // 선택된 면적대 표시 업데이트
+}
+
+// 선택된 면적대 표시 업데이트 함수
+function updateAreaDisplay() {
+    var minArea = document.getElementById('min-area').value;
+    var maxArea = document.getElementById('max-area').value;
+    var minAreaDisplay = minArea === '0' ? '0㎡' : minArea + '㎡';
+    var maxAreaDisplay = maxArea === 'max' ? '최대' : maxArea + '㎡';
+    
+    document.getElementById('min-area-display').textContent = minAreaDisplay;
+    document.getElementById('max-area-display').textContent = maxAreaDisplay;
+}
+
+// 면적대 확인 함수
+function confirmAreaRange() {
+    var minArea = document.getElementById('min-area').value;
+    var maxArea = document.getElementById('max-area').value;
+
+    // 화면에 표시
+    document.getElementById('min-area-display').textContent = minArea + '㎡';
+    document.getElementById('max-area-display').textContent = maxArea === 'max' ? '최대' : maxArea + '㎡';
+    
+    // TODO: 서버로 값 전송하는 로직 구현
+	 sendSearchCriteria();
+	 closeAreaPopup(); // 면적대를 확인한 후 팝업창을 닫습니다.
+}
+
+
+// 면적대 선택 버튼 클릭 이벤트 리스너
+document.getElementById('area-select-btn').addEventListener('click', function() {
+    var popup = document.getElementById('area-range-popup');
+    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+});
+
+	// 최소 가격 선택박스 변경 시 최대 가격 옵션 업데이트 및 선택된 가격대 표시 업데이트
+	document.getElementById('min-area').addEventListener('change', function() {
+	    updateMaxAreaOptions();
+ 	    updateAreaDisplay();
+ 	});
+

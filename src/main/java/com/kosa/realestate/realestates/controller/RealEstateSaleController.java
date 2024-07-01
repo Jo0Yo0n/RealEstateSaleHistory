@@ -24,7 +24,12 @@ import lombok.RequiredArgsConstructor;
 public class RealEstateSaleController {
 
   private final IRealEstateSaleService realEstateSaleService;
-
+  
+  @GetMapping("")
+  public String estate() {
+    return "map";
+  }
+  
   @GetMapping("/count")
   @ResponseBody
   public int estateCount(
@@ -33,12 +38,13 @@ public class RealEstateSaleController {
     return realEstateId == 0 ? realEstateSaleService.getRealEstateSaleCount() : realEstateSaleService.getRealEstateSaleCount(realEstateId);
   }
   
-  @GetMapping("/select")
-  public String estateSelect(Model model) {
-     model.addAttribute("districtList",realEstateSaleService.getAllDestrictId());
-//     model.addAttribute("",realEstateSaleService.)
-    return "map";
-  }
+
+  
+  /*
+   * @GetMapping("/select") public String estateSelect(Model model) {
+   * model.addAttribute("districtList",realEstateSaleService.getAllDestrictId()); //
+   * model.addAttribute("",realEstateSaleService.) return "map"; }
+   */
   
   @GetMapping("/search")
   @ResponseBody
@@ -65,7 +71,9 @@ public class RealEstateSaleController {
   public List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(
       @RequestBody(required = false) Map<String, Object> searchCriteria) {
     // 지역구 조건
-    String districtName = searchCriteria != null && searchCriteria.get("districtName") != null ? (String) searchCriteria.get("districtName") : null;
+    Integer districtName = null;
+    System.out.println(searchCriteria.get("districtName"));
+    districtName = searchCriteria != null && searchCriteria.get("districtName") != null ? Integer.parseInt((String) searchCriteria.get("districtName")) : 0;
     // 동 조건의 여부
     String neighborhoodName = searchCriteria != null && searchCriteria.get("neighborhoodName") != null ? (String) searchCriteria.get("neighborhoodName") : null;
     // 가격 조건

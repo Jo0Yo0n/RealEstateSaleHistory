@@ -96,5 +96,10 @@
 		  from favorite
 		 where favorite_id = #{favoriteId}
 	</delete>
-	
+
+	<select id="getTotalFavoritesCountByEmail" resultType="int">
+		select count(*)
+		from favorite
+		where user_id = #{userId}
+	</select>
 </mapper>

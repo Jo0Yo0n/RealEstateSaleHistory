@@ -5,6 +5,7 @@
 <head>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/my-page.css">
+  <link rel="stylesheet" href="/css/post-list.css">
   <link rel="stylesheet" href="/css/list.css">
   <script src="/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -33,46 +34,28 @@
 
 
       <div class="tabs">
-        <div class="tab active" onclick="showFavorites()">관심매물</div>
-        <div class="tab" onclick="showPosts()">작성한 글</div>
+        <div class="tab active" data-tab="favorites">관심매물</div>
+        <div class="tab" data-tab="posts">작성한 글</div>
       </div>
 
-      <div id="content-container">
-        <div th:replace="favorite_list :: content"></div>
-      </div>
+      <div id="content-container"></div>
 
-
-      <!-- TODO: 페이징 기능 추가 -->
-      <div class="pagination">
-        <span>&lt;</span>
-        <span class="active">1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span>&gt;</span>
-      </div>
     </div>
   </div>
+  <div class="pagination"></div>
 </div>
+
 <!-- 모달 추가 -->
 <div th:replace="~{modals :: modals}"></div>
 
-<!-- TODO: 탭 선택 시 동작 추가 (관심매물, 작성한 글) -->
-<script>
-  function showFavorites() {
-    document.getElementById(
-        'content-container').innerHTML = '<div th:replace="favorite_list :: content"></div>';
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab')[0].classList.add('active');
-  }
 
-  function showPosts() {
-    document.getElementById(  // 아직 작성한 글 fragment명은 안 정해짐
-        'content-container').innerHTML = '<div th:replace="post_list :: content"></div>';
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab')[1].classList.add('active');
-  }
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const userId = /*[[${#authentication.principal.userId}]]*/ null;
+  /*]]>*/
 </script>
+
+<!-- TODO: 탭 선택 시 보여주는 화면이 달라져야 함. + 페이지 버튼도 다른 요청 보내야 함 (관심매물, 작성한 글) -->
+
 </body>
 </html>

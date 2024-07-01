@@ -61,7 +61,7 @@ public class RealEstateSaleService implements IRealEstateSaleService {
   }
 
   @Override
-  public List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(String districtName,
+  public List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(int districtName,
       String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize) {
 
     Map<String, Object> salePrice = new HashMap();

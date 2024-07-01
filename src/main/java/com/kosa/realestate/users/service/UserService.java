@@ -146,7 +146,7 @@ public class UserService implements IUserService {
     return userRepository.searchAgentList(nickname, offset, limit);
   }
 
-  //권한 UDATE
+  //권한 UPDATE
   @Override
   @Transactional(rollbackFor = PersistenceException.class)
   public int updateUserAccountType(List<Long> userId) {
