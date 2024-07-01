@@ -1,13 +1,19 @@
 package com.kosa.realestate.community.service;
 
 
+import com.kosa.realestate.community.dto.UserPostDTO;
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.service.UserService;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +30,8 @@ import lombok.RequiredArgsConstructor;
 public class CommunityService implements ICommunityService {
 
 	private final CommunityRepository communityRepository;
-	
+	private final UserService userService;
+
 	private String uploadFolder = "C:\\fileUpload";
 	
 
@@ -127,7 +134,7 @@ public class CommunityService implements ICommunityService {
 		}
 		
 	}
-	
+
 	// 폴더 생성
 	private String makeFolder() {
 
@@ -166,4 +173,15 @@ public class CommunityService implements ICommunityService {
 
 		return communityRepository.selectNewPostList();
   }
+
+	// userId로 회원이 작성한 게시글 전체 조회
+	public List<UserPostDTO> getPostsByUserId(Long userId, int page, int pageSize) {
+		int offset = page * pageSize;
+		return communityRepository.getPostsByUserId(userId, offset, pageSize);
+	}
+
+	// userId로 회원이 작성한 게시글 갯수 조회
+	public int getTotalPostsCountByUserId(Long userId) {
+		return communityRepository.getTotalPostsCountByUserId(userId);
+	}
 }
