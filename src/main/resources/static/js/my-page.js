@@ -1,5 +1,58 @@
 $(document).ready(function () {
+  let currentTab = 'favorites';
+  let currentPage = 0;
   let savedPassword = '';
+
+  // 초기 로드
+  loadContent(currentTab, currentPage);
+
+  // 탭 클릭 이벤트
+  $('.tab').click(function() {
+    $('.tab').removeClass('active');
+    $(this).addClass('active');
+    currentTab = $(this).data('tab');
+    currentPage = 0;
+    loadContent(currentTab, currentPage);
+  });
+
+  // 페이지네이션 클릭 이벤트
+  $('.pagination').on('click', '.pagination span', function () {
+    if ($(this).hasClass('disabled')) return;
+    currentPage = parseInt($(this).data('page'));
+    loadContent(currentTab, currentPage);
+  });
+
+  function loadContent(tab, page) {
+    let url = tab === 'favorites' ? `/favorites` : `/community/${userId}`;
+
+    $.ajax({
+      url: `${url}?page=${page}`,
+      method: 'GET',
+      success: function(response) {
+        $("#content-container").html(response);
+
+        let paginationInfo = $("#pagination-info");
+        let currentPage = parseInt(paginationInfo.data('current-page'));
+        let totalPages = parseInt(paginationInfo.data('total-pages'));
+        updatePagination(currentPage, totalPages);
+      },
+      error: function(xhr, status, error) {
+        console.error('Error loading content: ', error);
+      }
+    });
+  }
+
+  function updatePagination(currentPage, totalPages) {
+    let paginationHtml = '';
+    for (let i = 0; i < totalPages; i++) {
+      if (i === currentPage) {
+        paginationHtml += `<span class="active" data-page="${i}">${i +1}</span>`;
+      } else {
+        paginationHtml += `<span data-page=${i}>${i + 1}</span>`;
+      }
+    }
+    $('.pagination').html(paginationHtml);
+  }
 
   // 회원 정보 수정 버튼 기능
   $(document).on('click', '.update', function () {

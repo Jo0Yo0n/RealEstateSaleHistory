@@ -1,13 +1,13 @@
 package com.kosa.realestate.community.repository;
 
-import com.kosa.realestate.community.dto.PostInfoDTO;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
-
 import com.kosa.realestate.community.dto.FileMetaDataDTO;
 import com.kosa.realestate.community.dto.PostDTO;
+import com.kosa.realestate.community.dto.PostInfoDTO;
+import com.kosa.realestate.community.dto.UserPostDTO;
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
@@ -42,4 +42,8 @@ public interface CommunityRepository {
 
 
 	List<PostInfoDTO> selectNewPostList();
+
+	List<UserPostDTO> getPostsByUserId(@Param("userId") Long userId, @Param("offset") int offset, @Param("pageSize") int pageSize);	// 유저가 작성한 글 조회
+
+	int getTotalPostsCountByUserId(@Param("userId") Long userId);
 }

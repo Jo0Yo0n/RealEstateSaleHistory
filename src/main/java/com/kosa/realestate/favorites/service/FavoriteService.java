@@ -53,4 +53,9 @@ public class FavoriteService implements IFavoriteService {
     
     favoriteRepostiory.removeFavorite(favoriteId);    
   }
+
+  // 한 유저가 즐겨찾기한 매물 개수 반환
+  public int getTotalFavoritesCountByEmail(Long userId) {
+    return favoriteRepostiory.getTotalFavoritesCountByEmail(userId);
+  }
 }

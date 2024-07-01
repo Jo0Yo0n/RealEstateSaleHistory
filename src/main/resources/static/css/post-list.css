@@ -1,0 +1,75 @@
+/* 게시글 카드 */
+.post {
+  padding: 10px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.post:hover {
+  transform: translateY(-5px);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.post-label {
+  font-size: 0.7em;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  padding: 2px 3px;
+  margin-right: 5px;
+  border: 1px solid #E0E0E0;
+}
+
+.post-title {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.post-content {
+  font-size: 0.9em;
+  margin-bottom: 15px;
+  flex-grow: 1;
+}
+
+/* 조회수 및 작성일 정보 */
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8em;
+  color: #666;
+}
+
+.post-info {
+  font-style: italic;
+}
+
+.view-info {
+  display: flex;
+  align-items: center;
+}
+
+.view-title {
+  margin-right: 5px;
+}
+
+.view-count {
+  font-weight: bold;
+  color: #E3242B;
+}
+
+/* 스크롤 수정 예정 */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
+  flex: 1;
+  overflow-y: auto;
+}

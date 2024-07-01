@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content" class="list-container">
 
@@ -39,5 +40,9 @@
       </div>
     </div>
   </div>
+  <div id="pagination-info"
+       th:data-current-page="${currentPage}"
+       th:data-total-pages="${totalPages}"
+       style="display: none;"></div>
 </div>
 </html>
