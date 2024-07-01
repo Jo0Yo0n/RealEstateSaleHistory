@@ -20,33 +20,33 @@
 
 	<!-- 게시물 기준 조회 -->
 	<select id="selectCommentByPostId" parameterType="Long" resultType="CommentDTO">
-		select comment_id
-         	 , upper_comment_id
-         	 , post_id
-         	 , user_id
-         	 , comments
-         	 , to_char(created_at, 'yyyy-mm-dd hh24:mi:ss') created_at
-		  from comments
-		 where post_id      = #{postId}
-		   and is_deleted   = UPPER('N')
-	  order by created_at desc
+		select c.comment_id
+         	 , c.upper_comment_id
+         	 , c.post_id
+         	 , c.user_id
+         	 , c.comments
+         	 , c.created_at
+         	 , u.nickname AS "nickname"
+		  from comments c
+		  INNER JOIN users u ON c.user_id = u.user_id
+		  where c.post_id      = #{postId}
+		  and c.is_deleted   = UPPER('N')
+	  order by created_at ASC
 	</select>
 	
 
 	<!-- 댓글 등록 -->
-	<insert id="insertComment" parameterType="map">
+	<insert id="insertComment" parameterType="CommentDTO">
         insert
           into comments 
-             ( upper_comment_id
-             , post_id
+             ( post_id
              , user_id
              , comments
              )
         values 
-             ( #{commentForm.upperCommentId, jdbcType=NUMERIC}
-             , #{postId, jdbcType=NUMERIC}
-             , #{userId, jdbcType=NUMERIC}
-             , #{commentForm.comments, jdbcType=VARCHAR}
+             ( #{postId}
+             , #{userId}
+             , #{comments}
              )	
 	</insert>
 

@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommentService implements ICommentService {
 
-    private final IUserService userService;
+
     private final ICommunityService communityService;
 
     private final CommentRepository commentRepository;
@@ -35,12 +35,8 @@ public class CommentService implements ICommentService {
 
     // 댓글 등록
     @Transactional
-    public void addComments(Long postId, String email, CommentForm commentForm) {
-
-        UserDTO user = userService.findUserByEmail(email);
-        communityService.findPostInfo(postId);
-
-        commentRepository.insertComment(postId, user.getUserId(), commentForm);
+    public void addComments(CommentDTO cdto) {
+        commentRepository.insertComment(cdto);
     }
 
 
@@ -48,13 +44,13 @@ public class CommentService implements ICommentService {
     @Transactional
     public void modifyComment(Long commentId, Long postId, String email, CommentForm commentForm) {
 
-        UserDTO user = userService.findUserByEmail(email);
-        CommentDTO comment = commentRepository.selectCommentByCommentId(commentId);
-        
-        if (!user.getUserId().equals(comment.getUserId())) {
-            throw new RuntimeException("댓글 작성자가 아닙니다.");
-        }
-        communityService.findPostInfo(postId);
+//        UserDTO user = userService.findUserByEmail(email);
+//        CommentDTO comment = commentRepository.selectCommentByCommentId(commentId);
+//        
+//        if (!user.getUserId().equals(comment.getUserId())) {
+//            throw new RuntimeException("댓글 작성자가 아닙니다.");
+//        }
+//        communityService.findPostInfo(postId);
 
         commentRepository.modifyComment(commentId, commentForm);
     }
@@ -63,12 +59,12 @@ public class CommentService implements ICommentService {
     // 댓글 삭제 수정
     public void modfiyDeleteComment(Long commentId, String email) {
     	
-    	UserDTO user = userService.findUserByEmail(email);
-    	CommentDTO comment = commentRepository.selectCommentByCommentId(commentId);
-    	
-    	if (!user.getUserId().equals(comment.getUserId())) {
-            throw new RuntimeException("댓글 작성자가 아닙니다.");
-        }
+//    	UserDTO user = userService.findUserByEmail(email);
+//    	CommentDTO comment = commentRepository.selectCommentByCommentId(commentId);
+//    	
+//    	if (!user.getUserId().equals(comment.getUserId())) {
+//            throw new RuntimeException("댓글 작성자가 아닙니다.");
+//        }
     	
     	commentRepository.modifyCommentDelete(commentId);
     }

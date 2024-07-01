@@ -13,4 +13,7 @@ public class CommentDTO {
     private Long userId;
     private String comments;
     private String createdAt;
+    private Long parentComment;
+    
+    private String nickname;
 }

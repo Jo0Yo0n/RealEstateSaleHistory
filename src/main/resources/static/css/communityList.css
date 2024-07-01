@@ -129,4 +129,17 @@
 .interaction button:focus {
     outline: none;
 }
-
+.emptyPostimg{
+	margin-top: 150px;
+	margin-left: 515px;
+	width: 100px;
+	height: 100px;
+}
+.emptyPosttxt{
+	margin-top:20px;
+	margin-left: 380px;
+}
+.uploadData{
+	margin-left: 750px;
+    color: #999;
+}
