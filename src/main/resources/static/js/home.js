@@ -1,3 +1,6 @@
+// 현재 페이지 번호를 저장하는 전역 변수
+var currentPageNumber = 1;
+
 $(document).ready(function () {
 	$('.filter-id').click(function () {
 		// 모든 필터의 색상을 초기화
@@ -65,79 +68,20 @@ function createPagination(currentPage, totalPages) {
 
 	paginationHtml += '</div>';
 	$('.pagination').html(paginationHtml);
+	
+  	// 페이지 번호 버튼 클릭 이벤트 리스너
+    $('.page-link').on('click', function() {
+        currentPageNumber = $(this).data('page'); // 클릭된 페이지 번호를 전역 변수에 저장합니다.
+        sendSearchCriteria(); // 페이지 번호가 업데이트된 후 sendSearchCriteria 함수를 호출합니다.
+    });
 }
 
-	// AJAX를 사용하여 부동산 목록 데이터를 가져오는 함수
-	function fetchRealEstateData(realEstateId, page, size) {
-		$.ajax({
-			url: '/realestate/search',
-			type: 'GET',
-			data: {
-				realEstateId: realEstateId,
-				page: page,
-				size: size
-			},
-			success: function (data) {
-				if (data && data.length > 0) {
-					//데이터가 존재하는 경우, HTML 생성 및 삽입
-					let realEstateListHtml = '';
-					data.forEach(function (realEstate) {
-						realEstateListHtml += `<div class="real-estate-item"><h4>${realEstate.realEstateSale.salesId}</h4></div>`;
-					});
-	
-					$('.district-list-container').html(realEstateListHtml);
-				} else {
-					// 데이터가 없을 경우, 사용자에게 알림
-					$('.district-list-container').html('<p>부동산 목록이 없습니다.</p>')
-				}
-	
-			},
-			error: function (error) {
-				console.error('데이터를 가져오는데 실패했습니다:', error);
-			}
-		});
-	}
 		
-
-// 총 데이터 개수를 가져오는 AJAX 요청 함수
-function fetchEstateCount(realEstateId) {
-	return new Promise((resolve, reject) => {
-		$.ajax({
-			url: '/realestate/count',
-			type: 'GET',
-			data: { realEstateId: realEstateId },
-			success: function (count) {
-				resolve(count);
-			},
-			error: function (error) {
-				console.error('Error fetching estate count:', error);
-				reject(error);
-			}
-		});
-	});
-}
-
-// 페이지 번호 클릭 이벤트 핸들러
-$(document).on('click', '.page-link', function (e) {
-	e.preventDefault();
-	var selectedPage = parseInt($(this).data('page'));
-	fetchEstateCount(0).then(allCount => {
-
-		fetchRealEstateData(0, selectedPage, 10); // 여기서 0은 realEstateId의 예시 값입니다.
-		createPagination(selectedPage, Math.ceil(allCount / 10));
-	}).catch(error => {
-		console.error('Error in pagination:', error);
-	});
-});
-
 
 
 // #homeIcon 클릭 시 데이터를 가져오는 함수와 전체 게시물 수를 가져오는 함수를 호출합니다.
 $('#home-icon').click(function () {
-	fetchEstateCount(0).then(allCount => {
-		createPagination(1, Math.ceil(allCount / 10));
-	}); // 첫 번째 페이지 데이터와 총 데이터 개수를 가져옵니다.
-	fetchRealEstateData(0, 1, 10); //첫 번째 페이지 
+	sendSearchCriteria();
 });
 
 
@@ -226,3 +170,44 @@ function confirmAreaRange() {
 
 
 
+function showRealEstate(response) {
+    // response에서 부동산 데이터를 추출하여 HTML로 변환합니다.
+    var realEstateHtml = response.map(function(estate) {
+        return `
+            <div class="building">
+                <div class="building-header">
+                    <div class="building-label">아파트</div>
+                    <div class="building-name">${estate.realEstate.complexName}</div>
+                </div>
+                <div class="building-info">
+                    <div>
+                        <span>${estate.cityName}</span>
+                        <span> / ${estate.districtName}</span>
+                        <span> / ${estate.neighborhoodName}</span>
+                    </div>
+                    <div>
+                        <span>설립:${estate.realEstate.constructionYear}</span>
+                        <span> / 번지:${estate.realEstate.address}</span>
+                        <span> / 도로명:${estate.realEstate.addressStreet}</span>
+                    </div>
+                </div>
+                <div class="building-sale">
+                    <div>
+                        <div class="lately-title">최근 매매 실거래가</div>
+                        <div class="lately-price">${estate.realEstateSale.salePrice}</div>
+                        <div class="lately-info">오늘, ${estate.realEstateSale.floor}, ${estate.realEstateSale.exclusiveArea}㎡</div>
+                    </div>
+                    <div class="sale-info">
+                        <div>
+                            <span class="sale-title">전체 매매가</span>
+                            <span class="sale-price">11</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // 생성된 HTML을 district-list-container에 삽입합니다.
+    $('.district-list-container').html(realEstateHtml);
+}

@@ -272,7 +272,7 @@ function sendSearchCriteria() {
     getFilteredEstateCount(district, neighborhood, PriceMin, PriceMax, ExclusiveSizeMin, ExclusiveSizeMax)
 		    .then(totalCount => {
 		        // totalCount를 사용하여 페이지네이션을 생성합니다.
-		        createPagination(1, Math.ceil(totalCount / 10)); // 여기서 10은 한 페이지에 표시할 게시물 수입니다.
+		        createPagination(currentPageNumber, Math.ceil(totalCount / 10)); // 여기서 10은 한 페이지에 표시할 게시물 수입니다.
 		    })
 		    .catch(error => {
 		        console.error('Error fetching total count:', error);
@@ -289,15 +289,15 @@ function sendSearchCriteria() {
 			PriceMin: PriceMin,
 			PriceMax: PriceMax,
 			ExclusiveSizeMin: ExclusiveSizeMin,
-			ExclusiveSizeMax:ExclusiveSizeMax
+			ExclusiveSizeMax:ExclusiveSizeMax,
+			page: currentPageNumber // 전역 변수를 사용하여 현재 페이지 번호를 추가합니다
 		}),
 		dataType: 'json',
 		success: function (response) {
 			// 서버로부터 응답을 받으면 실행되는 함수
-			console.log('검색 결과:', response.length);
+			console.log('검색 결과:', response);
 			// TODO: 검색 결과를 화면에 표시하는 로직을 여기에 작성합니다.
-			//showRealEstate(response);
-			
+			showRealEstate(response);
 		},
 		error: function (xhr, status, error) {
 			// 요청이 실패하면 실행되는 함수

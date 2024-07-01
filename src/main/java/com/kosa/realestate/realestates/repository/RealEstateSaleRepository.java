@@ -1,11 +1,10 @@
 package com.kosa.realestate.realestates.repository;
 
-import com.kosa.realestate.realestates.model.NewRealEstateSaleDTO;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import com.kosa.realestate.realestates.model.NewRealEstateSaleDTO;
 import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
 import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 
@@ -22,7 +21,9 @@ public interface RealEstateSaleRepository {
   //동 리스트 조회
   List<Map<String, Object>> getAllNeighborhood(int destrictId);
   //검색조건으로 매매기록 조회하기
-  List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(@Param("districtName") int districtName, @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice,@Param("exclusiveArea") Map<String, Object> exclusiveArea);
+  List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(@Param("districtName") int districtName,
+      @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice,
+      @Param("exclusiveArea") Map<String, Object> exclusiveArea, @Param("offset") int offset, @Param("limit") int limit);
   
   List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId);
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);
