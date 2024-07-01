@@ -1,6 +1,7 @@
 package com.kosa.realestate.community.service;
 
 import com.kosa.realestate.community.dto.PostInfoDTO;
+import com.kosa.realestate.community.dto.UserPostDTO;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -46,4 +47,8 @@ public interface ICommunityService {
 
 	// 게시글 메인 최신글 조회
 	List<PostInfoDTO> findNewPostList();
+
+	List<UserPostDTO> getPostsByUserId(Long userId, int page, int pageSize);
+
+	int getTotalPostsCountByUserId(Long userId);
 }

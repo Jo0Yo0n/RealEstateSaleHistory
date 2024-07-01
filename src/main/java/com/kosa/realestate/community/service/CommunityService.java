@@ -2,6 +2,7 @@ package com.kosa.realestate.community.service;
 
 
 
+import com.kosa.realestate.community.dto.UserPostDTO;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;

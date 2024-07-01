@@ -10,4 +10,5 @@ public interface IFavoriteService {
   List<FavoriteDetailListDTO> findFavoriteDetailLst(int page, Long realEstateId);
   void addFavorite(Long realEstateId, String email);
   void removeFavorite(Long favoriteId);
+  int getTotalFavoritesCountByEmail(Long userId);
 }

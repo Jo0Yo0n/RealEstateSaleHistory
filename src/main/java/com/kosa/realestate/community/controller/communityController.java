@@ -7,6 +7,7 @@ import com.kosa.realestate.comments.service.ICommentService;
 import com.kosa.realestate.community.dto.FileMetaDataDTO;
 import com.kosa.realestate.community.dto.PostDTO;
 import com.kosa.realestate.community.dto.PostInfoDTO;
+import com.kosa.realestate.community.dto.UserPostDTO;
 import com.kosa.realestate.community.service.ICommunityService;
 import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
