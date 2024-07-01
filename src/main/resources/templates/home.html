@@ -33,7 +33,6 @@
 		    <div class="select-box">
 		        <select name="district" id="district" >
 		            <option value='select-district' disabled selected>자치구</option>
-		            <option value='all'>전체</option>
 		            <!-- 타임리프를 사용하여 서버에서 받은 자치구 목록으로 옵션을 생성 -->
 		        </select>
 		    </div>
@@ -60,7 +59,8 @@
 			         <!-- 최소 가격 선택박스 -->
 			        <label for="min-price">최저</label>
 			        <select id="min-price" class="price-option" onchange="updateMaxPriceOptions()">
-			            <option value="0">0</option>
+			        	<option value="" disabled>선택하세요</option>
+			            <option value="0" >최저가격</option>
 			            <option value="1">1억</option>
 			            <option value="2">2억</option>
 			            <option value="3">3억</option>
@@ -86,13 +86,51 @@
 			</div>
 		    
 		
-		    <div class="select-box">
-		        <select name='area' id='area'>
-		            <option value='select-area' disabled selected>면적</option>
-		            <option value='all'>전체</option>
-		            <!-- 여기에 추가 면적 옵션 -->
-		        </select>
-		    </div>
+		    <!-- 면적대 선택 버튼과 팝업을 포함하는 컨테이너 -->
+			<div class="area-container">
+			    <!-- 면적대 선택 버튼 -->
+			    <button id="area-select-btn" class="area-select-btn">면적대 선택</button>
+			    
+			    <!-- 면적대 선택 팝업창 -->
+			    <div id="area-range-popup" class="popup" style="display:none;">
+			        <!-- 팝업창 제목 -->
+			        <div class="popup-header">
+			            <span class="popup-title">면적대 선택</span>
+			            <button class="popup-close-btn" onclick="closeAreaPopup()">닫기</button>
+			        </div>
+			         <!-- 최소 면적 선택박스 -->
+			        <label for="min-area">최소</label>
+			        <select id="min-area" class="area-option" onchange="updateMaxAreaOptions()">
+			            <option value="0">0</option>
+			            <option value="10">10㎡</option>
+					    <option value="20">20㎡</option>
+					    <option value="30">30㎡</option>
+					    <option value="40">40㎡</option>
+					    <option value="50">50㎡</option>
+					    <option value="60">60㎡</option>
+					    <option value="70">70㎡</option>
+					    <option value="80">80㎡</option>
+					    <option value="90">90㎡</option>
+					    <option value="100">100㎡</option>
+   					 <!-- 추가적으로 더 많은 옵션을 넣을 수 있습니다 -->
+			            <!-- 추가 옵션 -->
+			        </select>
+			        <!-- 최대 면적 선택박스 -->
+			        <label for="max-area">최대</label>
+			        <select id="max-area" class="area-option">
+			            <!-- 옵션은 JavaScript를 통해 동적으로 생성됩니다 -->
+			        </select>
+			        <!-- 선택된 면적대 표시 -->
+			        <div id="selected-area-range" class="selected-area-range">
+			            선택된 면적대: <span id="min-area-display">0㎡</span> - <span id="max-area-display">최대</span>
+			        </div>
+			        <!-- 확인 버튼 -->
+			        <button class="confirm-btn" onclick="confirmAreaRange()">확인</button>
+			    </div>
+			</div>
+
+		    
+		    
 		</div>
 
 
@@ -108,7 +146,10 @@
 	function closePopup() {
 	    document.getElementById('price-range-popup').style.display = 'none';
 	}
-
+	// 면적대 팝업창 닫기 함수
+	function closeAreaPopup() {
+	    document.getElementById('area-range-popup').style.display = 'none';
+	}
 	
 	function updateMaxPriceOptions() {
 	    var minPrice = parseInt(document.getElementById('min-price').value);
@@ -116,7 +157,7 @@
 	    maxPriceSelect.innerHTML = ''; // 기존 옵션 제거
 
 	    // '1억 이하' 선택 시 기본 옵션 추가
-	    if (minPrice === 0) {
+	    if (minPrice === '0') {
 	        var defaultOption = document.createElement('option');
 	        defaultOption.value = '1'; // '1억 이하' 옵션의 value 설정
 	        defaultOption.textContent = '1억 이하';
@@ -135,6 +176,7 @@
 		    maxOption.value = '180'; // '최대' 옵션의 value를 서버에 전달할 실제 값으로 설정
 		    maxOption.textContent = '최대';
 		    maxPriceSelect.appendChild(maxOption);
+		    maxPriceSelect.value = 'max'; // '최대' 옵션을 기본값으로 설정
 	    }
 	   
 
@@ -147,7 +189,7 @@
 	    var maxPrice = document.getElementById('max-price').value;
 	    var maxPriceSelect = document.getElementById('max-price');
 	    var minPriceDisplay = minPrice === '0' ? '0' : formatPrice(minPrice);
-	    var maxPriceDisplay = maxPriceSelect.disabled ? '1억 이하' : (maxPrice === '180' ? '최대' : formatPrice(maxPrice));
+	    var maxPriceDisplay = maxPriceSelect ? '1억 이하' : (maxPrice === '180' ? '최대' : formatPrice(maxPrice));
 	    
 	    document.getElementById('min-price-display').textContent = minPriceDisplay;
 	    document.getElementById('max-price-display').textContent = maxPriceDisplay;
@@ -192,7 +234,7 @@
  	// 페이지 로드 시 최대 가격 옵션 초기화 및 선택된 가격대 표시 업데이트
 	document.addEventListener('DOMContentLoaded', function() {
 	    updateMaxPriceOptions();
-	    updatePriceDisplay(); // 초기 페이지 로드 시에도 선택된 가격대를 업데이트
+	    updateMaxAreaOptions();
 	}); 
 	
 
@@ -200,7 +242,6 @@
 	document.getElementById('min-price').addEventListener('change', function() {
 	    updateMaxPriceOptions();
  	    updatePriceDisplay();
- 	   isPriceSelected = true; // 최소 가격이 변경되었음을 표시
  	});
 
 	
@@ -224,14 +265,16 @@ function sendSearchCriteria() {
 	var neighborhood = $('#neighborhood').val() === 'all' ? null : $('#neighborhood').val();
  	var minPrice = $('#min-price').val(); // 최소 가격을 가져옵니다.
     var maxPrice = $('#max-price').val(); // 최대 가격을 가져옵니다. 
-	var area = $('#area').val() === 'all' ? null : $('#area').val();
-    
+	var minArea = $('#min-area').val();
+    var maxArea = $('#max-area').val();
      // 서버에 전송할 가격대 데이터를 설정합니다.
-    var PriceMin = minPrice === '0' ? 0 : parseInt(minPrice);
+    var PriceMin = !minPrice ? 0 : parseInt(minPrice);
     var PriceMax = maxPrice === '180' ? 180 : parseInt(maxPrice); 
     var PriceMax = maxPrice ? parseInt(maxPrice) : 180;
-    
-    
+    var ExclusiveSizeMin = minArea === '0' ? 0 : parseInt(minArea);
+    var ExclusiveSizeMax = maxArea === 'max' ? 320 : maxArea === '0' ? 320 : parseInt(maxArea);
+
+	console.log(ExclusiveSizeMax);
 	// AJAX 요청을 설정합니다.
 	$.ajax({
 		url: '/realestate/search/byCriteria', // 컨트롤러의 URL
@@ -242,8 +285,8 @@ function sendSearchCriteria() {
 			neighborhoodName: neighborhood,
 			PriceMin: PriceMin,
 			PriceMax: PriceMax,
-			ExclusiveSizeMin: 1,
-			ExclusiveSizeMax:100
+			ExclusiveSizeMin: ExclusiveSizeMin,
+			ExclusiveSizeMax:ExclusiveSizeMax
 		}),
 		dataType: 'json',
 		success: function (response) {
@@ -259,7 +302,71 @@ function sendSearchCriteria() {
 }
 		
 		
-		
+// 전용 면적 관려 js
+
+
+//최소 면적 선택박스 변경 시 최대 면적 옵션 업데이트 함수
+function updateMaxAreaOptions() {
+ var minArea = parseInt(document.getElementById('min-area').value);
+ var maxAreaSelect = document.getElementById('max-area');
+ maxAreaSelect.innerHTML = ''; // 기존 옵션 제거
+
+ // 최소 면적 선택 시 최대 면적 옵션 생성
+ for (var i = minArea + 10; i <= 100; i += 10) {
+     var option = document.createElement('option');
+     option.value = i;
+     option.textContent = i + '㎡';
+     maxAreaSelect.appendChild(option);
+ }
+ 
+ // '최대' 옵션 추가
+ var maxOption = document.createElement('option');
+ maxOption.value = 'max'; // '최대' 옵션의 value 설정
+ maxOption.textContent = '최대';
+ maxAreaSelect.appendChild(maxOption);
+ maxAreaSelect.value = 'max'; // '최대' 옵션을 기본값으로 설정
+ updateAreaDisplay(); // 선택된 면적대 표시 업데이트
+}
+
+//선택된 면적대 표시 업데이트 함수
+function updateAreaDisplay() {
+ var minArea = document.getElementById('min-area').value;
+ var maxArea = document.getElementById('max-area').value;
+ var minAreaDisplay = minArea === '0' ? '0㎡' : minArea + '㎡';
+ var maxAreaDisplay = maxArea === 'max' ? '최대' : maxArea + '㎡';
+ 
+ document.getElementById('min-area-display').textContent = minAreaDisplay;
+ document.getElementById('max-area-display').textContent = maxAreaDisplay;
+}
+
+//면적대 확인 함수
+function confirmAreaRange() {
+ var minArea = document.getElementById('min-area').value;
+ var maxArea = document.getElementById('max-area').value;
+
+ // 화면에 표시
+ document.getElementById('min-area-display').textContent = minArea + '㎡';
+ document.getElementById('max-area-display').textContent = maxArea === 'max' ? '최대' : maxArea + '㎡';
+ 
+ // TODO: 서버로 값 전송하는 로직 구현
+	 sendSearchCriteria();
+	 closeAreaPopup(); // 면적대를 확인한 후 팝업창을 닫습니다.
+}
+
+
+//면적대 선택 버튼 클릭 이벤트 리스너
+document.getElementById('area-select-btn').addEventListener('click', function() {
+ var popup = document.getElementById('area-range-popup');
+ popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+});
+
+	// 최소 가격 선택박스 변경 시 최대 가격 옵션 업데이트 및 선택된 가격대 표시 업데이트
+	document.getElementById('min-area').addEventListener('change', function() {
+	    updateMaxAreaOptions();
+	    updateAreaDisplay();
+	});
+
+
 		
 		
 		
@@ -274,7 +381,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const districtSelect = document.getElementById('district');
     const neighborhoodSelect = document.getElementById('neighborhood');
 
-    
+    // 초기 가격대 선택을 비활성화합니다.
+    document.getElementById('min-price').selectedIndex = 0; // "0" 옵션을 선택합니다.
+    document.getElementById('max-price').innerHTML = ''; // 최대 가격 옵션을 비웁니다.
+    updatePriceDisplay(); // 선택된 가격대 표시를 업데이트합니다.
 
 	// Fetch cities and populate city select box
 	fetch('/admindivison/cities')
@@ -292,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	    // 행정구역 선택 시 이벤트 리스너
 	    citySelect.addEventListener('change', function() {
 	        const selectedCityId = this.value;
-	        districtSelect.innerHTML = '<option value="" disabled selected>자치구를 선택하세요</option>'; // 기본 옵션 초기화
+	        districtSelect.innerHTML = '<option value="" disabled selected>자치구</option>'; // 기본 옵션 초기화
 	        
 	     // "전체" 옵션을 다시 생성합니다.
 	        const allOption = document.createElement('option');
@@ -300,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	        allOption.text = '전체';
 	        districtSelect.appendChild(allOption);
 	        
-	        if (selectedCityId && selectedCityId !== 'select-city') {
+	        if (selectedCityId && selectedCityId !== 'all') {
 	            // AJAX 요청을 통해 서버에서 자치구 목록을 가져옵니다.
 	            fetch(`/admindivison/cities/districts?cityId=${selectedCityId}`)
 	                .then(response => {
@@ -327,13 +437,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	    // 자치구 선택 시 이벤트 리스너
 	    districtSelect.addEventListener('change', function() {
 	        const selectedDistrictName = this.value;
-	        neighborhoodSelect.innerHTML = '<option value="" disabled selected>읍/면/동을 선택하세요</option>'; // 기본 옵션 초기화
+	        neighborhoodSelect.innerHTML = '<option value="" disabled selected>읍/면/동</option>'; // 기본 옵션 초기화
 	        
 	     	// "전체" 옵션을 다시 생성합니다.
 	        const allOption = document.createElement('option');
 	        allOption.value = 'all';
 	        allOption.text = '전체';
-	        districtSelect.appendChild(allOption);
+	        neighborhoodSelect.appendChild(allOption);
 	        
 	        if (selectedDistrictName && selectedDistrictName !== 'all') {
 	            // AJAX 요청을 통해 서버에서 동 목록을 가져옵니다.
