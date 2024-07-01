@@ -1,15 +1,30 @@
 /* 게시글 카드 */
+.list-container {
+  width: 900px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  box-sizing: border-box;
+  margin: auto;
+  padding: 5px; /* 상하 패딩 추가 */
+  overflow-y: auto; /* 내부 스크롤 추가 */
+}
+
 .post {
   padding: 10px;
   border: 1px solid #E0E0E0;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease; /* 부드러운 전환 효과 추가 */
 }
 
 .post:hover {
   transform: translateY(-5px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 호버 시 약간의 그림자 추가 */
 }
 
 .post-header {

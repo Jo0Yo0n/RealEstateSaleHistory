@@ -1,18 +1,5 @@
 package com.kosa.realestate.community.controller;
 
-import com.kosa.realestate.admindivision.model.dto.DistrictDTO;
-import com.kosa.realestate.admindivision.service.IAdminDivisionService;
-import com.kosa.realestate.comments.model.dto.CommentDTO;
-import com.kosa.realestate.comments.service.ICommentService;
-import com.kosa.realestate.community.dto.FileMetaDataDTO;
-import com.kosa.realestate.community.dto.PostDTO;
-import com.kosa.realestate.community.dto.PostInfoDTO;
-import com.kosa.realestate.community.dto.UserPostDTO;
-import com.kosa.realestate.community.service.ICommunityService;
-import com.kosa.realestate.users.model.UserDTO;
-import com.kosa.realestate.users.service.IUserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +15,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import com.kosa.realestate.admindivision.model.dto.DistrictDTO;
+import com.kosa.realestate.admindivision.service.IAdminDivisionService;
+import com.kosa.realestate.comments.model.dto.CommentDTO;
+import com.kosa.realestate.comments.service.ICommentService;
+import com.kosa.realestate.community.dto.FileMetaDataDTO;
+import com.kosa.realestate.community.dto.PostDTO;
+import com.kosa.realestate.community.dto.PostInfoDTO;
+import com.kosa.realestate.community.dto.UserPostDTO;
+import com.kosa.realestate.community.service.ICommunityService;
+import com.kosa.realestate.pagination.dto.PageInfoDTO;
+import com.kosa.realestate.pagination.service.PaginationService;
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.service.IUserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+
 
 
 @Controller
@@ -42,8 +46,17 @@ public class communityController {
   private IAdminDivisionService adminDivisionService;
   @Autowired
   private ICommentService commentService;
+  @Autowired
+  private PaginationService paginationService;
 
 
+  
+  @GetMapping("/reply")
+  public String reply() {
+    return "reply";
+  }
+
+  
   @PostMapping("/postUpdate")
   @ResponseBody
   // 게시글 업로드(아이디,구아이디,제목,내용)
@@ -51,15 +64,12 @@ public class communityController {
       @RequestParam("districtId") int districtId, @RequestParam("content") String content,
       @RequestParam(value = "uploadFile", required = false) MultipartFile[] files) {
 
-    System.out.println("[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
-
     // 게시글 업로드
     PostDTO pdto = new PostDTO(userId, districtId, title, content);
-    System.out.println("[[[[[[[[[[[[[[[[[[[[[[["+pdto);
 
     // insert한 idx값을 가져온다
     int n = communityService.insertPost(pdto);
-    System.out.println("gggggggggggg"+n);
+
     Long idx = pdto.getPostId();
 
     communityService.fileTest(idx, files);
@@ -80,32 +90,41 @@ public class communityController {
     return "communityForm";
   }
 
-  // 커뮤니티 리스트
   @GetMapping("/communityList")
-  public String communityList(Principal principal, Model model) {
+  public String communityList(Principal principal, Model model, @RequestParam(value = "page", defaultValue = "1") int currentPage) {
+      List<DistrictDTO> districts = adminDivisionService.findDistrictList(1L);
+      model.addAttribute("districts", districts);
 
-    List<DistrictDTO> districts = adminDivisionService.findDistrictList(1L);
+      List<PostDTO> postList = communityService.postList();
+      int totalPosts = postList.size();
+      
+      int postsPerPage = 5;
+      int displayPageNum = 5;
 
-    model.addAttribute("districts", districts);
+      PageInfoDTO pageInfo = new PageInfoDTO(totalPosts, currentPage, postsPerPage, displayPageNum);
+      paginationService.calculatePageInfo(pageInfo);
 
-    List<PostDTO> postList = communityService.postList();
+      int start = (currentPage - 1) * postsPerPage;
+      int end = Math.min(start + postsPerPage, totalPosts);
+      List<PostDTO> pagedPostList = postList.subList(start, end);
 
-
-    // 각 게시물의 생성일자 날짜 부분만 추출하여 새로운 속성에 설정
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    for (PostDTO postDTO : postList) {
-      LocalDateTime createdAt = postDTO.getCreatedAt();
-      if (createdAt != null) {
-        String dateOnly = createdAt.format(formatter);
-        postDTO.setDateOnly(dateOnly);
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      for (PostDTO postDTO : pagedPostList) {
+          LocalDateTime createdAt = postDTO.getCreatedAt();
+          if (createdAt != null) {
+              String dateOnly = createdAt.format(formatter);
+              postDTO.setDateOnly(dateOnly);
+          }
       }
-    }
 
-    model.addAttribute("postList", postList);
+      model.addAttribute("postList", pagedPostList);
+      model.addAttribute("pageInfo", pageInfo);
 
-    return "communityList";
+      return "communityList";
   }
+
+
+
 
   // 게시판 상세
   @GetMapping("/communityCard")
@@ -128,8 +147,6 @@ public class communityController {
 
       boolean isAuthor = commuCard.getUserId() == userId.intValue();
       model.addAttribute("isAuthor", isAuthor);
-
-
 
     }
 
@@ -170,14 +187,6 @@ public class communityController {
 
     return ResponseEntity.ok(communityService.findNewPostList());
   }
-
-
-  @GetMapping("/reply")
-  public String reply() {
-    return "reply";
-  }
-
-
 
   // 커뮤니티 파일 삭제
   @ResponseBody
@@ -297,6 +306,19 @@ public class communityController {
     return filterOptionPostList;
   }
 
+
+  // 게시글 검색
+  @GetMapping("/searchPosts")
+  @ResponseBody
+  public List<PostDTO> searchPosts(@RequestParam("searchText") String searchText) {
+      System.out.println(searchText);
+      List<PostDTO> posts = communityService.searchPosts(searchText);
+      System.out.println("게시글 검색"+posts);
+      
+      return posts;
+  }
+
+  // 사용자가 작성한 게시물 조회
   @GetMapping("/community/{userId}")
   public String getUserPosts(@PathVariable(name = "userId") Long userId,
       @RequestParam(name="page", defaultValue = "0") int page, Model model) {

@@ -25,7 +25,6 @@ public class FavoriteController {
   private final IUserService userService;
 
   // 즐겨찾기 아파트 리스트 조회
-  // TODO: ResponseBody 통해서 JSON 반환하도록 변경하기
   @GetMapping
   public String favoriteList(
       Model model, Principal principal,

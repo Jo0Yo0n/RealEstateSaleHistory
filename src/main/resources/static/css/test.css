@@ -74,20 +74,11 @@
   cursor: pointer;
 }
 
+.background-image {
 
-
-
-
-
-
-
-
-
-/* 차트 */
-.chart {
-  border: 1px solid #F4CA74;
-  border-radius: 10px;
-  margin: 10px;
+  background-image: url('../assets/images/backImg.jpg');
+  filter: opacity(0.5); 
+    z-index: -1; /* 다른 모든 요소보다 뒤에 위치하도록 설정 */
 }
 
 .slider {
@@ -337,4 +328,12 @@
 }
 .estate-slider .item:hover{
   filter: grayscale(0);
+}
+
+
+
+.box01{
+width: 500px;
+height: 300px;
+
 }

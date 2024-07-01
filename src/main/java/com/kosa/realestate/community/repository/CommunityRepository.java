@@ -41,9 +41,12 @@ public interface CommunityRepository {
   public List<PostDTO> postViewList();
 
 
-	List<PostInfoDTO> selectNewPostList();
+  public List<PostDTO> searchPosts(String searchText);
 
-	List<UserPostDTO> getPostsByUserId(@Param("userId") Long userId, @Param("offset") int offset, @Param("pageSize") int pageSize);	// 유저가 작성한 글 조회
+  List<PostInfoDTO> selectNewPostList();
 
-	int getTotalPostsCountByUserId(@Param("userId") Long userId);
+  List<UserPostDTO> getPostsByUserId(@Param("userId") Long userId, @Param("offset") int offset,
+      @Param("pageSize") int pageSize); // 유저가 작성한 글 조회
+
+  int getTotalPostsCountByUserId(@Param("userId") Long userId);
 }
