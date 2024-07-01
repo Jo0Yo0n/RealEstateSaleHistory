@@ -53,8 +53,6 @@ public class CommunityService implements ICommunityService {
 
   }
 
-
-
   // 게시글 조회
   public void findPostInfo(Long postId) {
 
@@ -215,6 +213,11 @@ public class CommunityService implements ICommunityService {
   public List<PostInfoDTO> findNewPostList() {
 
     return communityRepository.selectNewPostList();
+  }
+
+  @Override
+  public List<PostDTO> searchPosts(String searchText) {
+    return communityRepository.searchPosts(searchText);
   }
 
 }

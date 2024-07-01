@@ -41,5 +41,7 @@ public interface CommunityRepository {
   public List<PostDTO> postViewList();
 
 
-	List<PostInfoDTO> selectNewPostList();
+  List<PostInfoDTO> selectNewPostList();
+
+  public List<PostDTO> searchPosts(String searchText);
 }

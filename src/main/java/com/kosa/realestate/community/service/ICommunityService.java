@@ -42,8 +42,10 @@ public interface ICommunityService {
   List<PostDTO> loadPostsByView(int districtId);
 
   List<PostDTO> postViewList();
-  
 
-	// 게시글 메인 최신글 조회
-	List<PostInfoDTO> findNewPostList();
+
+  // 게시글 메인 최신글 조회
+  List<PostInfoDTO> findNewPostList();
+
+  List<PostDTO> searchPosts(String searchText);
 }
