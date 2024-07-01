@@ -43,12 +43,15 @@ public interface ICommunityService {
   List<PostDTO> loadPostsByView(int districtId);
 
   List<PostDTO> postViewList();
-  
 
-	// 게시글 메인 최신글 조회
-	List<PostInfoDTO> findNewPostList();
 
-	List<UserPostDTO> getPostsByUserId(Long userId, int page, int pageSize);
+  List<PostDTO> searchPosts(String searchText);
 
-	int getTotalPostsCountByUserId(Long userId);
+  // 게시글 메인 최신글 조회
+  List<PostInfoDTO> findNewPostList();
+
+  List<UserPostDTO> getPostsByUserId(Long userId, int page, int pageSize);
+
+  int getTotalPostsCountByUserId(Long userId);
+
 }

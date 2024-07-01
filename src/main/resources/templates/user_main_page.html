@@ -10,10 +10,11 @@
   <script type="text/javascript" th:src="@{/js/user_main_page.js}"></script>
 
   <link rel='stylesheet' th:href='@{/css/test.css}' type='text/css'/>
-
+<!-- <img class="backimg" src="../assets/images/backImg.jpg"/ -->
   <title>부동산사조</title>
 </head>
 <body>
+  <div class="background-image">
   <div th:replace="header :: headerFragment"></div>
 
   <div class="main-container">
@@ -79,7 +80,7 @@
 
     </div>
   </div>
-
+</div>
   <div th:replace="footer :: footerFragment"></div>
 </body>
 </html>
