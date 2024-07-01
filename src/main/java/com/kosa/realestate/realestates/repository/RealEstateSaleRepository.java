@@ -13,6 +13,7 @@ import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 public interface RealEstateSaleRepository {
   int getRealEstateSaleCount();
   int getRealEstateSaleCount(int realEstateId);
+  int estateCountByCriteria(@Param("districtName") int districtName, @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice,@Param("exclusiveArea") Map<String, Object> exclusiveArea);
   
   List<RealEstateWithSaleDTO> selectRealEstateWithSales();
   List<RealEstateWithSaleDTO> selectRealEstateWithSales(Map<String, Object> param);

@@ -38,13 +38,23 @@ public class RealEstateSaleController {
     return realEstateId == 0 ? realEstateSaleService.getRealEstateSaleCount() : realEstateSaleService.getRealEstateSaleCount(realEstateId);
   }
   
-
+  @PostMapping("/count/byCriteria")
+  @ResponseBody
+  public int estateCountByCriteria(@RequestBody(required = false) Map<String, Object> searchCriteria) {
+    // 지역구 조건
+    Integer districtName = null;
+    districtName = searchCriteria != null && searchCriteria.get("districtName") != null ? Integer.parseInt((String) searchCriteria.get("districtName")) : 0;
+    // 동 조건의 여부
+    String neighborhoodName = searchCriteria != null && searchCriteria.get("neighborhoodName") != null ? (String) searchCriteria.get("neighborhoodName") : null;
+    // 가격 조건
+    Integer minPrice = searchCriteria != null && searchCriteria.get("PriceMin") != null ? (Integer) searchCriteria.get("PriceMin") : null;
+    Integer maxPrice = searchCriteria != null && searchCriteria.get("PriceMax") != null ? (Integer) searchCriteria.get("PriceMax") : null;
+    //전용면적 조건
+    Integer minExclusiveSize = searchCriteria != null && searchCriteria.get("ExclusiveSizeMin") != null ? (Integer) searchCriteria.get("ExclusiveSizeMin") : null;
+    Integer maxExclusiveSize = searchCriteria != null && searchCriteria.get("ExclusiveSizeMax") != null ? (Integer) searchCriteria.get("ExclusiveSizeMax") : null;
   
-  /*
-   * @GetMapping("/select") public String estateSelect(Model model) {
-   * model.addAttribute("districtList",realEstateSaleService.getAllDestrictId()); //
-   * model.addAttribute("",realEstateSaleService.) return "map"; }
-   */
+    return realEstateSaleService.estateCountByCriteria(districtName, neighborhoodName, minPrice, maxPrice, minExclusiveSize, maxExclusiveSize);
+  }
   
   @GetMapping("/search")
   @ResponseBody
@@ -72,7 +82,6 @@ public class RealEstateSaleController {
       @RequestBody(required = false) Map<String, Object> searchCriteria) {
     // 지역구 조건
     Integer districtName = null;
-    System.out.println(searchCriteria.get("districtName"));
     districtName = searchCriteria != null && searchCriteria.get("districtName") != null ? Integer.parseInt((String) searchCriteria.get("districtName")) : 0;
     // 동 조건의 여부
     String neighborhoodName = searchCriteria != null && searchCriteria.get("neighborhoodName") != null ? (String) searchCriteria.get("neighborhoodName") : null;
