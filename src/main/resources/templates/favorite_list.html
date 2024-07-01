@@ -1,9 +1,9 @@
-<html th:decorate="~{my_page}">
-<div th:fragment="content">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content" class="list-container">
 
   <div th:each="favorite, loop : ${favoriteList}">
-    <div class="building" th:classappend="${loop.index % 2 == 0} ? '' : 'building-background'">
 
+    <div class="building">
       <div class="building-header">
         <div class="building-label" th:text="${favorite.buildingTypeName}"></div>
         <div class="building-name" th:text="${favorite.complexName}"></div>
@@ -26,16 +26,17 @@
         <div>
           <div class="lately-title">최근 매매 실거래가</div>
           <div class="lately-price" th:text="${favorite.latelySalePrice} + '억'"></div>
-          <div class="lately-info" th:text="${favorite.latelyContractDate} + ', ' + ${favorite.latelyFloor} + '층, ' + ${favorite.latelyExclusiveArea} + '㎡'"></div>
+          <div class="lately-info"
+               th:text="${favorite.latelyContractDate} + ', ' + ${favorite.latelyFloor} + '층, ' + ${favorite.latelyExclusiveArea} + '㎡'"></div>
         </div>
         <div class="sale-info">
           <div>
             <span class="sale-title">전체 매매가</span>
-            <span class="sale-price" th:text="${favorite.minSalePrice} + '억 ~ ' + ${favorite.maxSalePrice} + '억'"></span>
+            <span class="sale-price"
+                  th:text="${favorite.minSalePrice} + '억 ~ ' + ${favorite.maxSalePrice} + '억'"></span>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

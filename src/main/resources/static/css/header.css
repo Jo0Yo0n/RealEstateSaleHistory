@@ -4,9 +4,10 @@ body, html {
 }
 
 .header-container{
-	height: 100px;
+	/*background: #F9DE7B;*/
+	height: 80px;
 	min-width: 1400px;
-	border-bottom: 2px solid #bdbdbd;
+	border-bottom: 1.5px solid #616161;
 	margin:0;
 	display: flex;
 	justify-content:center;
@@ -14,7 +15,7 @@ body, html {
 
 .header-inner-container{
 	width: 1080px;
-	height: 100px;
+	height: 80px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -41,8 +42,19 @@ body, html {
 }
 
 .user-container{
-	width: 100px;
+	width: 150px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+}
+
+a {
+	font-weight: bold;
+	font-size: 1.1em;
+	text-decoration: none;
+	color: #616161;
+}
+
+a:visited, a:hover, a:active {
+	color: #616161;
 }

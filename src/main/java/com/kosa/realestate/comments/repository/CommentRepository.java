@@ -20,8 +20,7 @@ public interface CommentRepository {
     List<CommentDTO> selectCommentByPostId(Long postId);
 
     // 댓글 등록
-    int insertComment(@Param("postId") Long postId, @Param("userId") Long userId,
-        @Param("commentForm") CommentForm commentForm);
+    int insertComment(CommentDTO cdto);
 
     // 댓글 수정
     int modifyComment(

@@ -168,4 +168,37 @@
 	</select>
 
 
+	<select id="selectNewRealEstateSale" resultType="NewRealEstateSaleDTO">
+			select res.sales_id
+					 , res.sale_price
+					 , res.floor
+					 , res.building_name
+					 , res.exclusive_area
+					 , re.real_estate_id
+					 , re.complex_name
+					 , re.address
+					 , re.address_street
+					 , re.construction_year
+					 , re.lat
+					 , re.lng
+					 , bt.building_type_name
+					 , di.district_name
+					 , ci.city_name
+					 , di.district_name
+					 , ne.neighborhood_name
+			  from real_estate_sale     res
+	inner join real_estate          re
+					on re.real_estate_id    = res.real_estate_id
+	inner join building_type        bt
+				  on bt.building_type_id  = re.building_type_id
+	inner join neighborhood         ne
+					on ne.neighborhood_id   = re.neighborhood_id
+	inner join district             di
+					on di.district_id       = ne.district_id
+	inner join city                 ci
+					on ci.city_id           = di.city_id
+		order by res.created_at desc
+			 fetch first 5 rows only
+	</select>
+
 </mapper>

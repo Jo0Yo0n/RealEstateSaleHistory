@@ -1,5 +1,6 @@
 package com.kosa.realestate.admindivision.service;
 
+import com.kosa.realestate.admindivision.model.dto.AutoSearchDTO;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -32,6 +33,8 @@ public class AdminDivisionService implements IAdminDivisionService {
             .build())
         .collect(Collectors.toList());
   }
+
+
   // 자치구 조회
   public List<DistrictDTO> findDistrictList(Long cityId) {
 
@@ -59,5 +62,11 @@ public class AdminDivisionService implements IAdminDivisionService {
             .neighborhoodName(neighborhood.getNeighborhoodName())
             .build())
         .collect(Collectors.toList());
+  }
+
+  // 자동완선 조회
+  public List<AutoSearchDTO> findAutoSearshList() {
+
+    return adminDivisionRepository.selectAutoSearshList();
   }
 }

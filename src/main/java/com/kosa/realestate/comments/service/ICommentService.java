@@ -11,7 +11,7 @@ public interface ICommentService {
 	List<CommentDTO> findCommentByPostId(Long postId);
 
 	// 댓글 등록
-	void addComments(Long postId, String email, CommentForm commentForm);
+	void addComments(CommentDTO cdto);
 
 	// 댓글 수정
 	void modifyComment(Long commentId, Long postId, String email, CommentForm commentForm);

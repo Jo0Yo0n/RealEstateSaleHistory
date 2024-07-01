@@ -1,5 +1,6 @@
 package com.kosa.realestate.admindivision.controller;
 
+import com.kosa.realestate.admindivision.model.dto.AutoSearchDTO;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,5 +41,13 @@ public class AdminDivisonController {
     public ResponseEntity<List<NeighborhoodDTO>> neighborhoodList(@RequestParam("districtId") Long districtId) {
 
         return ResponseEntity.ok(admindivisionService.findNeighborhoodList(districtId));
+    }
+
+
+    // 자동 완성 조회
+    @GetMapping("/auto/search")
+    public ResponseEntity<List<AutoSearchDTO>> autoSearshList() {
+
+        return ResponseEntity.ok(admindivisionService.findAutoSearshList());
     }
 }

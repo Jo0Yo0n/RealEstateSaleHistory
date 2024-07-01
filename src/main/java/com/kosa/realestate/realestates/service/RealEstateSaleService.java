@@ -1,5 +1,6 @@
 package com.kosa.realestate.realestates.service;
 
+import com.kosa.realestate.realestates.model.NewRealEstateSaleDTO;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,5 +73,10 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, salePrice, exclusiveArea);
   }
 
-  
+
+  // 최근 등록 매물 (메인화면)
+  public List<NewRealEstateSaleDTO> findNewRealEstateSale() {
+
+    return estateSaleRepository.selectNewRealEstateSale();
+  }
 }

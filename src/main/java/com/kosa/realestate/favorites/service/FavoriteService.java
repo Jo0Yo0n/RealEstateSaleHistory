@@ -22,7 +22,7 @@ public class FavoriteService implements IFavoriteService {
   // 즐겨찾기 아파트 리스트 조회
   public List<FavoriteListDTO> findFavoriteList(int page, String email) {
     
-    Pageable pageable = PageRequest.of(page, 10);
+    Pageable pageable = PageRequest.of(page, 6);
     
     UserDTO userDto = userService.findUserByEmail(email);
 

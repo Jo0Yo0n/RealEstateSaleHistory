@@ -1,0 +1,91 @@
+/* 즐겨찾기한 리스트 전용 css */
+.list-container {
+  width: 900px;
+  height: 100%;
+  /*border: 1px solid black;*/
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 생성 */
+  /*grid-template-rows: repeat(3, 1fr);    !* 3행 생성 *!*/
+  gap: 20px; /* 그리드 아이템 사이의 간격 설정 */
+  box-sizing: border-box;
+  margin: auto;
+}
+
+.building {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+}
+
+.building:hover {
+  transform: translateY(-5px);
+}
+
+.building-background {
+  background-color: #FAEBAC;
+}
+
+.building-header {
+  display: flex;
+  align-items: center;
+}
+
+.building-label {
+  font-size: 0.7em;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  padding: 2px 3px;
+  margin-right: 5px;
+  border: 1px solid #E0E0E0;
+}
+
+.building-name {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.building-info {
+  font-size: 0.7em;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+/* 최근 거래 내역 */
+.building-sale {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lately-title {
+  font-size: 0.9em;
+}
+
+.lately-price {
+  color: #E3242B;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.lately-info {
+  font-size: 0.7em;
+}
+
+.sale-info {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.sale-title {
+  font-size: 0.7em;
+}
+
+.sale-price {
+  color: #E3242B;
+  font-size: 1em;
+}

@@ -9,7 +9,6 @@
     </div>
   </div>
   <form th:action="@{/users/signup}" th:object="${userCreateForm}" method="post">
-    <!-- <div th:replace="~{form_errors :: formErrorsFragment}"></div> -->
     <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일 오류</div>
     <div>
       <label for="email">이메일</label>

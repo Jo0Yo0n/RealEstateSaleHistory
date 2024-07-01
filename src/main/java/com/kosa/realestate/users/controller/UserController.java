@@ -25,17 +25,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
 import com.kosa.realestate.favorites.service.FavoriteService;
-import com.kosa.realestate.users.DuplicateUserException;
-import com.kosa.realestate.users.InvalidPasswordException;
+import com.kosa.realestate.DuplicateUserException;
+import com.kosa.realestate.InvalidPasswordException;
 import com.kosa.realestate.users.form.UserCreateForm;
 import com.kosa.realestate.users.form.UserUpdateForm;
 import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * UserController 클래스
@@ -55,20 +52,21 @@ public class UserController {
   // 회원가입 페이지로 이동
   @GetMapping("/signup")
   public String signup(UserCreateForm userCreateForm) {
-    return "signup_form";
+
+    return "signup";
   }
 
-  // 회원가입 폼 저장
+  // 회원가입
   @PostMapping("/signup")
-  public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+  public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
-      return "signup_form";
+      return "signup";
     }
 
     // 확인 비밀번호 불일치
     if (!userCreateForm.getPassword().equals(userCreateForm.getPasswordConfirm())) {
       bindingResult.rejectValue("passwordConfirm", "passwordInCorrect", "패스워드가 일치하지 않습니다.");
-      return "signup_form";
+      return "signup";
     }
 
     // 중복 가입 방지
@@ -81,17 +79,17 @@ public class UserController {
       } else if (e.getMessage().contains("Nickname")) {
         bindingResult.rejectValue("nickname", "nicknameDuplicate", "사용 중인 닉네임입니다.");
       }
-      return "signup_form";
+      return "signup";
     }
 
-    // TODO: redirect 위치를 메인 페이지로 변경하기
+    redirectAttributes.addFlashAttribute("signupSuccess", true);
     return "redirect:/";
   }
 
   // 로그인 페이지로 이동
   @GetMapping("/login")
   public String login() {
-    return "login_form";
+    return "login";
   }
 
   // 마이 페이지로 이동
@@ -103,26 +101,17 @@ public class UserController {
 
     String email = principal.getName();
     UserDTO userDTO = userService.findUserByEmail(email);
+
     model.addAttribute("user", userDTO);
 
     List<FavoriteListDTO> favoriteListDtoList = favoriteService.findFavoriteList(0, email);
     model.addAttribute("favoriteList", favoriteListDtoList);
 
     // TODO: my_page.html에서 AJAX 도입해서 페이지네이션
-    return "my_page_temp";
+    return "my-page";
   }
 
-  // 회원 정보 수정 페이지로 이동
-  @GetMapping("/me/update")
-  public String updateUser(Principal principal, UserUpdateForm userUpdateForm) {
-    if (principal == null) {
-      return "access_denied";
-    }
-
-    return "update_form";
-  }
-
-  // 회원 정보 수정 폼 저장
+  // 회원 정보 수정
   @PutMapping("/me")
   @ResponseBody
   public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateForm userUpdateForm,
@@ -197,11 +186,11 @@ public class UserController {
   }
 
 
-
   //사용자 중개자 권한 요청
   @PostMapping("/me/permission")
   @ResponseBody
-  public ResponseEntity<?> requestPermission(Principal principal, RedirectAttributes redirectAttributes) {
+  public ResponseEntity<?> requestPermission(Principal principal,
+      RedirectAttributes redirectAttributes) {
     if (principal == null) {
       return ResponseEntity.status(403).body("접근 거부됨");
     }
@@ -210,7 +199,7 @@ public class UserController {
     String email = principal.getName();
     UserDTO target = userService.findUserByEmail(email);
 
-    try{
+    try {
       boolean result = userService.requestPermission(target.getUserId());
 
       if (result) {
@@ -255,28 +244,28 @@ public class UserController {
     int updatedCount = userService.updateUserAccountType(userIds);
     return ResponseEntity.ok("성공적으로 업데이트된 사용자 수: " + updatedCount);
   }
-  
-    
+
+
   //권한 요청 거절 
-    @PostMapping("/rejectPermission")
-    public ResponseEntity<?> rejectPermission(@RequestBody List<Long> userId) {
-      
-      boolean success = userService.rejectUserAccountType(userId);
-     
-      if (success) {
-        return ResponseEntity.ok("사용자 권한 요청이 성공적으로 거절되었습니다.");
-      } else {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                             .body("권한 요청 거절 처리 중 오류가 발생했습니다.");
-      }
+  @PostMapping("/rejectPermission")
+  public ResponseEntity<?> rejectPermission(@RequestBody List<Long> userId) {
+
+    boolean success = userService.rejectUserAccountType(userId);
+
+    if (success) {
+      return ResponseEntity.ok("사용자 권한 요청이 성공적으로 거절되었습니다.");
+    } else {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("권한 요청 거절 처리 중 오류가 발생했습니다.");
     }
-    
-    //권한 UPDATE agent -> nomal
-    @PostMapping("/roleToNomal")
-    public ResponseEntity<?> updateRoleToNormal(@RequestBody List<Long> userIds){
-      
-      int updatedCount = userService.updateRoleToNormal(userIds);
-      return ResponseEntity.ok("성공적으로 업데이트된 사용자 수: " + updatedCount);
-    }
+  }
+
+  //권한 UPDATE agent -> nomal
+  @PostMapping("/roleToNomal")
+  public ResponseEntity<?> updateRoleToNormal(@RequestBody List<Long> userIds) {
+
+    int updatedCount = userService.updateRoleToNormal(userIds);
+    return ResponseEntity.ok("성공적으로 업데이트된 사용자 수: " + updatedCount);
+  }
 
 }

@@ -1,5 +1,6 @@
 package com.kosa.realestate.realestates.repository;
 
+import com.kosa.realestate.realestates.model.NewRealEstateSaleDTO;
 import java.util.List;
 import java.util.Map;
 
@@ -24,4 +25,7 @@ public interface RealEstateSaleRepository {
   
   List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId);
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);
+
+  // 최근 등록 매물 (메인화면)
+  List<NewRealEstateSaleDTO> selectNewRealEstateSale();
 }

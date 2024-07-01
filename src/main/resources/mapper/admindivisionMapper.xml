@@ -20,14 +20,40 @@
       	  from district
      	 where city_id = #{cityId}
 	</select>
-	
-	
+
+	<!--  행정동 조회 -->
 	<select id="selectNeighborhoodList" parameterType="long" resultType="Neighborhood">
         select neighborhood_id      neighborhoodId
              , district_id          districtId
              , neighborhood_name    neighborhoodName
           from neighborhood
          where district_id = #{districtId}
+	</select>
+
+
+	<select id="selectAutoSearshList" resultType="AutoSearchDTO">
+		select 0            seq
+				 , city_name    name
+		  from city
+		 union
+		select 1                                        seq
+				 , ci.city_name || ' ' || di.district_name  name
+			from city     ci
+inner join district di
+				on di.city_id = ci.city_id
+		 union
+		select 2                                               seq
+				 , di.district_name || ' ' || ne.neighborhood_name name
+			from district         di
+inner join neighborhood     ne
+				on ne.district_id   = di.district_id
+		 union
+		select 3                                                seq
+				 , ne.neighborhood_name || ' ' || re.complex_name   name
+		  from neighborhood         ne
+inner join real_estate          re
+				on re.neighborhood_id   = ne.neighborhood_id
+  order by seq
 	</select>
 
 </mapper>

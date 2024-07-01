@@ -1,4 +1,4 @@
-package com.kosa.realestate.users;
+package com.kosa.realestate.security;
 
 import com.kosa.realestate.users.model.Users;
 import java.time.LocalDateTime;

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판 폼 예제</title>
-    <title>게시판 폼 예제</title>
 	<link rel='stylesheet' href='../css/communityList.css' type='text/css'/>
     <!-- 부트스트랩 CSS 링크 -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -18,57 +17,93 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!-- Select2 초기화 스크립트 -->
     <script type="text/javascript">
-        $(document).ready(function(){
-            $('#districtSelect').change(function() {
-                var districtId = $(this).val();
+    $(document).ready(function(){
+       
+        $('.postListdiv').on('click', '.postTitle', function() {
+            var postId = $(this).data('postid');
+            window.location.href = '/communityCard?postId=' + postId;
+        });
+		
+        //좋아요, 최신순
+        $('#filterOption').change(function() {
+            var filterOption = $(this).val();
+            
+            var districtId= $('#districtSelect').val();
+            console.log(districtId);
 
-                // AJAX 요청 설정
-                $.ajax({
-                    url: '/loadPostsByDistrict', // 데이터를 가져올 엔드포인트 URL
-                    type: 'GET', // GET 또는 POST 방식 선택
-                    data: { districtId: districtId }, // 요청에 포함할 데이터
-                    success: function(response) {
-                        // 성공적으로 데이터를 받았을 때 실행할 코드
-                        // 예: 받은 데이터로 게시물 목록을 업데이트
-                        updatePostList(response); 
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        // 오류 처리 코드
-                        console.error('AJAX Error: ' + textStatus, errorThrown);
-                    }
-                });
+            $.ajax({
+                url: '/filterOption', 
+                type: 'GET', 
+                data: { filterOption: filterOption,
+                     	districtId:districtId}, 
+                success: function(response) {
+                	updatePostList(response);                	
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                   
+                    console.error('AJAX Error: ' + textStatus, errorThrown);
+                }
             });
+  			
+        });
+        
+        // // 자치구 필터링    
+        $('#districtSelect').change(function() {
+            var districtId = $(this).val();
 
-            // 받은 데이터로 게시물 목록을 업데이트하는 함수
-            function updatePostList(posts) {
-                // 게시물을 표시할 DOM 요소 선택
-                var postContainer = $('.card-body'); // 실제로는 데이터를 표시할 적절한 DOM 요소 선택
+            $.ajax({
+                url: '/loadPostsByDistrict', 
+                type: 'GET', 
+                data: { districtId: districtId }, 
+                success: function(response) {
+                    updatePostList(response); 
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                   
+                    console.error('AJAX Error: ' + textStatus, errorThrown);
+                }
+            });
+        });
+    });
 
-                // 기존 게시물 목록을 비우고 새로운 데이터로 업데이트
-                postContainer.empty();
+        $('.postTitle').click(function() {
+            var postId = $(this).data('postid');
+            window.location.href = '/communityCard?postId=' + postId;
+        });
+        function updatePostList(posts) {
+            // 게시물을 표시할 DOM 요소 선택
+            var postContainer = $('.postListdiv'); 
+
+            // 기존 게시물 목록을 비우고 새로운 데이터로 업데이트
+            postContainer.empty();
+            
+            console.log("postContainer 실행");
+            
+            if(posts.length === 0) {
+                postContainer.append('<div class="no-posts"><img class="emptyPostimg" src="../assets/images/gps.gif"/><p class="emptyPosttxt">현재 게시글이 없습니다. 글을 작성해 소통해보세요!</p></div>');
+            }  else {
                 posts.forEach(function(post) {
-                    // 게시물을 표시하는 HTML 코드를 생성하여 추가
+                    
                     var postHTML = '<div class="card">';
                     postHTML += '<div class="card-body">';
-                    postHTML += '<div class="card-header">' + post.nickname + '</div>';
-                    postHTML += '<div class="card-title">' + post.title + '</div>';
-                    postHTML += '<div class="card-text">' + post.content + '</div>';
+                    postHTML += '<div class="card-header">';
+                    postHTML += '<span>' + post.nickname + '</span>';
+                    postHTML += '<div class="location">서울특별시 · <span class="postcon" data-postid="' + post.postId + '">' + post.districtName + '</span></div>';
+                    postHTML += '</div>';
+                    postHTML += '<div class="card-title"><span class="postTitle" data-postid="' + post.postId + '">' + post.title + '</span></div>';
+                    postHTML += '<div class="card-text"><span>' + post.content + '</span></div>';
                     postHTML += '<div class="card-footer">';
                     postHTML += '<div class="interaction">';
                     postHTML += '<button class="comment">💬 ' + post.comments + '</button>';
-                    postHTML += '<span class="view">👁️ ' + post.views + '</span>';
+                    postHTML += '<span class="view">👁️ ' + post.postView + '</span>';
+                    postHTML += '<span class="uploadData">' + post.dateOnly + '</span>';
                     postHTML += '</div></div></div></div>';
 
-                    // 생성한 HTML을 postContainer에 추가
+                   
                     postContainer.append(postHTML);
                 });
             }
-           
-            $('.postcon').click(function() {
-                var postId = $(this).data('postid');
-                window.location.href = '/communityCard?postId=' + postId;
-            });
-        });
+        }
 
     </script>
 </head>
@@ -88,35 +123,43 @@
                     <option selected>서울특별시</option>
                 </select>
                 <select class="form-control pt-1 mt-4 selectbox" id="districtSelect">
-					<option value="" disabled selected>자치구</option>
+					<option  th:value=0  th:text="자치구"></option>
 				    <!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
 				    <option th:each="district : ${districts}" th:value="${district.districtId}" th:text="${district.districtName}"></option>
                 </select>
-                <select class="form-control pt-1 mt-4 selectbox">
-                    <option selected>최신순</option>
-				<option value="" disabled selected>좋아요순 </option>
+                <select class="form-control pt-1 mt-4 selectbox" id="filterOption">
+                    <option selected value="최신순">최신순</option>
+				<option value="조회순"> 조회순 </option>
                 </select>
             </div>
-            <hr>            
-         <th:block th:each="post : ${postList}">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-header">
-                          <span th:text="${post.nickname}"></span>
-                        <div class="location">서울특별시 · <span class="postcon" th:data-postid="${post.postId}" th:text="${post.districtName}"></span></div>
-                    </div>
-                    <div class="card-title"><span  class="postcon" th:data-postid="${post.postId}"  th:text="${post.title}"></span></div>
-                    <div class="card-text"><span th:text="${post.content}"></span></div>
-                    <div class="card-footer">
-                        <div class="interaction">
-<!--                             <button class="like">👍 1</button> -->
-                            <button class="comment">💬 1</button>
-                            <span class="view">👁️ 1</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </th:block>
+            <hr>
+			<div class="postListdiv">   
+			    <th:block th:if="${#lists.isEmpty(postList)}">
+			        <div class="no-posts">
+			            <img class="emptyPostimg" src='../assets/images/gps.gif'/>
+			            <p class="emptyPosttxt">현재 게시글이 없습니다. 글을 작성해 소통해보세요!</p>
+			        </div>
+			    </th:block>
+			    <div th:each="post : ${postList}">
+			        <div class="card">
+			            <div class="card-body">
+			                <div class="card-header">
+			                    <span th:text="${post.nickname}"></span>
+			                    <div class="location">서울특별시 · <span class="postcon" th:data-postid="${post.postId}" th:text="${post.districtName}"></span></div>
+			                </div>
+			                <div class="card-title"><span class="postTitle" th:data-postid="${post.postId}" th:text="${post.title}"></span></div>
+			                <div class="card-text"><span th:text="${post.content}"></span></div>
+			                <div class="card-footer">
+			                    <div class="interaction">
+			                        <button class="comment">💬 *</button>
+			                        <span class="view">👁️ <span th:text="${post.postView}"></span></span>
+			                        <span class="uploadData"><span th:text="${post.dateOnly}"></span>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
         </div>
     </div>
 </body>
