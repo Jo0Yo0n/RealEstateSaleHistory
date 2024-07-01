@@ -26,4 +26,7 @@ public interface FavoriteRepostiory {
   
   // 즐겨찾기 삭제
   void removeFavorite(Long favoriteId);
+
+  // 사용자가 즐겨찾기한 매물 개수 반환
+  int getTotalFavoritesCountByEmail(Long userId);
 }

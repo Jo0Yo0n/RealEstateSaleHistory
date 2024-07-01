@@ -240,4 +240,36 @@
 		p.post_view DESC		  				   
 	</select>
 
+	<select id="getPostsByUserId" resultType="UserPostDTO">
+		SELECT
+			p.post_id,
+			p.content,
+			p.user_id,
+			p.district_id,
+			p.title,
+			p.created_at,
+			p.updated_at,
+			p.post_view,
+			u.nickname,
+			d.district_name,
+			c.city_name
+		FROM
+			post p
+				INNER JOIN
+			users u ON p.user_id = u.user_id
+				INNER JOIN
+			district d ON p.district_id = d.district_id
+				INNER JOIN
+			city c ON c.city_id = d.city_id
+		where p.isdeleted = 'N' and p.user_id = #{userId}
+		ORDER BY
+			p.created_at desc
+		offset #{offset} rows fetch next #{pageSize} rows only
+	</select>
+
+	<select id="getTotalPostsCountByUserId" resultType="int">
+		select count(*)
+		from post
+		where isdeleted = 'N' AND user_id = #{userId}
+	</select>
 </mapper>

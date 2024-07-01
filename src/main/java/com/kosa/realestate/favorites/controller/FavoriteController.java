@@ -1,7 +1,12 @@
 package com.kosa.realestate.favorites.controller;
 
+import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
+import com.kosa.realestate.favorites.service.IFavoriteService;
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.service.IUserService;
 import java.security.Principal;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,9 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
-import com.kosa.realestate.favorites.service.IFavoriteService;
-import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteController {
 
   private final IFavoriteService favoriteService;
-
+  private final IUserService userService;
 
   // 즐겨찾기 아파트 리스트 조회
   // TODO: ResponseBody 통해서 JSON 반환하도록 변경하기
@@ -32,10 +34,18 @@ public class FavoriteController {
     List<FavoriteListDTO> favoriteListDto = favoriteService.findFavoriteList(page,
         principal.getName());
 
+    UserDTO userDTO = userService.findUserByEmail(principal.getName());
+
+    int pageSize = 6;
+    int totalFavorites = favoriteService.getTotalFavoritesCountByEmail(userDTO.getUserId());
+    int totalPages = (int) Math.ceil((double) totalFavorites / pageSize);
+
     model.addAttribute("favoriteCount", favoriteListDto.size());
     model.addAttribute("favoriteList", favoriteListDto);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
 
-    return "redirect:/users/me";
+    return "favorite_list :: content";
   }
 
 
