@@ -1,0 +1,17 @@
+@charset "UTF-8";
+body, html {
+  margin: 0;
+}
+
+.footer-container{
+  /*background: #F9DE7B;*/
+  height: 100px;
+  width: 100%;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1.5px solid #616161;
+  position: absolute;
+  bottom: 0;
+}

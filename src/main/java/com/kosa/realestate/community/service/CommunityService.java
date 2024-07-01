@@ -154,5 +154,16 @@ public class CommunityService implements ICommunityService {
 		communityRepository.postDelete(postId);
 		
 	}
-    
+
+  @Override
+  public List<PostDTO> loadPostsByDistrict(int districtId) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public List<PostInfoDTO> findNewPostList() {
+
+		return communityRepository.selectNewPostList();
+  }
 }

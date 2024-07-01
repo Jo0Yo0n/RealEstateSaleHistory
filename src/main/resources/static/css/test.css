@@ -1,0 +1,340 @@
+
+.main-container {
+  display: flex;
+  justify-content: center;
+}
+
+.body-container {
+  width: 1080px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 검색 창 */
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 20px;
+}
+
+.search img {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  cursor: pointer;
+  right: 25px;
+  justify-content: center;
+}
+
+.search-box {
+  width: 400px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f8f8f8;
+  font-size: 20px;
+  padding-left: 15px;
+  font-weight: bold;
+  border: 1px solid #616161;
+}
+
+.search-box::placeholder {
+  color: #b7b7b7;
+}
+
+.search-box:focus {
+  outline: 0.5px solid #616161;
+}
+
+/* 자동 완성 */
+.auto-complete {
+  position: absolute;
+  width: 350px;
+  margin: 1px 10px;
+  background: #f8f8f8;
+  border-radius: 10px;
+}
+
+.auto-complete > div.active {
+  background: #BDBDBD;
+  color: white;
+}
+
+.auto-complete > div:hover, .auto-complete > div.hover {
+  background: #666;
+  color: white;;
+}
+
+.auto-complete > div {
+  background: #f8f8f8;
+  padding: .2rem .6rem;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+/* 차트 */
+.chart {
+  border: 1px solid #F4CA74;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.slider {
+  /*border: 1px solid coral;*/
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.slides {
+  width: 500%;
+  height: 300px;
+  display: flex;
+}
+
+.slides input {
+  display: none;
+}
+
+.slide {
+  width: 20%;
+  transition: 2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-manual {
+  position: absolute;
+  width: 1080px;
+  display: flex;
+  justify-content: right;
+  margin-top: 305px;
+}
+
+.manual-btn {
+  border: 1px solid #BDBDBD;
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 1s;
+}
+
+.manual-btn:not(:last-child) {
+  margin-right: 5px;
+}
+
+/* 마우스 올렸을 때 */
+.manual-btn:hover {
+  background: #616161;
+}
+
+#radio1:checked ~ .first {
+  margin-left: 0;
+}
+#radio2:checked ~ .first {
+  margin-left: -20%;
+}
+
+.navigation-auto {
+  position: absolute;
+  display: flex;
+  width: 1080px;
+  justify-content: right;
+  margin-top: 305px;
+}
+
+.navigation-auto div {
+  border: 1px solid #BDBDBD;
+  padding: 5px;
+  border-radius: 10px;
+  transition: 1s;
+}
+
+.navigation-auto div:not(:last-child) {
+  margin-right: 5px;
+}
+
+#radio1:checked ~ .navigation-auto .auto-btn1 {
+  background: #F9DE7B;
+}
+#radio2:checked ~ .navigation-auto .auto-btn2 {
+  background: #F9DE7B;
+}
+
+
+/* 정보 */
+.detail-info {
+  display: flex;
+  width: 100%; /* 전체 너비 사용 */
+  margin-top: 20px;
+}
+
+/* 최근 게시물 */
+.post-info {
+  border: 1px solid #F4CA74;
+  padding: 10px;
+  width: 65%;
+  margin: 0px 20px 0px 0px;
+  border-radius: 10px;
+}
+
+.info-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #616161;
+  display: inline-block;
+  border-bottom: 2px solid #616161;
+  padding-bottom: 5px;
+}
+
+.post-link {
+  display: flex;
+  justify-content: space-between;
+  text-decoration: none;
+  color: black;
+  padding: 5px;
+  margin: 5px 10px 0px 10px;
+  border: 1px solid #BDBDBD;
+  border-radius: 5px;
+}
+
+.post-link:hover {
+  background-color: #F9DE7B;
+}
+
+.post-title {
+  color: #616161;
+  font-size: 0.8em;
+}
+
+.post-create-date {
+  color: #616161;
+  font-size: 0.4em;
+}
+
+
+
+
+
+
+
+/* 최근 매물 */
+.estate-info {
+  border: 1px solid #F4CA74;
+  padding: 10px;
+  width: 35%;
+  border-radius: 10px;
+}
+
+.building {
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #E0E0E0;
+}
+
+.building-background {
+  background-color: #FAEBAC;
+}
+
+.building-header {
+  display: flex;
+  align-items: center;
+}
+
+.building-label {
+  font-size: 0.3em;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  padding: 2px 3px;
+  margin-right: 5px;
+  border: 1px solid #E0E0E0;
+}
+
+.building-name {
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+.building-info {
+  font-size: 0.3em;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+/* 최근 거래 내역 */
+.building-sale {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lately-price {
+  color: #E3242B;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.lately-info {
+  font-size: 0.4em;
+}
+
+/* 매매 관련 오토 슬라이드 */
+.auto-slider {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.estate-slider{
+  width: 100%;
+  height: var(--height);
+  overflow: hidden;
+}
+
+.estate-slider .estate-list{
+  display: flex;
+  width: 100%;
+  min-width: calc(var(--width) * var(--quantity));
+  position: relative;
+}
+
+.estate-slider .estate-list .item{
+  width: var(--width);
+  height: var(--height);
+  position: absolute;
+  left: 100%;
+  animation: autoRun 15s linear infinite;
+  transition: filter 0.5s;
+  animation-delay: calc((15s / var(--quantity)) * (var(--position) - 1))!important;
+}
+
+@keyframes autoRun{
+  from{
+    left: 30%;
+  }to{
+     left: calc(var(--width) * -3.8);
+   }
+}
+
+.estate-slider:hover .item{
+  animation-play-state: paused!important;
+  filter: grayscale(1);
+}
+.estate-slider .item:hover{
+  filter: grayscale(0);
+}

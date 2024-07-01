@@ -1,5 +1,6 @@
 package com.kosa.realestate.realestates.service;
 
+import com.kosa.realestate.realestates.model.NewRealEstateSaleDTO;
 import java.util.List;
 import java.util.Map;
 import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
@@ -17,4 +18,8 @@ public interface IRealEstateSaleService {
 
   List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId);
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);
+
+
+  // 최근 등록 매물 (메인화면)
+  List<NewRealEstateSaleDTO> findNewRealEstateSale();
 }

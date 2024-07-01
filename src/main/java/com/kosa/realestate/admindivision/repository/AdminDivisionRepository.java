@@ -1,5 +1,6 @@
 package com.kosa.realestate.admindivision.repository;
 
+import com.kosa.realestate.admindivision.model.dto.AutoSearchDTO;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface AdminDivisionRepository {
   List<District> selectDistrictList(Long cityId);
 
   List<Neighborhood> selectNeighborhoodList(Long districtId);
+
+  List<AutoSearchDTO> selectAutoSearshList();
 }

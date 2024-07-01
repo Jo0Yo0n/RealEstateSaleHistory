@@ -10,4 +10,5 @@ public class PostInfoDTO {
     private Long postId;
     private String title;
     private String content;
+    private String createdAt;
 }
