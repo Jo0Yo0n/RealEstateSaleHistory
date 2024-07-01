@@ -20,33 +20,25 @@
 </head>
 
 <body>
+
+
     <div class="navbar">
         <div class="nav-content" id="home-icon">
             <img th:src="@{/assets/images/home.png}" />
         </div>
-        <div class="nav-content" id="comm-icon">
-            <img th:src="@{/assets/images/comm.png}" />
-        </div>
-        <div class="nav-content" id="user-icon">
-            <img th:src="@{/assets/images/user.png}" />
-        </div>
     </div>
+	<div class="global-search">
+		<input class="global-search-box" type='text' placeholder='검색어 입력' /> 
+		<img th:src="@{/assets/images/search.png}" />
+	</div>
+   
     <div id="map"></div>
     <div class="menu" id="home-menu">
         <div class="close-menu"><img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' /></div>
         <div th:insert="~{home :: content}"></div>
     </div>
-    <div class="menu" id="comm-menu">
-        <div class="close-menu">
-            <img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' />
-        </div>
-    </div>
-    <div class="menu" id="user-menu">
-        User Menu Content
-        <div class="close-menu">
-            <img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' />
-        </div>
-    </div>
+
+
     <div class="menu" id="apt-info"></div>
 
     <div id="close-btn-template" style="display:none;">

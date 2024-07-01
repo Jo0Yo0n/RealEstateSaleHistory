@@ -105,3 +105,34 @@ body, html {
   color: white; /* 활성 페이지의 글자색 */
   border: 1px solid #4CAF50; /* 활성 페이지의 테두리 */
 }
+.global-search {
+  position: absolute; /* 절대적 위치 지정 */
+  top: 22px; /* 상단에서 10px 떨어진 위치 */
+  left: 94px; /* 왼쪽에서 10px 떨어진 위치 */
+  z-index: 999; /* 지도 위에 나타나도록 z-index 설정 */
+}
+
+.global-search-box {
+  height: 40px;
+  width: 335px;
+  border-radius: 10px;
+  background: rgb(248, 248, 248);
+  font-size: 14px;
+  padding-left: 15px;
+  font-weight: bold;
+  border: 0px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.global-search img {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  cursor: pointer;
+  right: 35px;
+  top : 8px;
+}
+
+.global-search-box::placeholder {
+  color: #b7b7b7;
+}
