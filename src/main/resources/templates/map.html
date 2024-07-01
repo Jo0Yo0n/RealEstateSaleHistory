@@ -27,11 +27,9 @@
             <img th:src="@{/assets/images/home.png}" />
         </div>
     </div>
-	<div class="global-search">
-		<input class="global-search-box" type='text' placeholder='검색어 입력' /> 
-		<img th:src="@{/assets/images/search.png}" />
-	</div>
-   
+	<div class="search-container">
+	   <div th:replace="search :: search-box"></div>
+   </div>
     <div id="map"></div>
     <div class="menu" id="home-menu">
         <div class="close-menu"><img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' /></div>
