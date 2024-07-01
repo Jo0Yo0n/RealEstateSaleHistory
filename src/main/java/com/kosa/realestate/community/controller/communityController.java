@@ -318,6 +318,7 @@ public class communityController {
       return posts;
   }
 
+  // 사용자가 작성한 게시물 조회
   @GetMapping("/community/{userId}")
   public String getUserPosts(@PathVariable(name = "userId") Long userId,
       @RequestParam(name="page", defaultValue = "0") int page, Model model) {
