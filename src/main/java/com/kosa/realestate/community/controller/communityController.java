@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +22,7 @@ import com.kosa.realestate.comments.service.ICommentService;
 import com.kosa.realestate.community.dto.FileMetaDataDTO;
 import com.kosa.realestate.community.dto.PostDTO;
 import com.kosa.realestate.community.dto.PostInfoDTO;
+import com.kosa.realestate.community.dto.UserPostDTO;
 import com.kosa.realestate.community.service.ICommunityService;
 import com.kosa.realestate.pagination.dto.PageInfoDTO;
 import com.kosa.realestate.pagination.service.PaginationService;
@@ -28,6 +30,8 @@ import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+
 
 
 @Controller
@@ -65,7 +69,7 @@ public class communityController {
 
     // insert한 idx값을 가져온다
     int n = communityService.insertPost(pdto);
-    System.out.println("gggggggggggg" + n);
+
     Long idx = pdto.getPostId();
 
     communityService.fileTest(idx, files);
@@ -302,6 +306,7 @@ public class communityController {
     return filterOptionPostList;
   }
 
+
   // 게시글 검색
   @GetMapping("/searchPosts")
   @ResponseBody
@@ -313,4 +318,19 @@ public class communityController {
       return posts;
   }
 
+  @GetMapping("/community/{userId}")
+  public String getUserPosts(@PathVariable(name = "userId") Long userId,
+      @RequestParam(name="page", defaultValue = "0") int page, Model model) {
+
+    int pageSize = 6;
+    List<UserPostDTO> posts = communityService.getPostsByUserId(userId, page, pageSize);
+    int totalPosts = communityService.getTotalPostsCountByUserId(userId);
+    int totalPages = (int) Math.ceil((double) totalPosts / pageSize);
+
+    model.addAttribute("posts", posts);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+
+    return "post-list :: content";
+  }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kosa.realestate.community.dto.FileMetaDataDTO;
 import com.kosa.realestate.community.dto.PostDTO;
 import com.kosa.realestate.community.dto.PostInfoDTO;
+import com.kosa.realestate.community.dto.UserPostDTO;
 import com.kosa.realestate.community.repository.CommunityRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,15 +54,15 @@ public class CommunityService implements ICommunityService {
 
   }
 
-  // 게시글 조회
+	// 게시글 조회
   public void findPostInfo(Long postId) {
 
-    PostInfoDTO postInfo = communityRepository.selectPostInfo(postId);
+		PostInfoDTO postInfo = communityRepository.selectPostInfo(postId);
 
-    if (postInfo == null) {
-      throw new RuntimeException("해당 되는 게시판이 없습니다.");
-    }
-  }
+		if (postInfo == null) {
+			throw new RuntimeException("해당 되는 게시판이 없습니다.");
+		}
+	}
 
   @Override
   public List<FileMetaDataDTO> selectFiles(Long postId) {
@@ -107,7 +108,7 @@ public class CommunityService implements ICommunityService {
         String directoryPath = filePath.substring(0, filePath.lastIndexOf("\\") + 1);
 
         String fileType = originalFileName.substring(originalFileName.lastIndexOf(".") + 1); // 파일
-                                                                                             // 유형
+        // 유형
 
         File saveFile = new File(filePath);
 
@@ -215,9 +216,21 @@ public class CommunityService implements ICommunityService {
     return communityRepository.selectNewPostList();
   }
 
+
   @Override
   public List<PostDTO> searchPosts(String searchText) {
     return communityRepository.searchPosts(searchText);
   }
 
+
+  // userId로 회원이 작성한 게시글 전체 조회
+  public List<UserPostDTO> getPostsByUserId(Long userId, int page, int pageSize) {
+    int offset = page * pageSize;
+    return communityRepository.getPostsByUserId(userId, offset, pageSize);
+  }
+
+  // userId로 회원이 작성한 게시글 갯수 조회
+  public int getTotalPostsCountByUserId(Long userId) {
+		return communityRepository.getTotalPostsCountByUserId(userId);
+	}
 }
