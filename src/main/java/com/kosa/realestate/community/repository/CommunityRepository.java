@@ -12,25 +12,34 @@ import com.kosa.realestate.community.dto.PostDTO;
 @Mapper
 @Repository
 public interface CommunityRepository {
-	
-	public int insertPost(PostDTO pdto);
 
-	public void fileUpload(FileMetaDataDTO fdto);
+  public int insertPost(PostDTO pdto);
 
-	public List<PostDTO> postList();
+  public void fileUpload(FileMetaDataDTO fdto);
 
-	public PostDTO communityCard(int postId);
+  public List<PostDTO> postList();
 
-	// 게시글 조회
-	PostInfoDTO selectPostInfo(Long postId);
+  public PostDTO communityCard(Long postId);
 
-	public List<FileMetaDataDTO> selectFiles(int postId);
+  // 게시글 조회
+  PostInfoDTO selectPostInfo(Long postId);
 
-	public void deleteFile(int fileId);
+  public List<FileMetaDataDTO> selectFiles(Long postId);
 
-	public void postUpdate(PostDTO pdto);
+  public void deleteFile(int fileId);
 
-	public void postDelete(int postId);
+  public void postUpdate(PostDTO pdto);
+
+  public void postDelete(Long postId);
+
+  public List<PostDTO> loadPostsByDistrict(int districtId);
+
+  public void updateViewCount(Long postId);
+
+  public List<PostDTO> loadPostsByView(int districtId);
+
+  public List<PostDTO> postViewList();
+
 
 	List<PostInfoDTO> selectNewPostList();
 }

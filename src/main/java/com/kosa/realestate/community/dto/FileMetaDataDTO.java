@@ -12,7 +12,7 @@ import lombok.ToString;
 	
 	
 		private int fileId;
-		private int postId;
+		private Long postId;
 		private String fileName;
 		private String filePath;
 		private String fileType;

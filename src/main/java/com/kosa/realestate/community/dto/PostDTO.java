@@ -18,7 +18,7 @@ import lombok.ToString;
 
 public class PostDTO {
 
-	private int postId;
+	private Long postId;
     private int userId;
     private int districtId;
     private String title;
@@ -30,11 +30,12 @@ public class PostDTO {
 
     private String nickname;
     private String districtName;
+    private String dateOnly;
     
 
     
     // 모든 필드를 초기화하는 생성자
-    public PostDTO(int postId, int userId, int districtId, String title, String content,
+    public PostDTO(Long postId, int userId, int districtId, String title, String content,
                    int postView, String isDeleted, LocalDateTime createdAt, LocalDateTime updatedAt,
                    String nickname, String districtName) {
         this.postId = postId;

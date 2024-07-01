@@ -12,27 +12,31 @@
 		p.user_id AS "userId",
 		p.district_id,
 		p.title,
-		p.createdat,
-		p.updatedat,
-		p.post_view,
+		p.created_at,
+		p.updated_at,
+		p.post_view AS "postView",
 		u.user_id AS "user.userId",
-		u.nickname AS "nickname",
+		u.nickname AS
+		"nickname",
 		d.district_id AS "districtId",
-		d.district_name AS "districtName"
+		d.district_name
+		AS
+		"districtName"
 		FROM
 		post p
 		INNER JOIN
 		users u ON p.user_id = u.user_id
 		INNER JOIN
 		district d ON p.district_id = d.district_id
-		where p.isdeleted = 'N'
+		where p.isdeleted
+		= 'N'
 		ORDER BY
-  	    p.createdat desc
+		p.created_at desc
 	</select>
 
 
 	<insert id="insertPost" parameterType="PostDTO">
-		<selectKey keyProperty="postId" resultType="int"
+		<selectKey keyProperty="postId" resultType="Long"
 			order="BEFORE">
 			SELECT TB_POST_SEQ.NEXTVAL AS postId FROM DUAL
 		</selectKey>
@@ -52,46 +56,50 @@
 		#{fileOriginName})
 	</insert>
 
-	<select id="communityCard" resultType="PostDTO"
-		parameterType="int">
-		SELECT
-		p.post_id AS "postId",
-		p.content,
-		p.user_id AS "userId",
-		p.district_id,
-		p.title,
-		p.createdat,
-		p.updatedat,
-		p.post_view,
-		u.user_id AS "user.userId",
-		u.nickname AS "nickname",
-		d.district_id AS "districtId",
-		d.district_name AS "districtName"
-		FROM
-		post p
-		INNER JOIN
-		users u ON p.user_id = u.user_id
-		INNER JOIN
-		district d ON p.district_id = d.district_id
-		WHERE
-		post_id = #{postId}
-	</select>
+<select id="communityCard" resultType="PostDTO" parameterType="long">
+    SELECT
+        p.post_id AS postId,
+        p.content,
+        p.user_id AS userId,
+        p.district_id AS districtId,
+        p.title,
+        TO_CHAR(p.created_at, 'yyyy-mm-dd hh24:mi:ss'),
+        TO_CHAR(p.updated_at, 'yyyy-mm-dd hh24:mi:ss'),
+        p.post_view AS postView,
+        u.user_id AS userId,
+        u.nickname AS nickname,
+        d.district_id AS districtId,
+        d.district_name AS districtName
+    FROM
+        post p
+    INNER JOIN
+        users u ON p.user_id = u.user_id
+    INNER JOIN
+        district d ON p.district_id = d.district_id
+    WHERE
+        p.post_id = #{postId}
+</select>
 
-	<select id="selectFiles" parameterType="int"
+
+	<select id="selectFiles" parameterType="long"
 		resultType="FileMetaDataDTO">
 		select file_name fileName
 		, file_id fileId
-		, file_path filePath
+		, file_path
+		filePath
 		, file_type fileType
 		, file_size fileSize
-		, file_origin_name fileOriginName
+		, file_origin_name
+		fileOriginName
 		, upload_date uploadDate
 		from file_meta_data
-		where post_id = #{postId}
+		where post_id
+		= #{postId}
 	</select>
 
 	<delete id="deleteFile" parameterType="int">
-		DELETE FROM FILE_META_DATA WHERE file_id = #{fileId}
+		DELETE FROM FILE_META_DATA
+		WHERE file_id = #{fileId}
 	</delete>
 
 	<update id="postUpdate" parameterType="PostDTO">
@@ -105,20 +113,24 @@
 		post_id=#{postId}
 	</update>
 
-	<select id="selectPostInfo" parameterType="Long"
-		resultType="PostInfoDTO">
-		select post_id postId
-		, title
-		, content
-		, to_char(created_at, 'yyyy-mm-dd hh24:mi:ss')  created_at
-		from post
+<select id="selectPostInfo" parameterType="Long" resultType="PostInfoDTO">
+    SELECT
+        post_id AS postId,
+        title,
+        content,
+        TO_CHAR(created_at, 'yyyy-mm-dd hh24:mi:ss')
+    FROM post
+    WHERE post_id = #{postId}
+</select>
+
+
+			 
+	<update id="postDelete" parameterType="long">
+		update post set isdeleted
+		= 'Y'
 		where post_id = #{postId}
-	</select>
-	
-	<update id="postDelete" parameterType="int">
-	 update post set isdeleted = 'Y'
-	 where post_id = #{postId}
 	</update>
+
 
 	<select id="selectNewPostList" resultType="PostInfoDTO">
 		select post_id
@@ -127,7 +139,105 @@
 			   , to_char(created_at, 'yyyy-mm-dd hh24:mi:ss')  created_at
 		  from post
   order by created_at desc
-  fetch first 5 rows only
+  fetch first 5 rows only		  				  
+	</select>
+ 
+
+	<select id="loadPostsByDistrict" parameterType="int"
+		resultType="PostDTO">
+		SELECT
+		p.post_id AS "postId",
+		p.content,
+		p.user_id AS
+		"userId",
+		p.district_id,
+		p.title,
+		p.created_at,
+		p.updated_at,
+		p.post_view AS "postView",
+		u.user_id AS
+		"user.userId",
+		u.nickname AS "nickname",
+		d.district_id AS
+		"districtId",
+			 
+		d.district_name AS "districtName"
+		FROM
+		post p
+		INNER JOIN
+		users u ON
+		p.user_id = u.user_id
+		INNER JOIN
+		district d ON p.district_id =
+		d.district_id
+		where p.isdeleted = 'N'and p.district_id= #{districtId}
+		ORDER
+		BY
+		p.created_at desc
+	</select>
+
+	<insert id="updateViewCount" parameterType="long">
+		update post
+		set
+		POST_VIEW = POST_VIEW + 1
+		where post_id=#{postId}
+	</insert>
+
+	<select id="loadPostsByView" parameterType="int"
+		resultType="PostDTO">
+		SELECT
+		p.post_id AS "postId",
+		p.content,
+		p.user_id AS "userId",
+		p.district_id,
+		p.title,
+		p.created_at,
+		p.updated_at,
+		p.post_view AS "postView",
+		u.user_id AS "user.userId",
+		u.nickname AS
+		"nickname",
+		d.district_id AS "districtId",
+		d.district_name AS
+		"districtName"
+		FROM
+		post p
+		INNER JOIN
+		users u ON p.user_id = u.user_id
+		INNER JOIN
+		district d ON p.district_id = d.district_id
+		where p.isdeleted= 'N'and p.district_id= #{districtId}
+		ORDER BY
+		p.post_view desc
+	</select>
+	
+	<select id="postViewList" resultType="PostDTO">
+		SELECT
+		p.post_id AS "postId",
+		p.content,
+		p.user_id AS "userId",
+		p.district_id,
+		p.title,
+		p.created_at,
+		p.updated_at,
+		p.post_view AS "postView",
+		u.user_id AS "user.userId",
+		u.nickname AS
+		"nickname",
+		d.district_id AS "districtId",
+		d.district_name
+		AS
+		"districtName"
+		FROM
+		post p
+		INNER JOIN
+		users u ON p.user_id = u.user_id
+		INNER JOIN
+		district d ON p.district_id = d.district_id
+		where p.isdeleted
+		= 'N'
+		ORDER BY
+		p.post_view DESC		  				   
 	</select>
 
 </mapper>
