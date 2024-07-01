@@ -32,4 +32,5 @@ public interface CommunityRepository {
 
 	public void postDelete(int postId);
 
+	List<PostInfoDTO> selectNewPostList();
 }

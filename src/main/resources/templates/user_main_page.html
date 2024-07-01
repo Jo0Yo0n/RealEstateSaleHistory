@@ -2,40 +2,84 @@
 
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/user_main_page.js}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" th:src="@{/js/user_main_page.js}"></script>
 
+  <link rel='stylesheet' th:href='@{/css/test.css}' type='text/css'/>
 
-	<title>부동산사조</title>
+  <title>부동산사조</title>
 </head>
 <body>
-  <div sec:authorize="isAnonymous()">
-    <a th:href="@{/users/login}">로그인</a>
-    <a th:href="@{/users/signup}">회원가입</a>
-  </div>
-  <div sec:authorize="isAuthenticated()">
-    <a th:href="@{/users/logout}">로그아웃</a>
-    <a th:href="@{/users/me}">마이페이지</a>
+  <div th:replace="header :: headerFragment"></div>
+
+  <div class="main-container">
+    <div class="body-container">
+      <div>
+        <div class="search">
+          <input class="search-box" type='text' placeholder='검색어 입력'/>
+          <img th:src="@{/assets/images/search.png}"/>
+        </div>
+        <div class="auto-complete"></div>
+      </div>
+
+      <div class="slider">
+        <div class="slides">
+          <input type="radio" name="radio-btn" id="radio1" checked>
+          <input type="radio" name="radio-btn" id="radio2">
+
+          <div class="slide first">
+            <canvas class="chart" id="chart1" width="530" height="300"></canvas>
+            <canvas class="chart" id="chart2" width="530" height="300"></canvas>
+          </div>
+          <div class="slide">
+            <canvas class="chart" id="chart3" width="530" height="300"></canvas>
+            <canvas class="chart" id="chart4" width="530" height="300"></canvas>
+          </div>
+
+          <div class="navigation-auto">
+            <div class="auto-btn1"></div>
+            <div class="auto-btn2"></div>
+          </div>
+
+          <div class="navigation-manual">
+            <label for="radio1" class="manual-btn" th:value="1"></label>
+            <label for="radio2" class="manual-btn" th:value="2"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-info">
+        <div class="post-info">
+          <span class="info-title">최근 게시글</span>
+          <div id="new-post">
+
+          </div>
+        </div>
+
+        <div class="estate-info">
+          <span class="info-title">최근 매물</span>
+
+          <div class="auto-slider">
+            <div class="estate-slider" style="
+              --width: 280px;
+              --height: 160px;
+              --quantity: 5;
+            ">
+              <div class = "estate-list">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <a th:href="@{/realestate/select}">매물 검색</a>
-  <a th:href="@{/communityList}">게시판</a>
-
-	<div class='chart1' style="width: 400px; height: 200px">
-        <canvas id="chart1" width="400" height="200"></canvas>
-    </div>
-    <div class='chart2' style="width: 400px; height: 200px">
-        <canvas id="chart2" width="400" height="200"></canvas>
-    </div>
-    <div class='chart3' style="width: 400px; height: 200px">
-        <canvas id="chart3" width="400" height="200"></canvas>
-    </div>
-    <div class='chart4' style="width: 400px; height: 200px">
-        <canvas id="chart4" width="400px" height="200"></canvas>
-    </div>
+  <div th:replace="footer :: footerFragment"></div>
 </body>
 </html>
