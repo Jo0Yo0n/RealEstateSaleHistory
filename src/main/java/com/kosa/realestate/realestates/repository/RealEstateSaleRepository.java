@@ -12,17 +12,16 @@ import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 public interface RealEstateSaleRepository {
   int getRealEstateSaleCount();
   int getRealEstateSaleCount(int realEstateId);
-  int estateCountByCriteria(@Param("districtName") int districtName, @Param("neighborhoodName")String neighborhoodName,
-      @Param("salePrice") Map<String, Object> salePrice, @Param("exclusiveArea") Map<String, Object> exclusiveArea);
+  int estateCountByCriteria(@Param("districtName") String districtName, @Param("neighborhoodName")String neighborhoodName,
+      @Param("salePrice") Map<String, Object> salePrice, @Param("realEstateId") int realEstateId);
   
   List<RealEstateWithSaleDTO> selectRealEstateWithSales();
   List<RealEstateWithSaleDTO> selectRealEstateWithSales(Map<String, Object> param);
 
   
   //검색조건으로 매매기록 조회하기
-  List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(@Param("districtName") int districtName,
-      @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice,
-      @Param("exclusiveArea") Map<String, Object> exclusiveArea, @Param("offset") int offset, @Param("limit") int limit, @Param("realEstateId") int realEstateId);
+  List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(@Param("districtName") String districtName,
+      @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice, @Param("offset") int offset, @Param("limit") int limit, @Param("realEstateId") int realEstateId);
   
   List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId);
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);
