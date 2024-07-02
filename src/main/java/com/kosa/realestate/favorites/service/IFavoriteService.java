@@ -7,7 +7,7 @@ import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
 public interface IFavoriteService {
 
   List<FavoriteListDTO> findFavoriteList(int page, String email);
-  List<FavoriteDetailListDTO> findFavoriteDetailLst(int page, Long realEstateId);
+  List<FavoriteDetailListDTO> findFavoriteDetailList(int page, Long realEstateId);
   void addFavorite(Long realEstateId, String email);
   void removeFavorite(Long favoriteId);
   int getTotalFavoritesCountByEmail(Long userId);

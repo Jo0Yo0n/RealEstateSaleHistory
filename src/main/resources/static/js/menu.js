@@ -1,45 +1,42 @@
-
 $(document).ready(function () {
-    // 검색창의 값을 전역 변수에 저장하지 않고 바로 동기화
-    $('.search-box').on('input', function() {
-        var searchValue = $(this).val();
-        // 모든 검색창에 입력값 동기화
-        $('.search-box').val(searchValue);
-    });
-	
-   function toggleMenu(iconId, menuId) {
-    $("#" + iconId).click(function () {
-        var isActive = $("#" + menuId).hasClass("active");
+  // 검색창의 값을 전역 변수에 저장하지 않고 바로 동기화
+  $('.search-box').on('input', function() {
+    var searchValue = $(this).val();
+    // 모든 검색창에 입력값 동기화
+    $('.search-box').val(searchValue);
+  });
 
-        $(".menu").removeClass("active");
-        $(".close-menu").removeClass("active");
+  function toggleMenu() {
+    var $homeMenu = $("#home-menu");
+    var $toggleBtn = $("#toggle-menu-btn");
 
-        if (!isActive) {
-            $("#" + menuId).addClass("active");
-            $("#" + menuId).find(".close-menu").addClass("active");
-            // home-icon 클릭 시에만 search-container 안의 search-box 숨김
+    $toggleBtn.click(function () {
+      var isActive = $homeMenu.hasClass("active");
 
-/*            if (iconId === "home-icon") {
-                $('.search-container .search').hide();
-            }*/
-        } else {
-            // 다른 메뉴 아이콘 클릭 시 search-container 안의 search-box 표시
-            // $('.search-container .search').show();
+      if (!isActive) {
+        $homeMenu.addClass("active");
+        $toggleBtn.addClass("active");
+        // 메뉴가 열릴 때 데이터를 불러옵니다.
+        if (typeof sendSearchCriteria === 'function') {
+          sendSearchCriteria();
         }
+      } else {
+        $homeMenu.removeClass("active");
+        $toggleBtn.removeClass("active");
+      }
     });
 
-    $("#" + menuId).find(".close-menu").click(function () {
-        $("#" + menuId).removeClass("active");
-        $(this).removeClass("active");
-        // 메뉴 닫을 때 search-container 안의 search-box 표시
-        // $('.search-container .search').show();
+    $homeMenu.find(".close-menu").click(function () {
+      $homeMenu.removeClass("active");
+      $toggleBtn.removeClass("active");
     });
-}
+  }
 
+  // 메뉴 토글 기능 초기화
+  toggleMenu();
 
-
-    // 기존 메뉴 토글 기능
-    toggleMenu("home-icon", "home-menu");
-    toggleMenu("comm-icon", "comm-menu");
-    toggleMenu("user-icon", "user-menu");
+  // 페이지 로드 시 초기 데이터 로딩
+  if (typeof sendSearchCriteria === 'function') {
+    sendSearchCriteria();
+  }
 });

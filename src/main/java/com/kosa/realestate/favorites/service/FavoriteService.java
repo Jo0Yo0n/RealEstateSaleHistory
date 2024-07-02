@@ -31,7 +31,7 @@ public class FavoriteService implements IFavoriteService {
 
 
   // 즐겨찾기 아파트 상세 조회
-  public List<FavoriteDetailListDTO> findFavoriteDetailLst(int page, Long realEstateId) {
+  public List<FavoriteDetailListDTO> findFavoriteDetailList(int page, Long realEstateId) {
 
     Pageable pageable = PageRequest.of(page, 10);
     
