@@ -91,8 +91,9 @@ public class RealEstateSaleController {
     //전용면적 조건
     Integer minExclusiveSize = searchCriteria != null && searchCriteria.get("ExclusiveSizeMin") != null ? (Integer) searchCriteria.get("ExclusiveSizeMin") : null;
     Integer maxExclusiveSize = searchCriteria != null && searchCriteria.get("ExclusiveSizeMax") != null ? (Integer) searchCriteria.get("ExclusiveSizeMax") : null;
-    
-    return realEstateSaleService.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, minPrice, maxPrice, minExclusiveSize, maxExclusiveSize);
+    //curremtPage
+    Integer currentPage = searchCriteria != null && searchCriteria.get("page") != null ? (Integer) searchCriteria.get("page") : 1; // 기본값을 1로 설정
+    return realEstateSaleService.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, minPrice, maxPrice, minExclusiveSize, maxExclusiveSize, currentPage);
   }
 
 

@@ -11,4 +11,5 @@ public class RealEstateWithSaleDTO {
 
   private RealEstateDTO realEstate;
   private RealEstateSaleDTO realEstateSale;
+  private RealEstateExtraDTO estateExtra;
 }
