@@ -81,7 +81,8 @@ $(document).ready(function () {
 
     $('.pagination').html(paginationHtml);
   }
-
+  
+  
   // 회원 정보 수정 버튼 기능
   $(document).on('click', '.update', function () {
     $('.modal-name').text('회원 정보 수정');
@@ -107,6 +108,54 @@ $(document).ready(function () {
     $('#agentModalLabel').text('중개사 신청');
     $('#agentModal').modal('show');
   });
+  
+  
+  
+   // 즐겨찾기 클릭
+  $(document).on('click', '.building', function () {
+	
+	// 특정 요소를 클릭한 경우 이벤트 중단
+    if ($(event.target).closest('.favorite-remove').length > 0) {
+        return;
+    }
+    
+   	var buildingName = $(this).find('.building-name').text();
+	var neighborhood = $(this).find('.neighborhood').text().replace(' / ', '');
+    window.location.href = `/realestate?lo=` + neighborhood + " " + buildingName + `&ms=`;
+	
+  });
+  
+  // 즐겨찾기 삭제 버튼 기능
+  $(document).on('click', '.favorite-remove', function () {
+	var favoriteId = $(this).closest('.building-header').find('.favorite-id').text();
+	$('.id').text(favoriteId);
+    $('#favoriteModalLabel').text('즐겨찾기 삭제');
+    $('#favoriteModal').modal('show');
+  });
+  
+  
+  
+  // 게시글 클릭
+  $(document).on('click', '.post', function () {
+	
+	// 특정 요소를 클릭한 경우 이벤트 중단
+    if ($(event.target).closest('.post-remove').length > 0) {
+        return;
+    }
+   	var postId = $(this).find('.post-id').text();
+    window.location.href = '/communityCard?postId=' + postId;
+  });
+  
+  // 게시글 삭제 버튼 기능
+  $(document).on('click', '.post-remove', function () {
+	var postId = $(this).closest('.post-header').find('.post-id').text();
+	console.log(postId);
+	$('.id').text(postId);
+    $('#postModalLabel').text('게시글 삭제');
+    $('#postModal').modal('show');
+  });
+
+
 
   // 폼 제출 이벤트 핸들러
   $(document).on('submit', '#form', function (event) {
@@ -133,6 +182,22 @@ $(document).ready(function () {
     $('#passwordModal').modal('hide');
     $('#confirmModal').modal('hide');
   });
+
+  // 즐겨찾기확인 모달의 "네" 버튼 클릭 이벤트
+  $(document).on('click', '#favoriteDelete', function () {
+    $('#confirmModal').modal('hide');
+    sendDeleteFavorite(document.querySelector('.id').textContent);
+  });
+  
+  // 게시글확인 모달의 "네" 버튼 클릭 이벤트
+  $(document).on('click', '#postDelete', function () {
+    $('#confirmModal').modal('hide');
+    console.log(document.querySelector('.id').textContent);
+    
+    sendDeletePost(document.querySelector('.id').textContent);
+  });
+
+
 
   // 모달 닫힘 이벤트 처리
   $('#passwordModal').on('hidden.bs.modal', function () {
@@ -221,6 +286,58 @@ $(document).ready(function () {
           errorMessage = xhr.responseJSON.message;
         }
         $('#resultModalLabel').text('회원 탈퇴 결과');
+        $('#resultModalBody').text(errorMessage);
+        $('#resultModal').modal('show');
+      }
+    });
+  }
+  
+  // 즐겨찾기 삭제 요청 처리
+  function sendDeleteFavorite(delFavoriteId) {
+    $.ajax({
+      url: '/favorites/' + delFavoriteId,
+      type: 'DELETE',
+      contentType: 'application/json',
+      success: function (response) {
+        $('#resultModalLabel').text('즐겨찾기 삭제 결과');
+        $('#resultModalBody').text('삭제되었습니다.');
+        $('#resultModal').modal('show');
+        $('#closeModalButton').click(function () {
+          window.location.href = '/users/me';
+        });
+      },
+      error: function (xhr) {
+        let errorMessage = "오류 발생: 서버에서 에러 메시지를 받지 못했습니다.";
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMessage = xhr.responseJSON.message;
+        }
+        $('#resultModalLabel').text('즐겨찾기 결과');
+        $('#resultModalBody').text(errorMessage);
+        $('#resultModal').modal('show');
+      }
+    });
+  }
+  
+  // 게시글 삭제 요청 처리
+  function sendDeletePost(postId) {
+    $.ajax({
+      url: '/postDelete?postId=' + postId,
+      type: 'DELETE',
+      contentType: 'application/json',
+      success: function (response) {
+        $('#resultModalLabel').text('게시글 삭제 결과');
+        $('#resultModalBody').text('삭제되었습니다.');
+        $('#resultModal').modal('show');
+        $('#closeModalButton').click(function () {
+          window.location.href = '/users/me';
+        });
+      },
+      error: function (xhr) {
+        let errorMessage = "오류 발생: 서버에서 에러 메시지를 받지 못했습니다.";
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMessage = xhr.responseJSON.message;
+        }
+        $('#resultModalLabel').text('게시글 결과');
         $('#resultModalBody').text(errorMessage);
         $('#resultModal').modal('show');
       }

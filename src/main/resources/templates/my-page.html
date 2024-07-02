@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/css/my-page.css">
   <link rel="stylesheet" href="/css/post-list.css">
   <link rel="stylesheet" href="/css/favorite-list.css">
+  <link rel='stylesheet' th:href='@{/css/footer.css}' type='text/css' />
   <script src="/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/js/my-page.js"></script>
@@ -43,6 +44,7 @@
     </div>
   </div>
   <div class="pagination"></div>
+  <div th:replace="footer :: footerFragment"></div>
 </div>
 
 <!-- 모달 추가 -->
@@ -54,6 +56,5 @@
   const userId = /*[[${#authentication.principal.userId}]]*/ null;
   /*]]>*/
 </script>
-
 </body>
 </html>
