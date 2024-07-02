@@ -52,10 +52,6 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.selectRealEstateWithSales(params);
   }
 
-  @Override
-  public List<Map<String, Object>> getAllDestrictId() {
-    return estateSaleRepository.getAllDestrictId();
-  }
 
   @Override
   public List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId) {
@@ -67,15 +63,11 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.getRealEstatePrice(salesId);
   }
 
-  @Override
-  public List<Map<String, Object>> getAllNeighborhood(int destrictId) {
-    return estateSaleRepository.getAllNeighborhood(destrictId);
-  }
+
 
   @Override
   public List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(int districtName,
-      String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize, int currentPage) {
-
+      String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize, int currentPage, int realEstateId) {
 
     final int limit = 6;
     int offset = (currentPage - 1) * limit;
@@ -87,7 +79,7 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     exclusiveArea.put("min", minExclusiveSize);
     exclusiveArea.put("max", maxExclusiveSize);
 
-    return estateSaleRepository.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, salePrice, exclusiveArea,  offset, limit);
+    return estateSaleRepository.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, salePrice, exclusiveArea,  offset, limit, realEstateId);
   }
 
 
@@ -112,6 +104,7 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     exclusiveArea.put("max", maxExclusiveSize);
     return estateSaleRepository.selectRealEstate(districtName, neighborhoodName, salePrice, exclusiveArea,  offset, limit);
   }
+  
   //아파트 중복 없이 총 개수 조회
   @Override
   public int selectRealEstateCount(int districtName, String neighborhoodName, int minPrice,

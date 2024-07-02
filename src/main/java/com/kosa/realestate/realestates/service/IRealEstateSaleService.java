@@ -13,13 +13,14 @@ public interface IRealEstateSaleService {
   
   List<RealEstateWithSaleDTO> selectRealEstateWithSales(int realEstateId, int pageNum, int pageSize);
   
-  List<Map<String, Object>> getAllDestrictId();
-  List<Map<String, Object>> getAllNeighborhood(int destrictId);
+
   // 검색조건으로 매매기록 조회하기
-  List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(int districtName, String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize, int currentPage);
+  List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(int districtName, String neighborhoodName,
+      int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize, int currentPage, int realEstateId);
 
   List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId);
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);
+  
   //아파트 중복 없이 검색
   List<Map<String, Object>> selectRealEstate(int districtName, String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize, int currentPage);
   int selectRealEstateCount(int districtName, String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize);

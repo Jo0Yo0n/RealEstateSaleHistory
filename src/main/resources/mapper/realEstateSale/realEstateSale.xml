@@ -159,19 +159,7 @@
     </select>
 
 
-	<select id="getAllDestrictId" resultType="hashmap">
-		SELECT 
-			district_id AS "districtId",
-			district_name AS "districtName"
-		FROM DISTRICT
-	</select>
-	
-	<select id="getAllNeighborhood" resultType="hashmap" parameterType="int">
-		SELECT B.NEIGHBORHOOD_NAME
-		FROM DISTRICT A
-		JOIN NEIGHBORHOOD B ON A.DISTRICT_ID = B.DISTRICT_ID
-		WHERE A.DISTRICT_ID = #{destrictId}
-	</select>
+
 	
  	<select id="selectRealEstateWithSalesByCondition" resultMap="RealEstateWithSaleMapDTO">
     	SELECT A.*, B.*,  E.city_name, F.building_type_name, D.district_name, C.neighborhood_name, G.ALL_PRICE
@@ -200,7 +188,9 @@
         	<if test="exclusiveArea != null">
         		AND A.EXCLUSIVE_AREA BETWEEN #{exclusiveArea.min} AND (#{exclusiveArea.max} +1)
         	</if>
-        	<if test=""></if>
+        	<if test="realEstateId != null">
+        		AND A.REAL_ESTATE_ID = #{realEstateId}
+        	</if>
     	</where>
     	ORDER BY A.CONTRACT_DATE DESC
     	OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
