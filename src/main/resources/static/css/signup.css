@@ -1,4 +1,9 @@
 /* signup.css */
+html {
+  overflow-y: scroll;
+}
+
+
 body {
   font-family: Arial, sans-serif;
 }
