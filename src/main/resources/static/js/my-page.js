@@ -7,7 +7,7 @@ $(document).ready(function () {
   loadContent(currentTab, currentPage);
 
   // 탭 클릭 이벤트
-  $('.tab').click(function() {
+  $('.tab').click(function () {
     $('.tab').removeClass('active');
     $(this).addClass('active');
     currentTab = $(this).data('tab');
@@ -16,8 +16,10 @@ $(document).ready(function () {
   });
 
   // 페이지네이션 클릭 이벤트
-  $('.pagination').on('click', '.pagination span', function () {
-    if ($(this).hasClass('disabled')) return;
+  $(document).on('click', '.pagination span', function () {
+    if ($(this).hasClass('disabled')) {
+      return;
+    }
     currentPage = parseInt($(this).data('page'));
     loadContent(currentTab, currentPage);
   });
@@ -28,7 +30,7 @@ $(document).ready(function () {
     $.ajax({
       url: `${url}?page=${page}`,
       method: 'GET',
-      success: function(response) {
+      success: function (response) {
         $("#content-container").html(response);
 
         let paginationInfo = $("#pagination-info");
@@ -36,7 +38,7 @@ $(document).ready(function () {
         let totalPages = parseInt(paginationInfo.data('total-pages'));
         updatePagination(currentPage, totalPages);
       },
-      error: function(xhr, status, error) {
+      error: function (xhr, status, error) {
         console.error('Error loading content: ', error);
       }
     });
@@ -44,13 +46,39 @@ $(document).ready(function () {
 
   function updatePagination(currentPage, totalPages) {
     let paginationHtml = '';
-    for (let i = 0; i < totalPages; i++) {
+    const visiblePages = 5; // 한 번에 보여줄 페이지 번호의 개수
+
+    let startPage = Math.max(0, currentPage - Math.floor(visiblePages / 2));
+    let endPage = Math.min(totalPages - 1, startPage + visiblePages - 1);
+
+    // 시작 페이지 조정
+    if (endPage - startPage + 1 < visiblePages) {
+      startPage = Math.max(0, endPage - visiblePages + 1);
+    }
+
+    // 이전 페이지 버튼
+    if (currentPage > 0) {
+      paginationHtml += `<span data-page="${currentPage - 1}">&laquo;</span>`;
+    } else {
+      paginationHtml += `<span class="disabled">&laquo;</span>`
+    }
+
+    // 페이지 번호
+    for (let i = startPage; i <= endPage; i++) {
       if (i === currentPage) {
-        paginationHtml += `<span class="active" data-page="${i}">${i +1}</span>`;
+        paginationHtml += `<span class="active" data-page="${i}">${i + 1}</span>`;
       } else {
         paginationHtml += `<span data-page=${i}>${i + 1}</span>`;
       }
     }
+
+    // 다음 페이지 버튼
+    if (currentPage < totalPages - 1) {
+      paginationHtml += `<span data-page="${currentPage + 1}">&raquo;</span>`;
+    } else {
+      paginationHtml += `<span class="disabled">&raquo;</span>`
+    }
+
     $('.pagination').html(paginationHtml);
   }
 
@@ -59,7 +87,8 @@ $(document).ready(function () {
     $('.modal-name').text('회원 정보 수정');
     $('#passwordConfirm').prop('required', true).show();
     $('label[for="passwordConfirm"]').show();
-    $('.submit').text('정보 수정').removeClass('btn-danger').addClass('btn-primary');
+    $('.submit').text('정보 수정').removeClass('btn-danger').addClass(
+        'btn-primary');
     $('#passwordModal').modal('show');
   });
 
@@ -68,7 +97,8 @@ $(document).ready(function () {
     $('.modal-name').text('회원 탈퇴');
     $('#passwordConfirm').prop('required', false).hide();
     $('label[for="passwordConfirm"]').hide();
-    $('.submit').text('회원 탈퇴').removeClass('btn-primary').addClass('btn-danger');
+    $('.submit').text('회원 탈퇴').removeClass('btn-primary').addClass(
+        'btn-danger');
     $('#passwordModal').modal('show');
   });
 
