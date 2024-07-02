@@ -1,3 +1,5 @@
+
+
 .container {
     width: 1080px;
     margin: 0 auto; /* 가운데 정렬 */
@@ -28,6 +30,8 @@
 /* 셀렉트 박스*/
 .selectboxes{
     display : flex;
+    justify-content: center;
+    gap: 50px;
 }
 
 #selectbox1 {

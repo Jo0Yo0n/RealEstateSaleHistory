@@ -1,205 +1,217 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>커뮤니티 리스트</title>
-    <link rel='stylesheet' href='../css/communityList.css' type='text/css'/>
-    <!-- 부트스트랩 CSS 링크 -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Select2 CSS 링크 -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <!-- jQuery CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Select2 JS 링크 -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <!-- 부트스트랩 JS 링크 -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <!-- Select2 초기화 스크립트 -->
-    <script type="text/javascript">
-        $(document).ready(function(){
-            
-            // 게시글 제목 클릭 시 상세 페이지로 이동
-            $('.postListdiv').on('click', '.postTitle', function() {
-                var postId = $(this).data('postid');
-                window.location.href = '/communityCard?postId=' + postId;
-            });
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커뮤니티 리스트</title>
+  <link rel='stylesheet' href='../css/communityList.css' type='text/css'/>
+  <!-- 부트스트랩 CSS 링크 -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        rel="stylesheet">
+  <!-- Select2 CSS 링크 -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+        rel="stylesheet"/>
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Select2 JS 링크 -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <!-- 부트스트랩 JS 링크 -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- Select2 초기화 스크립트 -->
+  <script type="text/javascript">
+    $(document).ready(function () {
 
-            // 필터 옵션 변경 시 AJAX 호출
-            $('#filterOption').change(function() {
-                var filterOption = $(this).val();
-                var districtId = $('#districtSelect').val();
+      // 게시글 제목 클릭 시 상세 페이지로 이동
+      $('.postListdiv').on('click', '.postTitle', function () {
+        var postId = $(this).data('postid');
+        window.location.href = '/communityCard?postId=' + postId;
+      });
 
-                $.ajax({
-                    url: '/filterOption',
-                    type: 'GET',
-                    data: { filterOption: filterOption, districtId: districtId },
-                    success: function(response) {
-                        updatePostList(response);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('AJAX Error: ' + textStatus, errorThrown);
-                    }
-                });
-            });
+      // 필터 옵션 변경 시 AJAX 호출
+      $('#filterOption').change(function () {
+        var filterOption = $(this).val();
+        var districtId = $('#districtSelect').val();
 
-            // 자치구 선택 시 AJAX 호출
-            $('#districtSelect').change(function() {
-                var districtId = $(this).val();
-
-                $.ajax({
-                    url: '/loadPostsByDistrict',
-                    type: 'GET',
-                    data: { districtId: districtId },
-                    success: function(response) {
-                        updatePostList(response);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('AJAX Error: ' + textStatus, errorThrown);
-                    }
-                });
-            });
-
-            // 게시글 검색 시 AJAX 호출
-            $(".searchBox").keyup(function() {
-                var searchText = $(this).val().trim();
-                console.log("검색어: " + searchText);
-
-                $.ajax({
-                    url: '/searchPosts',
-                    type: 'GET',
-                    data: { searchText: searchText },
-                    success: function(response) {
-                        updatePostList(response);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('AJAX Error: ' + textStatus, errorThrown);
-                    }
-                });
-            });
-
-            function updatePostList(posts) {
-            	
-                // 게시글 개수 가져오기
-                var postCount = posts.length;
-            	
-                // 게시글 개수가 5개 이하이면 페이지네이션 숨기기
-                if (postCount <= 5) {
-                    $('.pagination').hide(); // 페이지네이션 숨기기
-                } else {
-                    $('.pagination').show(); // 페이지네이션 보이기
-                }
-                
-                var postContainer = $('.postListdiv');
-                postContainer.empty();
-
-                if (posts.length === 0) {
-                    postContainer.append('<div class="no-posts"><img class="emptyPostimg" src="../assets/images/gps.gif"/><p class="emptyPosttxt">현재 게시글이 없습니다. 글을 작성해 소통해보세요!</p></div>');
-                } else {
-                    posts.forEach(function(post) {
-                        var postHTML = '<div class="card">';
-                        postHTML += '<div class="card-body">';
-                        postHTML += '<div class="card-header">';
-                        postHTML += '<span>' + post.nickname + '</span>';
-                        postHTML += '<div class="location">서울특별시 · <span class="postcon" data-postid="' + post.postId + '">' + post.districtName + '</span></div>';
-                        postHTML += '</div>';
-                        postHTML += '<div class="card-title"><span class="postTitle" data-postid="' + post.postId + '">' + post.title + '</span></div>';
-                        postHTML += '<div class="card-text"><span>' + post.content + '</span></div>';
-                        postHTML += '<div class="card-footer">';
-                        postHTML += '<div class="interaction">';
-                        postHTML += '<span class="view">👁️ ' + post.postView + '</span>';
-                        postHTML += '<span class="uploadData">' + post.dateOnly + '</span>';
-                        postHTML += '</div></div></div></div>';
-                        postContainer.append(postHTML);
-                    });
-                }
-            }
+        $.ajax({
+          url: '/filterOption',
+          type: 'GET',
+          data: {filterOption: filterOption, districtId: districtId},
+          success: function (response) {
+            updatePostList(response);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.error('AJAX Error: ' + textStatus, errorThrown);
+          }
         });
-    </script>
+      });
+
+      // 자치구 선택 시 AJAX 호출
+      $('#districtSelect').change(function () {
+        var districtId = $(this).val();
+
+        $.ajax({
+          url: '/loadPostsByDistrict',
+          type: 'GET',
+          data: {districtId: districtId},
+          success: function (response) {
+            updatePostList(response);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.error('AJAX Error: ' + textStatus, errorThrown);
+          }
+        });
+      });
+
+      // 게시글 검색 시 AJAX 호출
+      $(".searchBox").keyup(function () {
+        var searchText = $(this).val().trim();
+        console.log("검색어: " + searchText);
+
+        $.ajax({
+          url: '/searchPosts',
+          type: 'GET',
+          data: {searchText: searchText},
+          success: function (response) {
+            updatePostList(response);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.error('AJAX Error: ' + textStatus, errorThrown);
+          }
+        });
+      });
+
+      function updatePostList(posts) {
+
+        // 게시글 개수 가져오기
+        var postCount = posts.length;
+
+        // 게시글 개수가 5개 이하이면 페이지네이션 숨기기
+        if (postCount <= 5) {
+          $('.pagination').hide(); // 페이지네이션 숨기기
+        } else {
+          $('.pagination').show(); // 페이지네이션 보이기
+        }
+
+        var postContainer = $('.postListdiv');
+        postContainer.empty();
+
+        if (posts.length === 0) {
+          postContainer.append(
+              '<div class="no-posts"><img class="emptyPostimg" src="../assets/images/gps.gif"/><p class="emptyPosttxt">현재 게시글이 없습니다. 글을 작성해 소통해보세요!</p></div>');
+        } else {
+          posts.forEach(function (post) {
+            var postHTML = '<div class="card">';
+            postHTML += '<div class="card-body">';
+            postHTML += '<div class="card-header">';
+            postHTML += '<span>' + post.nickname + '</span>';
+            postHTML += '<div class="location">서울특별시 · <span class="postcon" data-postid="'
+                + post.postId + '">' + post.districtName + '</span></div>';
+            postHTML += '</div>';
+            postHTML += '<div class="card-title"><span class="postTitle" data-postid="'
+                + post.postId + '">' + post.title + '</span></div>';
+            postHTML += '<div class="card-text"><span>' + post.content + '</span></div>';
+            postHTML += '<div class="card-footer">';
+            postHTML += '<div class="interaction">';
+            postHTML += '<span class="view">👁️ ' + post.postView + '</span>';
+            postHTML += '<span class="uploadData">' + post.dateOnly + '</span>';
+            postHTML += '</div></div></div></div>';
+            postContainer.append(postHTML);
+          });
+        }
+      }
+    });
+  </script>
 </head>
 <body>
-    <div th:replace="header :: headerFragment"></div>
-    <div class="container">
-        <div class="menu">
-            <div class="commutop">
-                <div class="search">
-                    <img src='../assets/images/search.png'/>
-                    <input class="searchBox" type='text' placeholder='검색어 입력 (제목+내용)'/>
-                </div>
-            </div>
-            <hr class="hrs">
-            <div class="select-row">
-                <select class="form-control pt-1 mt-4 selectbox">
-                    <option selected>서울특별시</option>
-                </select>
-                <select class="form-control pt-1 mt-4 selectbox" id="districtSelect">
-                    <option th:value="0" th:text="자치구"></option>
-                    <!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
-                    <option th:each="district : ${districts}" th:value="${district.districtId}" th:text="${district.districtName}"></option>
-                </select>
-                <select class="form-control pt-1 mt-4 selectbox" id="filterOption">
-                    <option selected value="최신순">최신순</option>
-				<option value="조회순"> 조회순 </option>
-                </select>
-            </div>
-        </div>
-        <div class="postListdiv">
-            <!-- 게시글 카드 반복문 시작 -->
-            <div th:each="post : ${postList}" class="card">
-                <div class="card-body">
-                    <div class="card-header">
-                        <span th:text="${post.nickname}"></span>
-                        <div class="location">서울특별시 · <span class="postcon" th:text="${post.districtName}"></span></div>
-                    </div>
-                    <div class="card-title">
-                        <span class="postTitle" th:text="${post.title}" th:data-postid="${post.postId}"></span>
-                    </div>
-                    <div class="card-text">
-                        <span th:text="${post.content}"></span>
-                    </div>
-                    <div class="card-footer">
-                        <div class="interaction">
-                            <span class="view">👁️ <span th:text="${post.postView}"></span></span>
-                            <span class="uploadData" th:text="${post.dateOnly}"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 게시글 카드 반복문 끝 -->
-        </div>
+<div th:replace="header :: headerFragment"></div>
+<div class="container">
+  <div class="menu">
+    <div class="commutop">
+      <div class="search">
+        <img src='../assets/images/search.png'/>
+        <input class="searchBox" type='text' placeholder='검색어 입력 (제목+내용)'/>
+      </div>
     </div>
-    <!-- 페이지네이션 -->
+    <hr class="hrs">
+    <div class="select-row">
+      <select class="form-control pt-1 mt-4 selectbox">
+        <option selected>서울특별시</option>
+      </select>
+      <select class="form-control pt-1 mt-4 selectbox" id="districtSelect">
+        <option th:value="0" th:text="자치구"></option>
+        <!-- Thymeleaf 반복문 사용하여 옵션 생성 -->
+        <option th:each="district : ${districts}" th:value="${district.districtId}"
+                th:text="${district.districtName}"></option>
+      </select>
+      <select class="form-control pt-1 mt-4 selectbox" id="filterOption">
+        <option selected value="최신순">최신순</option>
+        <option value="조회순"> 조회순</option>
+      </select>
+    </div>
+    <div class="go-post">
+      <button class="btn btn-primary"
+              th:onclick="'window.location.href=\'' + @{/communityForm} + '\''">글 작성하기
+      </button>
+    </div>
+  </div>
+  <div class="postListdiv">
+    <!-- 게시글 카드 반복문 시작 -->
+    <div th:each="post : ${postList}" class="card">
+      <div class="card-body">
+        <div class="card-header">
+          <span th:text="${post.nickname}"></span>
+          <div class="location">서울특별시 · <span class="postcon" th:text="${post.districtName}"></span>
+          </div>
+        </div>
+        <div class="card-title">
+          <span class="postTitle" th:text="${post.title}" th:data-postid="${post.postId}"></span>
+        </div>
+        <div class="card-text">
+          <span th:text="${post.content}"></span>
+        </div>
+        <div class="card-footer">
+          <div class="interaction">
+            <span class="view">👁️ <span th:text="${post.postView}"></span></span>
+            <span class="uploadData" th:text="${post.dateOnly}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 게시글 카드 반복문 끝 -->
+  </div>
+</div>
+<!-- 페이지네이션 -->
 <div class="pagination d-flex justify-content-center">
-    <nav aria-label="">
-        <ul class="pagination justify-content-center">
-            <!-- 이전 페이지 -->
-            <li th:class="${pageInfo.currentPage == 1} ? 'page-item disabled' : 'page-item'">
-                <a class="page-link"
-                   th:href="@{/communityList(page=1)}"
-                   aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                </a>
-            </li>
-            <!-- 페이지 번호 -->
-            <li th:each="i : ${#numbers.sequence(1, pageInfo.totalPages)}"
-                th:class="${i == pageInfo.currentPage} ? 'page-item active' : 'page-item'">
-                <a class="page-link"
-                   th:href="@{/communityList(page=${i})}">
-                    <span th:text="${i}"></span>
-                </a>
-            </li>
-            <!-- 다음 페이지 -->
-            <li th:class="${pageInfo.currentPage == pageInfo.totalPages} ? 'page-item disabled' : 'page-item'">
-                <a class="page-link"
-                   th:href="@{/communityList(page=${pageInfo.totalPages})}"
-                   aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+  <nav aria-label="">
+    <ul class="pagination justify-content-center">
+      <!-- 이전 페이지 -->
+      <li th:class="${pageInfo.currentPage == 1} ? 'page-item disabled' : 'page-item'">
+        <a class="page-link"
+           th:href="@{/communityList(page=1)}"
+           aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      <!-- 페이지 번호 -->
+      <li th:each="i : ${#numbers.sequence(1, pageInfo.totalPages)}"
+          th:class="${i == pageInfo.currentPage} ? 'page-item active' : 'page-item'">
+        <a class="page-link"
+           th:href="@{/communityList(page=${i})}">
+          <span th:text="${i}"></span>
+        </a>
+      </li>
+      <!-- 다음 페이지 -->
+      <li th:class="${pageInfo.currentPage == pageInfo.totalPages} ? 'page-item disabled' : 'page-item'">
+        <a class="page-link"
+           th:href="@{/communityList(page=${pageInfo.totalPages})}"
+           aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </div>
 
 </body>
