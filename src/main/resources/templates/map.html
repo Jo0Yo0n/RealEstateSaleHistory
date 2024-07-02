@@ -27,12 +27,23 @@
             <img th:src="@{/assets/images/home.png}" />
         </div>
     </div>
-	<div class="search-container">
-	   <div th:replace="search :: search-box"></div>
-   </div>
+
+
+    <div class="">
+        <div class="search-container">
+            <div th:replace="search :: search-box"></div>
+        </div>
+    </div>
+
+
     <div id="map"></div>
+
+
+
     <div class="menu" id="home-menu">
-        <div class="close-menu"><img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' /></div>
+        <div class="close-menu">
+          <img th:src="@{/assets/images/close_menu.png}" class='close-menu-img' />
+        </div>
         <div th:insert="~{home :: content}"></div>
     </div>
 
@@ -137,7 +148,7 @@
 
         // 클러스터링 함수 -> markerClustering.js
         var markerClustering = new MarkerClustering({
-            minClusterSize: 2,
+            minClusterSize: 10,
             maxZoom: 18,
             map: map,
             markers: markers,
@@ -145,7 +156,7 @@
             gridSize: 250,
             icons: [htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4,
                 htmlMarker5],
-            indexGenerator: [10, 100, 200, 500, 1000],
+            indexGenerator: [50, 100, 200, 500, 1000],
             stylingFunction: function (clusterMarker, count) {
                 $(clusterMarker.getElement()).find("div:first-child").text(
                     count);

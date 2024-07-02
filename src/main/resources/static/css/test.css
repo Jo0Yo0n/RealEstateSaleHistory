@@ -35,7 +35,7 @@
   height: 40px;
   border-radius: 10px;
   background: #f8f8f8;
-  font-size: 20px;
+  font-size: 15px;
   padding-left: 15px;
   font-weight: bold;
   border: 1px solid #616161;
@@ -74,12 +74,12 @@
   cursor: pointer;
 }
 
-.background-image {
+/*.background-image {*/
 
-  background-image: url('../assets/images/backImg.jpg');
-  filter: opacity(0.5); 
-    z-index: -1; /* 다른 모든 요소보다 뒤에 위치하도록 설정 */
-}
+/*  background-image: url('../assets/images/backImg.jpg');*/
+/*  filter: opacity(0.5); */
+/*    z-index: -1; !* 다른 모든 요소보다 뒤에 위치하도록 설정 *!*/
+/*}*/
 
 .slider {
   /*border: 1px solid coral;*/
@@ -328,12 +328,4 @@
 }
 .estate-slider .item:hover{
   filter: grayscale(0);
-}
-
-
-
-.box01{
-width: 500px;
-height: 300px;
-
 }

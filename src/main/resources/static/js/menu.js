@@ -18,12 +18,13 @@ $(document).ready(function () {
             $("#" + menuId).addClass("active");
             $("#" + menuId).find(".close-menu").addClass("active");
             // home-icon 클릭 시에만 search-container 안의 search-box 숨김
+
 /*            if (iconId === "home-icon") {
                 $('.search-container .search').hide();
             }*/
         } else {
             // 다른 메뉴 아이콘 클릭 시 search-container 안의 search-box 표시
-            $('.search-container .search').show();
+            // $('.search-container .search').show();
         }
     });
 
@@ -31,7 +32,7 @@ $(document).ready(function () {
         $("#" + menuId).removeClass("active");
         $(this).removeClass("active");
         // 메뉴 닫을 때 search-container 안의 search-box 표시
-        $('.search-container .search').show();
+        // $('.search-container .search').show();
     });
 }
 

@@ -32,28 +32,36 @@
 
 
 	<select id="selectAutoSearshList" resultType="AutoSearchDTO">
-		select 0            seq
-				 , city_name    name
-		  from city
-		 union
+        select 0            seq
+             , city_name    name
+             , null         lat
+             , null         lng
+          from city
+         union
 		select 1                                        seq
-				 , ci.city_name || ' ' || di.district_name  name
-			from city     ci
-inner join district di
-				on di.city_id = ci.city_id
+			 , ci.city_name || ' ' || di.district_name  name
+             , null         lat
+             , null         lng
+		  from city     ci
+    inner join district di
+			on di.city_id = ci.city_id
 		 union
 		select 2                                               seq
-				 , di.district_name || ' ' || ne.neighborhood_name name
-			from district         di
-inner join neighborhood     ne
-				on ne.district_id   = di.district_id
+			 , di.district_name || ' ' || ne.neighborhood_name name
+             , null         lat
+             , null         lng
+		  from district         di
+    inner join neighborhood     ne
+			on ne.district_id   = di.district_id
 		 union
 		select 3                                                seq
-				 , ne.neighborhood_name || ' ' || re.complex_name   name
+			 , ne.neighborhood_name || ' ' || re.complex_name   name
+             , re.lat         
+             , re.lng         
 		  from neighborhood         ne
-inner join real_estate          re
-				on re.neighborhood_id   = ne.neighborhood_id
-  order by seq
+    inner join real_estate          re
+			on re.neighborhood_id   = ne.neighborhood_id
+      order by seq
 	</select>
 
 </mapper>
