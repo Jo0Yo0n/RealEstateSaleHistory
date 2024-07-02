@@ -96,6 +96,7 @@ public class RealEstateSaleService implements IRealEstateSaleService {
 
     return estateSaleRepository.selectNewRealEstateSale();
   }
+  
   //아파트 중복 없이 검색
   @Override
   public List<Map<String, Object>> selectRealEstate(int districtName, String neighborhoodName,
@@ -110,6 +111,18 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     exclusiveArea.put("min", minExclusiveSize);
     exclusiveArea.put("max", maxExclusiveSize);
     return estateSaleRepository.selectRealEstate(districtName, neighborhoodName, salePrice, exclusiveArea,  offset, limit);
+  }
+  //아파트 중복 없이 총 개수 조회
+  @Override
+  public int selectRealEstateCount(int districtName, String neighborhoodName, int minPrice,
+      int maxPrice, int minExclusiveSize, int maxExclusiveSize) {
+    Map<String, Object> salePrice = new HashMap();
+    salePrice.put("min", minPrice);
+    salePrice.put("max", maxPrice);
+    Map<String, Object> exclusiveArea = new HashMap();
+    exclusiveArea.put("min", minExclusiveSize);
+    exclusiveArea.put("max", maxExclusiveSize);
+    return estateSaleRepository.selectRealEstateCount(districtName, neighborhoodName, salePrice, exclusiveArea);
   }
 
 

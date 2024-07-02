@@ -19,62 +19,63 @@ $(document).ready(function () {
 
 // 페이지네이션 생성 함수
 function createPagination(currentPage, totalPages) {
+    var paginationHtml = '<div class="pagination">';
+    var startPage, endPage;
+    var maxPage = 5;
 
-	var paginationHtml = '<div class="pagination">';
-	var startPage, endPage;
-	var maxPage = 5;
+    // 총 페이지 수가 최대 페이지 수보다 작은 경우
+    if (totalPages <= maxPage) {
+        startPage = 1;
+        endPage = totalPages;
+    } else {
+        // 현재 페이지를 기준으로 앞뒤로 페이지를 표시
+        var startOffset = (currentPage % maxPage) === 0 ? maxPage : currentPage % maxPage;
+        startPage = currentPage - startOffset + 1;
+        endPage = startPage + maxPage - 1;
 
-	// 현재 페이지가 1부터 10 사이인 경우
-	if (currentPage <= maxPage) {
-		startPage = 1;
-		endPage = maxPage;
-	} else {
-		// 현재 페이지를 기준으로 앞뒤로 5페이지씩 표시
-		var startOffset = (currentPage % maxPage) === 0 ? maxPage : currentPage % maxPage;
-		startPage = currentPage - startOffset + 1;
-		endPage = startPage + maxPage - 1;
+        // 총 페이지 수를 넘지 않도록 조정
+        if (endPage > totalPages) {
+            endPage = totalPages;
+            startPage = endPage - maxPage + 1;
+        }
+    }
 
-		// 총 페이지 수를 넘지 않도록 조정
-		if (endPage > totalPages) {
-			endPage = totalPages;
-			startPage = totalPages - maxPage + 1;
-		}
-	}
+    // '처음' 페이지로 이동하는 버튼
+    if (startPage > 1) {
+        paginationHtml += '<button class="page-item page-link" data-page="1">처음</button>';
+    }
 
-	// '처음' 페이지로 이동하는 버튼
-	if (startPage > 1) {
-		paginationHtml += '<button class="page-item page-link" data-page="1">처음</button>';
-	}
+    // '이전' 페이지 버튼 생성
+    if (currentPage > 1) {
+        paginationHtml += '<button class="page-item page-link" data-page="' + (currentPage - 1) + '">이전</button>';
+    }
 
-	// '이전 10페이지' 버튼 생성
-	if (startPage > maxPage) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + (startPage - maxPage) + '">이전 5페이지</button>';
-	}
+    // 페이지 번호 버튼 생성
+    for (var i = startPage; i <= endPage; i++) {
+        paginationHtml += '<button class="page-item page-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
+    }
 
-	// 페이지 번호 버튼 생성
-	for (var i = startPage; i <= endPage; i++) {
-		paginationHtml += '<button class="page-item page-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
-	}
+    // '다음' 페이지 버튼 생성
+    if (currentPage < totalPages) {
+        paginationHtml += '<button class="page-item page-link" data-page="' + (currentPage + 1) + '">다음</button>';
+    }
 
-	// '다음 10페이지' 버튼 생성
-	if (endPage < totalPages) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + (endPage + 1) + '">다음 5페이지</button>';
-	}
+    // '마지막' 페이지로 이동하는 버튼
+    if (endPage < totalPages) {
+        paginationHtml += '<button class="page-item page-link" data-page="' + totalPages + '">마지막</button>';
+    }
 
-	// '마지막' 페이지로 이동하는 버튼
-	if (endPage < totalPages) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + totalPages + '">마지막</button>';
-	}
+    paginationHtml += '</div>';
+    $('.pagination').html(paginationHtml);
 
-	paginationHtml += '</div>';
-	$('.pagination').html(paginationHtml);
-	
-  	// 페이지 번호 버튼 클릭 이벤트 리스너
+    // 페이지 번호 버튼 클릭 이벤트 리스너
     $('.page-link').on('click', function() {
-        currentPageNumber = $(this).data('page'); // 클릭된 페이지 번호를 전역 변수에 저장합니다.
+        var clickedPageNumber = $(this).data('page');
+        currentPageNumber = clickedPageNumber; // 클릭된 페이지 번호를 전역 변수에 저장합니다.
         sendSearchCriteria(); // 페이지 번호가 업데이트된 후 sendSearchCriteria 함수를 호출합니다.
     });
 }
+
 
 		
 
@@ -145,7 +146,7 @@ function confirmAreaRange() {
 	function getFilteredEstateCount(district, neighborhood, PriceMin, PriceMax, ExclusiveSizeMin, ExclusiveSizeMax) {
 	    return new Promise((resolve, reject) => {
 	        $.ajax({
-	            url: '/realestate/count/byCriteria',
+	            url: '/realestate/count',
 			type: 'POST',
 			contentType: 'application/json',
 			data: JSON.stringify({
@@ -176,6 +177,7 @@ function showRealEstate(response) {
         return `
             <div class="building">
                 <div class="building-header">
+                	<div class="building-id" data-real-estate-id="${estate.realEstateId}"></div>
                     <div class="building-label">아파트</div>
                     <div class="building-name">${estate.complexName}</div>
                 </div>
@@ -199,7 +201,7 @@ function showRealEstate(response) {
                     </div>
                     <div class="sale-info">
                         <div>
-                            <span class="sale-title">전체 1년 매매가</span>
+                            <span class="sale-title">전체 매매가</span>
                             <span class="sale-price">${estate.minSalePrice}억 ~ ${estate.maxSalePrice}억</span>
                         </div>
                     </div>
@@ -210,4 +212,23 @@ function showRealEstate(response) {
     
     // 생성된 HTML을 district-list-container에 삽입합니다.
     $('.district-list-container').html(realEstateHtml);
+}
+
+// 중복되지 않는 아파트의 매매 정보를 조회하여 보여주는 함수
+function sendEstateData() {
+  fetch('/realEstate/search/byCriteria', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      districtName: estate.districtName,
+      neighborhoodName: estate.neighborhoodName,
+      minSalePrice: estate.minSalePrice,
+      maxSalePrice: estate.maxSalePrice
+    })
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch((error) => console.error('Error:', error));
 }

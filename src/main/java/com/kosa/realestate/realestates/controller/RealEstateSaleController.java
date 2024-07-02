@@ -30,12 +30,22 @@ public class RealEstateSaleController {
     return "map";
   }
   
-  @GetMapping("/count")
-  @ResponseBody
-  public int estateCount(
-      @RequestParam(value = "realEstateId", required = false, defaultValue = "0") int realEstateId
-      ) {
-    return realEstateId == 0 ? realEstateSaleService.getRealEstateSaleCount() : realEstateSaleService.getRealEstateSaleCount(realEstateId);
+  @PostMapping("/count")
+  public ResponseEntity<?> estateCount (@RequestBody(required = false) Map<String, Object> searchCriteria) {
+ // 지역구 조건
+    Integer districtName = null;
+    districtName = searchCriteria != null && searchCriteria.get("districtName") != null ? Integer.parseInt((String) searchCriteria.get("districtName")) : 0;
+    // 동 조건의 여부
+    String neighborhoodName = searchCriteria != null && searchCriteria.get("neighborhoodName") != null ? (String) searchCriteria.get("neighborhoodName") : null;
+    // 가격 조건
+    Integer minPrice = searchCriteria != null && searchCriteria.get("PriceMin") != null ? (Integer) searchCriteria.get("PriceMin") : null;
+    Integer maxPrice = searchCriteria != null && searchCriteria.get("PriceMax") != null ? (Integer) searchCriteria.get("PriceMax") : null;
+    //전용면적 조건
+    Integer minExclusiveSize = searchCriteria != null && searchCriteria.get("ExclusiveSizeMin") != null ? (Integer) searchCriteria.get("ExclusiveSizeMin") : null;
+    Integer maxExclusiveSize = searchCriteria != null && searchCriteria.get("ExclusiveSizeMax") != null ? (Integer) searchCriteria.get("ExclusiveSizeMax") : null;
+    
+    int result =  realEstateSaleService.selectRealEstateCount(districtName, neighborhoodName, minPrice, maxPrice, minExclusiveSize, maxExclusiveSize);
+    return ResponseEntity.ok(result);
   }
   
   @PostMapping("/count/byCriteria")
@@ -56,15 +66,7 @@ public class RealEstateSaleController {
     return realEstateSaleService.estateCountByCriteria(districtName, neighborhoodName, minPrice, maxPrice, minExclusiveSize, maxExclusiveSize);
   }
   
-//  @GetMapping("/search")
-//  @ResponseBody
-//  public List<RealEstateWithSaleDTO> getEstateList(
-//      @RequestParam(value="realEstateId" ,defaultValue = "0") int realEstateId,
-//      @RequestParam(value = "page", defaultValue = "0") int page,
-//      @RequestParam(value = "size", defaultValue = "10") int size
-//      ){
-//    return realEstateSaleService.selectRealEstateWithSales(realEstateId,page,size);
-//  }
+
   
   @GetMapping("/detail/{salesId}")
   public String detail(@PathVariable("salesId") int salesId, Model model) {
@@ -75,6 +77,7 @@ public class RealEstateSaleController {
       model.addAttribute("realEstatePrice", realEstatePrice);
       return "detail";
   }
+  
   //검색 조건에 따른 매물 검색
   @PostMapping("/search/byCriteria")
   @ResponseBody

@@ -22,7 +22,8 @@ public interface IRealEstateSaleService {
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);
   //아파트 중복 없이 검색
   List<Map<String, Object>> selectRealEstate(int districtName, String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize, int currentPage);
-
+  int selectRealEstateCount(int districtName, String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize);
+  
   // 최근 등록 매물 (메인화면)
   List<NewRealEstateSaleDTO> findNewRealEstateSale();
 }

@@ -16,10 +16,8 @@ public interface RealEstateSaleRepository {
   
   List<RealEstateWithSaleDTO> selectRealEstateWithSales();
   List<RealEstateWithSaleDTO> selectRealEstateWithSales(Map<String, Object> param);
-  //자치구 리스트 조회
-  List<Map<String, Object>> getAllDestrictId();
-  //동 리스트 조회
-  List<Map<String, Object>> getAllNeighborhood(int destrictId);
+
+  
   //검색조건으로 매매기록 조회하기
   List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(@Param("districtName") int districtName,
       @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice,
@@ -27,10 +25,15 @@ public interface RealEstateSaleRepository {
   
   List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId);
   List<RealEstateSaleDTO> getRealEstatePrice(int salesId);
+  
   //아파트 중복 없이 검색
   List<Map<String, Object>> selectRealEstate(@Param("districtName") int districtName,
       @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice,
       @Param("exclusiveArea") Map<String, Object> exclusiveArea, @Param("offset") int offset, @Param("limit") int limit);
+  //아파트 중복 없이 총 개수 
+  int selectRealEstateCount(@Param("districtName") int districtName,
+      @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice,
+      @Param("exclusiveArea") Map<String, Object> exclusiveArea);
   
   // 최근 등록 매물 (메인화면)
   List<NewRealEstateSaleDTO> selectNewRealEstateSale();
