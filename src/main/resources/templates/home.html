@@ -7,40 +7,43 @@
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
 	crossorigin="anonymous"></script>
 <script type="text/javascript" th:src="@{/js/home.js}"></script>
+	<script type="text/javascript" th:src="@{/js/coordinate.js}"></script>
+
 <link rel='stylesheet' th:href='@{/css/home.css}' type='text/css' />
 </head>
 <body>
 	<div class="home-menu-inner-container">
- 		<div th:replace="search :: search-box"></div> 
 
-		
+ <!-- 		<div th:replace="search :: search-box"></div>  -->
+
+
 		<div class="search-select-container">
 			<div class="select-box">
 			    <select name='city' id='city' th:attr="data-cities=${cities}">
 			        <option value='select-city' disabled selected>행정구역</option>
-	
+
 			    </select>
 			</div>
-			
+
 		    <div class="select-box">
 		        <select name="district" id="district" >
 		            <option value='select-district' disabled selected>자치구</option>
 		            <!-- 타임리프를 사용하여 서버에서 받은 자치구 목록으로 옵션을 생성 -->
 		        </select>
 		    </div>
-		
+
 		    <div class="select-box">
 		        <select name='neighborhood' id='neighborhood'>
 		            <option value='select-neighborhood' disabled selected>읍/면/동</option>
 		            <!-- 자치구 선택에 따라 동적으로 옵션을 생성 -->
 		        </select>
 		    </div>
-					
+
 			<!-- 가격대 선택 버튼과 팝업을 포함하는 컨테이너 -->
 			<div class="price-container">
 			    <!-- 가격대 선택 버튼 -->
 			    <button id="price-select-btn" class="price-select-btn">가격대 선택</button>
-			    
+
 			    <!-- 가격대 선택 팝업창 -->
 			    <div id="price-range-popup" class="popup" style="display:none;">
 			        <!-- 팝업창 제목 -->

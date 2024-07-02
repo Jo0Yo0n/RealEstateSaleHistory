@@ -10,7 +10,7 @@ $(document).ready(function() {
 	if (cachedData && cacheTimestamp && (now - cacheTimestamp < CACHE_EXPIRY_TIME)) {
 		dataList = JSON.parse(cachedData);
 	} else {
-		// 데이터가 캐시되지 않았거나 유효 기간이 지난 경우 서버에서 가져옴
+		// 데이터가 캐시되지 않았거나 유효 기간이 지난 경우 서버에서 가져옴*/
 		newFetchData({ url: "/admindivison/auto/search", dataFunction: autoSearchData });
 	}
 
@@ -202,7 +202,7 @@ $(document).ready(function() {
 	/* 자동 완성 데이터 */
 	function autoSearchData(data) {
 		data.forEach(item => {
-			dataList.push(item.name);
+			dataList.push(item);
 		});
 		// 데이터 로컬스토리지에 저장
 		localStorage.setItem('autoCompleteData', JSON.stringify(dataList));
@@ -244,6 +244,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
+
+
 /* 자동 완성 기능 */
 document.addEventListener("DOMContentLoaded", () => {
 	const $search = document.querySelector(".search-box");
@@ -260,25 +263,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// 자동완성 필터링
 		let matchDataList = value
-				? dataList.filter((label) =>
-						searchWords.every(word => label.includes(word))
-				)
-				: [];
+			? dataList.map(item => item.name).filter((label) =>
+				searchWords.every(word => label.includes(word))
+			)
+			: [];
 
 		matchDataList = matchDataList.slice(0, 5);
 
 		switch (event.keyCode) {
-				// UP KEY
+			// UP KEY
 			case 38:
 				nowIndex = Math.max(nowIndex - 1, 0);
 				break;
 
-				// DOWN KEY
+			// DOWN KEY
 			case 40:
 				nowIndex = Math.min(nowIndex + 1, matchDataList.length - 1);
 				break;
 
-				// ENTER KEY
+			// ENTER KEY
 			case 13:
 				document.querySelector(".search-box").value = matchDataList[nowIndex] || "";
 
@@ -287,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				matchDataList.length = 0;
 				break;
 
-				// 그외 다시 초기화
+			// 그외 다시 초기화
 			default:
 				nowIndex = 0;
 				break;
@@ -302,14 +305,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		const regex = new RegExp(`(${value})`, "g");
 
 		$autoComplete.innerHTML = data
-		.map(
+			.map(
 				(label, index) => `
                     <div class='${nowIndex === index ? "active" : ""}'>
                         ${label.replace(regex, "<mark>$1</mark>")}
                     </div>
                 `
-		)
-		.join("");
+			)
+			.join("");
 
 		// 각 자동완성 항목에 클릭 및 마우스 오버 이벤트 리스너 추가
 		document.querySelectorAll(".auto-complete > div").forEach((item, index) => {
@@ -331,3 +334,47 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	};
 });
+
+
+
+/* 검색 or 엔터 클릭 */
+document.addEventListener('DOMContentLoaded', function() {
+
+	const searchBox = document.querySelector('.search-box');
+	const searchEnter = document.querySelector('.search-enter');
+	const autoComplete = document.querySelector('.auto-complete');
+
+	// 엔터 키 눌렀을 때 이벤트
+	searchBox.addEventListener('keypress', function(event) {
+		if (event.key === 'Enter' && !autoComplete.innerHTML.trim()) {
+			performSearch();
+		}
+	});
+
+	// search-enter 클릭 시 이벤트
+	searchEnter.addEventListener('click', function() {
+		if (!autoComplete.innerHTML.trim()) {
+			performSearch();
+		}
+	});
+
+	// 검색 실행 함수
+	function performSearch() {
+		const searchContext = searchBox.value.trim();
+		if (searchContext) {
+			const matchedItems = dataList.filter(item => item.name === searchContext);
+
+			matchedItems.forEach(item => {
+
+				if (item.lng === null || item.lat === null) {
+					window.location.href = `/realestate?lo=${item.name}&ms=`;
+				} else {
+					window.location.href = `/realestate?lo=${item.name}&ms=${item.lat},${item.lng}`;
+				}
+			});
+		}
+	}
+});
+
+
+

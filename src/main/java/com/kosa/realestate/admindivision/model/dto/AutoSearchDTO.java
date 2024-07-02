@@ -9,4 +9,6 @@ public class AutoSearchDTO {
 
     private Long seq;
     private String name;
+    private Double lat;
+    private Double lng;
 }
