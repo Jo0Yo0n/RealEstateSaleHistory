@@ -18,9 +18,9 @@ $(document).ready(function () {
             $("#" + menuId).addClass("active");
             $("#" + menuId).find(".close-menu").addClass("active");
             // home-icon 클릭 시에만 search-container 안의 search-box 숨김
-            if (iconId === "home-icon") {
+/*            if (iconId === "home-icon") {
                 $('.search-container .search').hide();
-            }
+            }*/
         } else {
             // 다른 메뉴 아이콘 클릭 시 search-container 안의 search-box 표시
             $('.search-container .search').show();

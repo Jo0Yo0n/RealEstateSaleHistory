@@ -56,9 +56,11 @@
         <result property="exclusiveArea" column="EXCLUSIVE_AREA"/>
     </association>
     <association property="estateExtra" javaType="RealEstateExtraDTO">
+    	<result property="cityName" column="CITY_NAME"/>
     	<result property="buildingTypeName" column="BUILDING_TYPE_NAME"/>
     	<result property="districtName" column="DISTRICT_NAME"/>
     	<result property="neighborhoodName" column="NEIGHBORHOOD_NAME"/>
+    	<result property="allPrice" column="ALL_PRICE"/>
     </association>
 </resultMap>
 
@@ -109,13 +111,20 @@
 	</select>
 	
  	<select id="selectRealEstateWithSalesByCondition" resultMap="RealEstateWithSaleMapDTO">
-    	SELECT A.*, B.*,  E.city_name, F.building_type_name, D.district_name, C.neighborhood_name
+    	SELECT A.*, B.*,  E.city_name, F.building_type_name, D.district_name, C.neighborhood_name, G.ALL_PRICE
 		FROM REAL_ESTATE_SALE A
 		JOIN REAL_ESTATE B ON A.REAL_ESTATE_ID = B.REAL_ESTATE_ID
 		JOIN NEIGHBORHOOD C ON B.NEIGHBORHOOD_ID = C.NEIGHBORHOOD_ID
 		JOIN DISTRICT D ON C.DISTRICT_ID = D.DISTRICT_ID
 	 	JOIN CITY E ON E.city_id = D.city_id
        	JOIN building_type F ON F.building_type_id = b.building_type_id
+       	JOIN (
+            SELECT REAL_ESTATE_ID, 
+            CONCAT(CONCAT(MIN(SALE_PRICE), '억 ~ '), CONCAT(MAX(SALE_PRICE), '억')) AS ALL_PRICE
+             FROM REAL_ESTATE_SALE
+             WHERE CONTRACT_DATE BETWEEN ADD_MONTHS(SYSDATE, -12) AND SYSDATE
+            GROUP BY REAL_ESTATE_ID
+        ) G ON A.REAL_ESTATE_ID = G.REAL_ESTATE_ID
     	<where>
         	<if test="districtName != 0">
             	AND D.DISTRICT_ID = #{districtName}

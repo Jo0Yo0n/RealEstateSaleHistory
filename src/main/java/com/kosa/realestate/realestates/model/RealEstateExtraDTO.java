@@ -12,4 +12,5 @@ public class RealEstateExtraDTO {
   private String buildingTypeName;
   private String districtName;
   private String neighborhoodName;
+  private String allPrice;
 }
