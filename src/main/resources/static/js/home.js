@@ -177,30 +177,30 @@ function showRealEstate(response) {
             <div class="building">
                 <div class="building-header">
                     <div class="building-label">아파트</div>
-                    <div class="building-name">${estate.realEstate.complexName}</div>
+                    <div class="building-name">${estate.complexName}</div>
                 </div>
                 <div class="building-info">
                     <div>
-                        <span>${estate.estateExtra.cityName}</span>
-                        <span> / ${estate.estateExtra.districtName}</span>
-                        <span> / ${estate.estateExtra.neighborhoodName}</span>
+                        <span>${estate.cityName}</span>
+                        <span> / ${estate.districtName}</span>
+                        <span> / ${estate.neighborhoodName}</span>
                     </div>
                     <div>
-                        <span>설립:${estate.realEstate.constructionYear}</span>
-                        <span> / 번지:${estate.realEstate.address}</span>
-                        <span> / 도로명:${estate.realEstate.addressStreet}</span>
+                        <span>설립:${estate.constructionYear}</span>
+                        <span> / 번지:${estate.address}</span>
+                        <span> / 도로명:${estate.addressStreet}</span>
                     </div>
                 </div>
                 <div class="building-sale">
                     <div>
                         <div class="lately-title">최근 매매 실거래가</div>
-                        <div class="lately-price">${estate.realEstateSale.salePrice}억</div>
-                        <div class="lately-info">오늘, ${estate.realEstateSale.floor}, ${estate.realEstateSale.exclusiveArea}㎡</div>
+                        <div class="lately-price">${estate.latelySalePrice}억</div>
+                        <div class="lately-info">${estate.latelyContractDate}, ${estate.latelyFloor}, ${estate.latelyExclusiveArea}㎡</div>
                     </div>
                     <div class="sale-info">
                         <div>
                             <span class="sale-title">전체 1년 매매가</span>
-                            <span class="sale-price">${estate.estateExtra.allPrice}</span>
+                            <span class="sale-price">${estate.minSalePrice}억 ~ ${estate.maxSalePrice}억</span>
                         </div>
                     </div>
                 </div>

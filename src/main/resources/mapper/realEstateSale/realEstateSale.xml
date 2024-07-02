@@ -122,7 +122,6 @@
             SELECT REAL_ESTATE_ID, 
             CONCAT(CONCAT(MIN(SALE_PRICE), '억 ~ '), CONCAT(MAX(SALE_PRICE), '억')) AS ALL_PRICE
              FROM REAL_ESTATE_SALE
-             WHERE CONTRACT_DATE BETWEEN ADD_MONTHS(SYSDATE, -12) AND SYSDATE
             GROUP BY REAL_ESTATE_ID
         ) G ON A.REAL_ESTATE_ID = G.REAL_ESTATE_ID
     	<where>
@@ -143,7 +142,64 @@
     	OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
 	</select> 
 	
-	
+	<select id="selectRealEstate" resultType="map">
+	  SELECT
+	    re.real_estate_id AS "realEstateId",
+	    re.complex_name AS "complexName",
+	    re.address AS "address",
+	    re.address_street AS "addressStreet",
+	    re.construction_year AS "constructionYear",
+	    MIN(res.sale_price) AS "minSalePrice",
+	    MAX(res.sale_price) AS "maxSalePrice",
+	    MAX(res.sale_price) KEEP (DENSE_RANK LAST ORDER BY res.contract_date) AS "latelySalePrice",
+	    TO_CHAR(TO_DATE(MAX(res.contract_date) KEEP (DENSE_RANK LAST ORDER BY res.contract_date), 'YYYYMMDD'), 'YYYY.MM.DD') AS "latelyContractDate",
+	    MAX(res.exclusive_area) KEEP (DENSE_RANK LAST ORDER BY res.contract_date) AS "latelyExclusiveArea",
+	    MAX(res.floor) KEEP (DENSE_RANK LAST ORDER BY res.contract_date) AS "latelyFloor",
+	    bt.building_type_id AS "buildingTypeId",
+	    bt.building_type_name AS "buildingTypeName",
+	    ne.neighborhood_id AS "neighborhoodId",
+	    ne.neighborhood_name AS "neighborhoodName",
+	    di.district_id AS "districtId",
+	    di.district_name AS "districtName",
+	    ci.city_id AS "cityId",
+	    ci.city_name AS "cityName"
+	  FROM
+	    real_estate re
+	    INNER JOIN real_estate_sale res ON res.real_estate_id = re.real_estate_id
+	    INNER JOIN building_type bt ON bt.building_type_id = re.building_type_id
+	    INNER JOIN neighborhood ne ON ne.neighborhood_id = re.neighborhood_id
+	    INNER JOIN district di ON di.district_id = ne.district_id
+	    INNER JOIN city ci ON ci.city_id = di.city_id
+	  <where>
+	    <if test="districtName != 0">
+	      AND di.DISTRICT_ID = #{districtName}
+	    </if>
+	    <if test="neighborhoodName != null">
+	      AND ne.NEIGHBORHOOD_NAME = #{neighborhoodName}
+	    </if>
+	    <if test="salePrice != null">
+	      AND res.SALE_PRICE BETWEEN #{salePrice.min} AND #{salePrice.max}
+	    </if>
+	    <if test="exclusiveArea != null">
+	      AND res.EXCLUSIVE_AREA BETWEEN #{exclusiveArea.min} AND #{exclusiveArea.max}
+	    </if>
+	  </where>
+	  GROUP BY
+	    re.real_estate_id,
+	    re.complex_name,
+	    re.address,
+	    re.address_street,
+	    re.construction_year,
+	    bt.building_type_id,
+	    bt.building_type_name,
+	    ne.neighborhood_id,
+	    ne.neighborhood_name,
+	    di.district_id,
+	    di.district_name,
+	    ci.city_id,
+	    ci.city_name
+	    OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+	</select>
 	
 	<select id="getRealEstateDetail" parameterType="int" resultMap="RealEstateWithSaleMapDTO">
 	    SELECT 
