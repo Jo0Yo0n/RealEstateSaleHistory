@@ -1,17 +1,17 @@
 @charset "UTF-8";
-
+/* map.css */
 body, html {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 #map {
-  width: calc(100% - 70px);
+  width: 100%;
   height: 100%;
   position: absolute;
-  left: 70px;
 }
 
 .marker-container {
@@ -44,71 +44,100 @@ body, html {
   border-top: 6px solid #FAEBAC;
 }
 
-.navbar {
-  height: 100%;
-  width: 70px;
-  z-index: 999;
-  background-color: white;
-  border-right: 1px solid #d4d4d4;
-  position: absolute;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+/* 네비게이션 바 */
+/*.navbar {*/
+/*  position: fixed;*/
+/*  left: 0;*/
+/*  bottom: 0;*/
+/*  width: 70px;*/
+/*  z-index: 1030;*/
+/*  background-color: #f8f9fa;*/
+/*  border-right: 1px solid #dee2e6;*/
+/*}*/
 
-.nav-content {
-  display: flex;
-  height: 70px;
-  width: 70px;
-  border-bottom: 1px solid #d4d4d4;
-  justify-content: center;
-  align-items: center;
+/*.nav-content {*/
+/*  height: 70px;*/
+/*  width: 70px;*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*  cursor: pointer;*/
+/*  border-bottom: 1px solid #dee2e6;*/
+/*}*/
+
+/*.nav-content img {*/
+/*  width: 30px;*/
+/*  height: 30px;*/
+/*}*/
+
+/* 토글 버튼 스타일 */
+.toggle-menu-btn {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 6px 12px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
 }
 
-.nav-content img {
-  width: 30px;
-  height: 30px;
+.toggle-menu-btn i {
+  font-size: 16px;
+  /*transform: rotate(180deg);*/
+  transition: transform 0.3s ease;
 }
 
+.toggle-menu-btn.active i {
+  transform: rotate(180deg);
+}
+
+.toggle-menu-btn:hover {
+  background-color: #e9ecef;
+}
+
+/* 메뉴 (홈 메뉴 및 아파트 정보) */
 .menu {
-  display: none !important;
-  position: absolute;
-  left: 70px;
-  margin-top:65px;
-  top: 0;
-  width: 400px;
-  height: 100%;
+  position: fixed;
+  top: 170px; /* 헤더(80px) + 검색 컨테이너(80px) 아래에 위치 */
+  width: 450px;
+  height: calc(100% - 170px);
   background-color: white;
-  border-left: 1px solid #d4d4d4;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  z-index: 998;
+  z-index: 1010;
+  /*box-shadow: 0 2px 5px rgba(0,0,0,0.1);*/
+  overflow-y: auto;
+  transition: transform 1s;
+  transform: translateY(calc(100% + 160px)); /* 화면 아래로 숨김 */
 }
+
 
 .menu.active {
-  display: block !important;
+  transform: translateY(0); /* 원래 위치로 이동 */
 }
 
-.close-menu {
-  border: 1px solid #d4d4d4;
-  border-left: 0;
-  background-color: white;
-  position: absolute;
-  border-radius: 0 3px 3px 0;
-  width: 20px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  left: 400px;
-  top: 50vh;
-  cursor: pointer;
+/*.close-menu {*/
+/*  position: absolute;*/
+/*  right: 10px;*/
+/*  top: 10px;*/
+/*  width: 30px;*/
+/*  height: 30px;*/
+/*  background-color: white;*/
+/*  border: 1px solid #dee2e6;*/
+/*  border-radius: 50%;*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*  cursor: pointer;*/
+/*}*/
+
+.search-container {
+  z-index: 1020;
 }
 
 .close-menu-img {
   width: 15px;
-  height: 20px;
+  height: 15px;
 }
 
 .page-item.page-link.active {
@@ -118,35 +147,40 @@ body, html {
 }
 
 
-.tttt {
-  border: 2px solid black;
-  position: absolute;
-  width: 400px;
-  left: 70px;
-  top: 70px;
-  z-index: 999;
+/* 검색창 */
+.search-container,
+.menu {
+  position: fixed;
+  width: 450px;
+  background-color: white;
+  z-index: 1010;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
-
-
-
-
+/* 검색 컨테이너 */
 .search-container {
-  border: 2px solid black;
-  position: absolute;
-  width: 350px;
-  left: 70px;
-  z-index: 999;
+  position: fixed;
+  top: 80px; /* 헤더의 높이에 맞춤 */
+  width: 450px;
+  height: 100px;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  z-index: 1020;
 }
 
-
-
-.search {
+.search-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.search {
+  width: 100%;
   position: relative;
-  margin-top: 20px;
+  z-index: 1030;
 }
 
 .search img {
@@ -159,14 +193,23 @@ body, html {
 }
 
 .search-box {
-  width: 400px;
-  height: 40px;
-  border-radius: 10px;
-  background: #f8f8f8;
-  font-size: 15px;
-  padding-left: 15px;
-  font-weight: bold;
-  border: 1px solid #616161;
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: white; /* 검색 박스에 배경색 지정 */
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.search-enter {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 
 .search-box::placeholder {
@@ -180,10 +223,14 @@ body, html {
 /* 자동 완성 */
 .auto-complete {
   position: absolute;
-  width: 350px;
-  margin: 1px 10px;
-  background: #f8f8f8;
-  border-radius: 10px;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ced4da;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 1031;
 }
 
 .auto-complete > div.active {

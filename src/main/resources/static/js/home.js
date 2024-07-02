@@ -42,13 +42,13 @@ function createPagination(currentPage, totalPages) {
 	}
 
 	// '처음' 페이지로 이동하는 버튼
-	if (startPage > 1) {
-		paginationHtml += '<button class="page-item page-link" data-page="1">처음</button>';
-	}
+	// if (startPage > 1) {
+	// 	paginationHtml += '<button class="page-item page-link" data-page="1">&laquo;</button>';
+	// }
 
 	// '이전 10페이지' 버튼 생성
 	if (startPage > maxPage) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + (startPage - maxPage) + '">이전 5페이지</button>';
+		paginationHtml += '<button class="page-item page-link" data-page="' + (startPage - maxPage) + '">&lt;</button>';
 	}
 
 	// 페이지 번호 버튼 생성
@@ -58,13 +58,13 @@ function createPagination(currentPage, totalPages) {
 
 	// '다음 10페이지' 버튼 생성
 	if (endPage < totalPages) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + (endPage + 1) + '">다음 5페이지</button>';
+		paginationHtml += '<button class="page-item page-link" data-page="' + (endPage + 1) + '">&gt;</button>';
 	}
 
 	// '마지막' 페이지로 이동하는 버튼
-	if (endPage < totalPages) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + totalPages + '">마지막</button>';
-	}
+	// if (endPage < totalPages) {
+	// 	paginationHtml += '<button class="page-item page-link" data-page="' + totalPages + '">&raquo;</button>';
+	// }
 
 	paginationHtml += '</div>';
 	$('.pagination').html(paginationHtml);

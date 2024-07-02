@@ -55,7 +55,7 @@ public class FavoriteController {
       @PathVariable("realEstateId") Long realEstateId,
       @RequestParam(value = "page", defaultValue = "0") int page) {
 
-    favoriteService.findFavoriteDetailLst(page, realEstateId);
+    favoriteService.findFavoriteDetailList(page, realEstateId);
 
     return "favorite_list";
   }
