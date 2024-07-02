@@ -79,6 +79,9 @@ public class communityController {
   // 커뮤니티 작성폼
   @GetMapping("/communityForm")
   public String communityForm(Principal principal, Model model) {
+    if (principal == null) {
+      return "access_denied";
+    }
 
     String email = principal.getName();
     UserDTO udto = userService.findUserByEmail(email);

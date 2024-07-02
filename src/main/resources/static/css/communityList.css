@@ -2,6 +2,11 @@
     width: 1080px;
     margin: 0 auto; /* 가운데 정렬 */
 }
+
+.menu {
+    width: 1080px;
+}
+
 /* 커뮤니티 탑*/
 .commutop {
     display: flex;
@@ -16,8 +21,8 @@
 	width: 1000px;
 }
 .select-row {
-	padding-left : 25px;
-	padding-right : 35px;
+	/*padding-left : 25px;*/
+	/*padding-right : 35px;*/
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -62,6 +67,19 @@
     outline: none;
 }
 
+/* 글 작성하러 가기 버튼 */
+.go-post {
+    display: flex;
+}
+
+.go-post button {
+    margin-left: auto;
+}
+
+.postListdiv {
+    width: 1080px;
+}
+
 .card {
     width: 1000px;
     border: 1px solid #e0e0e0;
@@ -94,6 +112,7 @@
     font-weight: bold;
     font-size: 1.2rem;
     padding: 10px 15px;
+    cursor: pointer;
 }
 
 .card-text {
