@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (ms !== "" && ms !== null) {
 
 		const [lat, lng] = ms.split(',');
+		updateUrlWithoutReload(lo, `${lat}`, `${lng}`);
 		mapCoordinate(`${lat}`, `${lng}`);
 	} else if (lo !== "" && lo !== null) {
 
@@ -234,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					geoCoder(document.querySelector(".search-box").value);
 				} else {
 					mapCoordinate(item.lat, item.lng);
+					updateUrlWithoutReload(item.name, item.lat, item.lng);
 				}
 			});
 		}

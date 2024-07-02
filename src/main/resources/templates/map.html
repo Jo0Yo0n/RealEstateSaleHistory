@@ -28,13 +28,9 @@
 
 <body>
 
+
 <div th:replace="header :: headerFragment"></div>
 
-<!--<div class="navbar">-->
-<!--  <div class="nav-content" id="home-icon">-->
-<!--    <img th:src="@{/assets/images/home.png}"/>-->
-<!--  </div>-->
-<!--</div>-->
 
 <div class="search-container">
   <div class="search-wrapper">
@@ -48,9 +44,6 @@
 <div id="map"></div>
 
 <div class="menu" id="home-menu">
-  <!--  <div class="close-menu">-->
-  <!--    <img th:src="@{/assets/images/close_menu.png}" class='close-menu-img'/>-->
-  <!--  </div>-->
   <div th:insert="~{home :: content}"></div>
 </div>
 

@@ -77,6 +77,6 @@ public class FavoriteController {
 
     favoriteService.removeFavorite(favoriteId);
 
-    return "favorite_list";
+    return "favorite_list :: content";
   }
 }

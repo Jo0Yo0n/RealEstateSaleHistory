@@ -35,6 +35,10 @@
   align-items: center;
 }
 
+ .favorite-id, .id {
+	display: none;
+}
+
 .building-label {
   font-size: 0.7em;
   background-color: #FFFFFF;
@@ -55,6 +59,27 @@
   gap: 5px;
   margin-bottom: 10px;
 }
+
+
+.remove-header {
+  display: flex;
+  margin-left: auto;
+  margin-bottom: 30px;
+  transition: transform 0.2s ease;
+}
+
+.remove-header:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.favorite-remove {
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+}
+
+
 
 /* 최근 거래 내역 */
 .building-sale {
