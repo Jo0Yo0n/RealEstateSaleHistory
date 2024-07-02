@@ -70,6 +70,8 @@
   border-radius: 10px;
   box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   z-index: 1; /* z-index 낮게 설정하여 팝업창 아래에 위치 */
+  overflow: auto; /* 내용이 넘칠 경우 스크롤바를 표시 */
+  padding : 10px;
 }
 
 .price-container {
@@ -184,5 +186,34 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+
+.lately-title {
+  font-size: 0.8em;
+}
+
+.lately-price {
+  color: #E3242B;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.lately-info {
+  font-size: 0.5em;
+}
+
+.sale-info {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.sale-title {
+  font-size: 0.5em;
+}
+
+.sale-price {
+  color: #E3242B;
+  font-size: 0.8em;
 }
 

@@ -181,9 +181,9 @@ function showRealEstate(response) {
                 </div>
                 <div class="building-info">
                     <div>
-                        <span>${estate.cityName}</span>
-                        <span> / ${estate.districtName}</span>
-                        <span> / ${estate.neighborhoodName}</span>
+                        <span>${estate.estateExtra.cityName}</span>
+                        <span> / ${estate.estateExtra.districtName}</span>
+                        <span> / ${estate.estateExtra.neighborhoodName}</span>
                     </div>
                     <div>
                         <span>설립:${estate.realEstate.constructionYear}</span>
@@ -194,13 +194,13 @@ function showRealEstate(response) {
                 <div class="building-sale">
                     <div>
                         <div class="lately-title">최근 매매 실거래가</div>
-                        <div class="lately-price">${estate.realEstateSale.salePrice}</div>
+                        <div class="lately-price">${estate.realEstateSale.salePrice}억</div>
                         <div class="lately-info">오늘, ${estate.realEstateSale.floor}, ${estate.realEstateSale.exclusiveArea}㎡</div>
                     </div>
                     <div class="sale-info">
                         <div>
-                            <span class="sale-title">전체 매매가</span>
-                            <span class="sale-price">11</span>
+                            <span class="sale-title">전체 1년 매매가</span>
+                            <span class="sale-price">${estate.estateExtra.allPrice}</span>
                         </div>
                     </div>
                 </div>
