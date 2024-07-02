@@ -2,19 +2,24 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content" class="list-container">
 
-  <div th:each="favorite, loop : ${favoriteList}">
+  <div th:each="favorite : ${favoriteList}" th:if="${not #lists.isEmpty(favoriteList)}">
+ <!--  <div th:each="favorite, loop : ${favoriteList}"> -->
 
     <div class="building">
       <div class="building-header">
+      	<span class="favorite-id" th:text="${favorite.favoriteId}"></span>
         <div class="building-label" th:text="${favorite.buildingTypeName}"></div>
         <div class="building-name" th:text="${favorite.complexName}"></div>
+        <div class="remove-header">
+        	<img class="favorite-remove" th:src="@{/assets/images/remove.png}"/>
+        </div>
       </div>
 
       <div class="building-info">
         <div>
           <span th:text="${favorite.cityName}"></span>
           <span th:text="' / ' + ${favorite.districtName}"></span>
-          <span th:text="' / ' + ${favorite.neighborhoodName}"></span>
+          <span class="neighborhood" th:text="' / ' + ${favorite.neighborhoodName}"></span>
         </div>
         <div>
           <span th:text="'설립:' + ${favorite.constructionYear}"></span>
@@ -40,6 +45,10 @@
       </div>
     </div>
   </div>
+  <div th:if="${#lists.isEmpty(favoriteList)}">
+  	<p>관심매물이 없습니다.</p>
+  </div>
+  
   <div id="pagination-info"
        th:data-current-page="${currentPage}"
        th:data-total-pages="${totalPages}"
