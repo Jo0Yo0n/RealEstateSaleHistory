@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="headerFragment">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-	crossorigin="anonymous"></script>
-<link rel='stylesheet' th:href='@{/css/header.css}' type='text/css' />
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+          integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+          crossorigin="anonymous"></script>
+  <link rel='stylesheet' th:href='@{/css/header.css}' type='text/css'/>
 </head>
 <body>
-	<div class="header-container">
-		<div class="header-inner-container">
-			<div class="header-left-inner-container">
-				<div class="logo-container">
-					<span><a th:href="@{/}">Logo</a></span>
-				</div>
-				<div class="menu-container">
-					<span><a th:href="@{/realestate}">검색</a></span>
-					<span><a th:href="@{/communityList}">게시판</a></span>
-					<span><span sec:authorize="isAuthenticated()">
-						<a th:href="@{/users/me}">마이페이지</a>
-					</span></span>
-				</div>
-				
-			</div>
-			<div class="header-right-inner-container">
-				<div class="user-container">
-					<span><span sec:authorize="isAnonymous()"><a th:href="@{/users/login}">로그인</a></span></span>
-					<span sec:authorize="isAnonymous()"><a th:href="@{/users/signup}">회원가입</a></span>
-					<span sec:authorize="isAuthenticated()"><a th:href="@{/users/logout}">로그아웃</a></span>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="header-container">
+  <div class="header-inner-container">
+    <div class="header-left-inner-container">
+      <div class="logo-container">
+      <span>
+            <a th:href="@{/}">
+         <img class="logo" th:src="@{/assets/images/logo.png}" alt="Logo"/>
+        </a>
+      </span>
+      </div>
+      <div class="menu-container">
+        <span><a th:href="@{/realestate}">검색</a></span>
+        <span><a th:href="@{/communityList}">게시판</a></span>
+        <span><span sec:authorize="isAuthenticated()">
+       <a th:href="@{/users/me}">마이페이지</a>
+      </span></span>
+      </div>
+
+    </div>
+    <div class="header-right-inner-container">
+      <div class="user-container">
+        <span><span sec:authorize="isAnonymous()"><a th:href="@{/users/login}">로그인</a></span></span>
+        <span sec:authorize="isAnonymous()"><a th:href="@{/users/signup}">회원가입</a></span>
+        <span sec:authorize="isAuthenticated()"><a th:href="@{/users/logout}">로그아웃</a></span>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
