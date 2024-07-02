@@ -130,6 +130,9 @@
 
 	    <div class="district-list-container">
         <!-- 기존의 부동산 목록이 표시되는 곳 -->
+        
+        	<!-- 아파트 real_estate_id가 같은 것을 기준으로 같은 거래 내역 받아오기 -->
+        	
 	    </div>
         <!-- 페이지네이션을 위한 컨테이너 -->
         <div class="pagination"></div>
@@ -283,7 +286,7 @@ function sendSearchCriteria() {
 
 	// AJAX 요청을 설정합니다.
 	$.ajax({
-		url: '/realestate/search/byCriteria', // 컨트롤러의 URL
+		url: '/realestate/search', // 컨트롤러의 URL
 		type: 'POST',
 		contentType: 'application/json',
 		data: JSON.stringify({
@@ -297,8 +300,7 @@ function sendSearchCriteria() {
 		}),
 		dataType: 'json',
 		success: function (response) {
-			// 서버로부터 응답을 받으면 실행되는 함수
-			console.log('검색 결과:', response);
+
 			// TODO: 검색 결과를 화면에 표시하는 로직을 여기에 작성합니다.
 			showRealEstate(response);
 		},

@@ -56,15 +56,15 @@ public class RealEstateSaleController {
     return realEstateSaleService.estateCountByCriteria(districtName, neighborhoodName, minPrice, maxPrice, minExclusiveSize, maxExclusiveSize);
   }
   
-  @GetMapping("/search")
-  @ResponseBody
-  public List<RealEstateWithSaleDTO> getEstateList(
-      @RequestParam(value="realEstateId" ,defaultValue = "0") int realEstateId,
-      @RequestParam(value = "page", defaultValue = "0") int page,
-      @RequestParam(value = "size", defaultValue = "10") int size
-      ){
-    return realEstateSaleService.selectRealEstateWithSales(realEstateId,page,size);
-  }
+//  @GetMapping("/search")
+//  @ResponseBody
+//  public List<RealEstateWithSaleDTO> getEstateList(
+//      @RequestParam(value="realEstateId" ,defaultValue = "0") int realEstateId,
+//      @RequestParam(value = "page", defaultValue = "0") int page,
+//      @RequestParam(value = "size", defaultValue = "10") int size
+//      ){
+//    return realEstateSaleService.selectRealEstateWithSales(realEstateId,page,size);
+//  }
   
   @GetMapping("/detail/{salesId}")
   public String detail(@PathVariable("salesId") int salesId, Model model) {
@@ -96,8 +96,30 @@ public class RealEstateSaleController {
     return realEstateSaleService.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, minPrice, maxPrice, minExclusiveSize, maxExclusiveSize, currentPage);
   }
 
+  //아파트 중복 없이 검색
+  @PostMapping("/search")
+  @ResponseBody
+  public ResponseEntity<List<Map<String, Object>>> selectRealEstate(@RequestBody(required = false) Map<String, Object> searchCriteria) {
+    // 지역구 조건
+    Integer districtName = null;
+    districtName = searchCriteria != null && searchCriteria.get("districtName") != null ? Integer.parseInt((String) searchCriteria.get("districtName")) : 0;
+    // 동 조건의 여부
+    String neighborhoodName = searchCriteria != null && searchCriteria.get("neighborhoodName") != null ? (String) searchCriteria.get("neighborhoodName") : null;
+    // 가격 조건
+    Integer minPrice = searchCriteria != null && searchCriteria.get("PriceMin") != null ? (Integer) searchCriteria.get("PriceMin") : 0;
+    Integer maxPrice = searchCriteria != null && searchCriteria.get("PriceMax") != null ? (Integer) searchCriteria.get("PriceMax") : 180;
+    //전용면적 조건
+    Integer minExclusiveSize = searchCriteria != null && searchCriteria.get("ExclusiveSizeMin") != null ? (Integer) searchCriteria.get("ExclusiveSizeMin") : 0;
+    Integer maxExclusiveSize = searchCriteria != null && searchCriteria.get("ExclusiveSizeMax") != null ? (Integer) searchCriteria.get("ExclusiveSizeMax") : 320;
+    //curremtPage
+    Integer currentPage = searchCriteria != null && searchCriteria.get("page") != null ? (Integer) searchCriteria.get("page") : 1; // 기본값을 1로 설정
+    
+    List<Map<String, Object>> results = realEstateSaleService.selectRealEstate(
+        districtName, neighborhoodName, minPrice, maxPrice, minExclusiveSize, maxExclusiveSize, currentPage);
 
-
+    return ResponseEntity.ok(results);  
+    }
+  
   // 최근 등록 매물 (메인화면)
   @GetMapping("/new")
   public ResponseEntity<List<NewRealEstateSaleDTO>> newRealEstateSaleList() {
