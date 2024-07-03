@@ -1,220 +1,253 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>price detail</title>
-<link rel='stylesheet' th:href='@{/css/detail.css}' type='text/css' />
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-	crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <title>price detail</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel='stylesheet' th:href='@{/css/detail.css}' type='text/css'/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </head>
 <body>
-	<div class='detail-page-container'>
-		<div class='apt-container'>
-			<div class='apt-name'>
-				<strong th:text="${realEstateDetail[0].realEstate.complexName}"></strong>
-			</div>
-			<div class='apt-address'>
-				<strong th:text="'(' + ${realEstateDetail[0].realEstate.addressStreet} + ')'"></strong>
-			</div>
-		</div>
-		<div class='base-date'>기준일 : 2024-06-13</div>
-		<div class='chart-container'>
-			<div class='basic-chart'>
-				<canvas id="basic-chart" width="450" height="300"></canvas>
-			</div>
-			<div class='shoulder-knee-chart'>
-				<img th:src="@{/assets/images/person.png}" class='person'/>
-				<!-- <canvas id='sk-chart' width='450' height='300'></canvas> -->
-				<table>
-			        <tr><td><span class="shoulder-knee-price text-gray" id="chart-max"></span></td></tr>
-			        <tr><td><span class="shoulder-knee-price" id="chart-shoulder"></span></td></tr>
-			        <tr><td><span class="shoulder-knee-price text-gray" id="chart-median"></span></td></tr>
-			        <tr><td><span class="shoulder-knee-price" id="chart-knee"></span></td></tr>
-			        <tr class="none-border"><td><span class="shoulder-knee-price text-gray" id="chart-min"></span></td></tr>
-			    </table>
-			</div>
-		</div>
-		<div class='price-detail-container'>
-			<div class='price-title'><strong>가격 정보</strong></div>
-			<div class='price-content-container'>
-				<div class='price-content'>
-					<span th:text="${realEstateDetail[0].realEstateSale.salePrice} + '억'"></span>
-					<div class='price-inner-content'>
-						<span>최근 5년 실거래가</span>
-						<div class='price-high-row'>
-							<span id="max-price" class="max-min-price"></span>	
-							<span id="min-price" class="max-min-price"></span>	
-						</div>
-					</div>
-				</div>
-				<div class='price-content'>
-					<span th:text="'층 : '+${realEstateDetail[0].realEstateSale.floor}+'층'"></span>
-					<span th:text="'전용면적(m²) : '+${realEstateDetail[0].realEstateSale.exclusiveArea}+'m²'"></span>
-					<span th:text="'계약일자 : '+${realEstateDetail[0].realEstateSale.contractDate}"></span>
-					<span th:text="'등기일자 : '+${realEstateDetail[0].realEstateSale.registrationDate}"></span>
-				</div>
-			</div>
-		</div>
-		<div class='trade-list-container'>
-			<div class='trade-title'><strong>거래내역</strong></div>
-			<div class='trade-list'>
-				<div class='trade-list-title'>
-					<span class='trade-list-column'><strong>계약일</strong></span>
-					<span class='trade-list-column'><strong>계약유형</strong></span>
-					<span class='trade-list-column'><strong>전용면적(m²)</strong></span>
-					<span class='trade-list-column'><strong>층</strong></span>
-					<span class='trade-list-column'><strong>가격(억)</strong></span>
-				</div>
-				 <div th:each="sale : ${realEstatePrice}" class="trade-list-content">
-			        <span class="trade-list-value" th:text="${sale.contractDate}"></span>
-			        <span class="trade-list-value">매매</span>
-			        <span class="trade-list-value" th:text="${sale.exclusiveArea}"></span>
-			        <span class="trade-list-value" th:text="${sale.floor}"></span>
-			        <span class="trade-list-value" th:text="${sale.salePrice}"></span>
-			    </div>
-			</div>
-		</div>
-	</div>
-	<script th:inline="javascript">
-		// 페이지 로드 후 가격 정보 업데이트
-	    document.addEventListener("DOMContentLoaded", function() {
-	        document.getElementById("max-price").innerText = "최고가 : " + maxValue + "억";
-	        document.getElementById("min-price").innerText = "최저가 : " + minValue + "억";
-	        document.getElementById("chart-max").innerText = maxValue+"억";
-	        document.getElementById("chart-shoulder").innerText = "어깨 " + eightyPercentValue+"억";
-	        document.getElementById("chart-median").innerText = medianValue+"억";
-	        document.getElementById("chart-knee").innerText = "무릎 " + twentyPercentValue+"억";
-	        document.getElementById("chart-min").innerText = minValue+"억";
-	    });
+<div class="page-wrapper">
+  <header th:replace="header :: headerFragment"></header>
+  <main class="content-container">
+    <div class='detail-page-container'>
+      <div class='apt-info'>
+        <h1 class='apt-name' th:text="${realEstateDetail[0].realEstate.complexName}"></h1>
+        <p class='apt-address'
+           th:text="'(' + ${realEstateDetail[0].realEstate.addressStreet} + ')'"></p>
+        <!--        <p class='base-date'>기준일 : 2024-06-13</p>-->
+      </div>
+      <div class='chart-container'>
+        <div class='basic-chart'>
+          <canvas id="basic-chart" width="520" height="300"></canvas>
+        </div>
+        <div class='shoulder-knee-chart'>
+          <img th:src="@{/assets/images/person.png}" class='person' alt="Person silhouette"/>
+          <table>
+            <tr>
+              <td><span class="shoulder-knee-price text-gray" id="chart-max"></span></td>
+            </tr>
+            <tr>
+              <td><span class="shoulder-knee-price" id="chart-shoulder"></span></td>
+            </tr>
+            <tr>
+              <td><span class="shoulder-knee-price text-gray" id="chart-median"></span></td>
+            </tr>
+            <tr>
+              <td><span class="shoulder-knee-price" id="chart-knee"></span></td>
+            </tr>
+            <tr class="none-border">
+              <td><span class="shoulder-knee-price text-gray" id="chart-min"></span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <section class='price-detail-container'>
+        <h2 class='section-title'>가격 정보</h2>
+        <div class='price-content-container'>
+          <p class="current-price"
+             th:text="'최근 거래가: ' + ${realEstateDetail[0].realEstateSale.salePrice} + '억'"></p>
+          <div class='price-content'>
+            <div class='recent-five-years'>
+              <p class="title">최근 5년간의 거래가격</p>
+              <p id="max-price" class="max-min-price"></p>
+              <p id="min-price" class="max-min-price"></p>
+            </div>
+            <div class="sales-detail">
+              <p th:text="'층 : '+${realEstateDetail[0].realEstateSale.floor}+'층'"></p>
+              <p th:text="'전용면적(m²) : '+${realEstateDetail[0].realEstateSale.exclusiveArea}+'m²'"></p>
+              <p th:text="'계약일자 : '+${realEstateDetail[0].realEstateSale.contractDate}"></p>
+              <p th:text="'등기일자 : '+${realEstateDetail[0].realEstateSale.registrationDate}"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class='trade-list-container'>
+        <h2 class='section-title'>거래 내역</h2>
+        <div class='trade-list'>
+          <div class='trade-list-title'>
+            <span class='trade-list-column'>계약일</span>
+            <span class='trade-list-column'>계약유형</span>
+            <span class='trade-list-column'>전용면적(m²)</span>
+            <span class='trade-list-column'>층</span>
+            <span class='trade-list-column'>가격(억)</span>
+          </div>
+          <div th:each="sale : ${realEstatePrice}" class="trade-list-content">
+            <span class="trade-list-value" th:text="${sale.contractDate}"></span>
+            <span class="trade-list-value">매매</span>
+            <span class="trade-list-value" th:text="${sale.exclusiveArea}"></span>
+            <span class="trade-list-value" th:text="${sale.floor}"></span>
+            <span class="trade-list-value" th:text="${sale.salePrice}"></span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer th:replace="footer :: footerFragment"></footer>
+</div>
 
-	
-	    /*<![CDATA[*/
-	    var chartData = /*[[${realEstatePrice}]]*/ [];
-	    
-	    var labels = chartData.map(function(item) { return item.contractDate; }).reverse();
-	    var values = chartData.map(function(item) { return item.salePrice; }).reverse();
-	    
-	    var maxValue = Math.max(...values);
-	    var minValue = Math.min(...values);
-	    var medianValue = (maxValue + minValue) / 2 ;
-	    var eightyPercentValue = minValue + 0.8 * (maxValue - minValue);
-	    var twentyPercentValue = minValue + 0.2 * (maxValue - minValue);
-	    
-	    let bsCt = document.getElementById('basic-chart');
-		
-		let basicChart = new Chart(bsCt, {
-		  type: 'line',
-		  data: {
-		    labels: labels,
-		    datasets: [
-		      {
-		        label: '거래가(단위/억 원)',
-		        data: values,
-		      }
-		    ]
-		  },
-		    options: {
-		        plugins: {
-		            legend: {
-		                display: false // 라벨 숨기기
-		            }
-		        },
-		        scales: {
-		            y: {
-		              ticks: {
-		                // labels 데이터의 최소값보다 작은 값으로 설정 (예: labels 데이터 최소값 - 10)
-		                min: minValue - 1,
-		                // labels 데이터의 최대값보다 큰 값으로 설정 (예: labels 데이터 최대값 + 10)
-		                max: maxValue + 1,
-		              }
-		            },
-		            x: {
-		                ticks: {
-		                  // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-		                  callback: function(val, index) {
-		                    // Hide every 2nd tick label
-		                    if(values.length>=6){
-		                    	return index % 2 === 0 ? this.getLabelForValue(val) : '';
-		                    }
-		                    return this.getLabelForValue(val);
-		                  },
-		                  
-		                }
-		              }
-		          }
-		    }
-		});
-	    /*]]>*/
-	</script>
-	<script th:inline="javascript">
-		
-		
-		/*<![CDATA[*/
-	    var chartData = /*[[${realEstatePrice}]]*/ [];
-	    
-	    var values = [...new Set(chartData.map(function(item) { return item.salePrice; }))].reverse();
-	    
-	    // 중복 제거 후 정렬
-	    values.sort((a, b) => a - b);
-	    
-	    var minValue = values[0];
-	    var maxValue = values[values.length - 1];
-	    
-	    // 다섯 등분 값 계산
-	    var firstQuartile = minValue + (maxValue - minValue) / 4;
-	    var medianValue = minValue + (maxValue - minValue) / 2;
-	    var thirdQuartile = minValue + (maxValue - minValue) * 3 / 4;
+<script th:inline="javascript">
+  // 소수점 처리 함수
+  function formatNumber(value) {
+    const num = parseFloat(value);
+    return num % 1 === 0 ? num.toFixed(0) : num.toFixed(1);
+  }
 
-	    // 차트를 그리기 위해 데이터 배열을 생성
-		var chartValues = [minValue, firstQuartile, medianValue, thirdQuartile, maxValue];
-	    
-		let skCt = document.getElementById('sk-chart');
-		
-		let skChart = new Chart(skCt, {
-            type: 'line',
-            data: {
-                
-                datasets: [
-                    {
-                        label: '가격(단위/억 원)',
-                        data: chartValues,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1,
-                        fill: false
-                    }
-                ]
+  // 페이지 로드 후 가격 정보 업데이트
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("max-price").innerText = "최고가 : " + formatNumber(maxValue) + "억";
+    document.getElementById("min-price").innerText = "최저가 : " + formatNumber(minValue) + "억";
+    document.getElementById("chart-max").innerText = formatNumber(maxValue) + "억";
+    document.getElementById("chart-shoulder").innerText = "어깨 " + formatNumber(eightyPercentValue) + "억";
+    document.getElementById("chart-median").innerText = formatNumber(medianValue) + "억";
+    document.getElementById("chart-knee").innerText = "무릎 " + formatNumber(twentyPercentValue) + "억";
+    document.getElementById("chart-min").innerText = formatNumber(minValue) + "억";
+  });
+
+  /*<![CDATA[*/
+  var chartData = /*[[${realEstatePrice}]]*/ [];
+
+  var labels = chartData.map(function (item) {
+    return item.contractDate;
+  }).reverse();
+  var values = chartData.map(function (item) {
+    return item.salePrice;
+  }).reverse();
+
+  var maxValue = Math.max(...values);
+  var minValue = Math.min(...values);
+  var medianValue = (maxValue + minValue) / 2;
+  var eightyPercentValue = minValue + 0.8 * (maxValue - minValue);
+  var twentyPercentValue = minValue + 0.2 * (maxValue - minValue);
+
+  let bsCt = document.getElementById('basic-chart');
+
+  let basicChart = new Chart(bsCt, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '거래가(단위: 억)',
+          data: values,
+          backgroundColor: '#FEDF04'
+        }
+      ]
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false // 라벨 숨기기
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            // labels 데이터의 최소값보다 작은 값으로 설정 (예: labels 데이터 최소값 - 10)
+            min: minValue - 1,
+            // labels 데이터의 최대값보다 큰 값으로 설정 (예: labels 데이터 최대값 + 10)
+            max: maxValue + 1,
+
+            font: {
+              size: 12,
+              weight: 'bold'
             },
-            options: {
-                scales: {
-                    y: {
-                        position: 'right',
-                        ticks: {// y축 값 다섯 개만 나오게 설정
-                            maxTicksLimit: 5,
-                            stepSize: (maxValue - minValue)/5
-                        }
-                    },
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: true
-                    }
-                },
-                elements: {
-                    line: {
-                        display: false // 라인 차트를 표시하지 않음
-                    },
-                    point: {
-                        display: false // 데이터 포인트를 표시하지 않음
-                    }
-                }
+            callback: function(value) {
+              return value + '억';
             }
-        });
-	    /*]]>*/
-	</script>
+          }
+        },
+        x: {
+          ticks: {
+            // For a category axis, the val is the index so the lookup via getLabelForValue is needed
+            color: '#000000',
+            font: {
+              size: 12
+            },
+            callback: function (val, index) {
+              // Hide every 2nd tick label
+              if (values.length >= 6) {
+                return index % 2 === 0 ? this.getLabelForValue(val) : '';
+              }
+              return this.getLabelForValue(val);
+            },
+
+          }
+        }
+      }
+    }
+  });
+  /*]]>*/
+</script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var chartData = /*[[${realEstatePrice}]]*/ [];
+
+  var values = [...new Set(chartData.map(function (item) {
+    return item.salePrice;
+  }))].reverse();
+
+  // 중복 제거 후 정렬
+  values.sort((a, b) => a - b);
+
+  var minValue = values[0];
+  var maxValue = values[values.length - 1];
+
+  // 다섯 등분 값 계산
+  var firstQuartile = minValue + (maxValue - minValue) / 4;
+  var medianValue = minValue + (maxValue - minValue) / 2;
+  var thirdQuartile = minValue + (maxValue - minValue) * 3 / 4;
+
+  // 차트를 그리기 위해 데이터 배열을 생성
+  var chartValues = [minValue, firstQuartile, medianValue, thirdQuartile, maxValue];
+
+  let skCt = document.getElementById('sk-chart');
+
+  let skChart = new Chart(skCt, {
+    type: 'line',
+    data: {
+
+      datasets: [
+        {
+          label: '가격(단위/억 원)',
+          data: chartValues,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          position: 'right',
+          ticks: {// y축 값 다섯 개만 나오게 설정
+            maxTicksLimit: 5,
+            stepSize: (maxValue - minValue) / 5
+          }
+        },
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      elements: {
+        line: {
+          display: false // 라인 차트를 표시하지 않음
+        },
+        point: {
+          display: false // 데이터 포인트를 표시하지 않음
+        }
+      }
+    }
+  });
+  /*]]>*/
+</script>
 </body>
 </html>
