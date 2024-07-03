@@ -48,7 +48,7 @@ function createPagination(currentPage, totalPages) {
 
 	// '이전 10페이지' 버튼 생성
 	if (startPage > maxPage) {
-		paginationHtml += '<span class="page-item page-link" data-page="' + (startPage - maxPage) + '">&lt;</span>';
+		paginationHtml += '<span class="page-item page-link" data-page="' + (startPage - maxPage) + '">&laquo;</span>';
 	}
 
 	// 페이지 번호 버튼 생성
@@ -58,7 +58,7 @@ function createPagination(currentPage, totalPages) {
 
 	// '다음 10페이지' 버튼 생성
 	if (endPage < totalPages) {
-		paginationHtml += '<span class="page-item page-link" data-page="' + (endPage + 1) + '">&gt;</span>';
+		paginationHtml += '<span class="page-item page-link" data-page="' + (endPage + 1) + '">&raquo;</span>';
 	}
 
 	// '마지막' 페이지로 이동하는 버튼
