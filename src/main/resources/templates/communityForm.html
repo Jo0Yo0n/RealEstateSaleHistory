@@ -48,10 +48,12 @@ function checkExtension(fileName, fileSize) {
 //폼 검증 함수
 function validateForm() {
     var districtId = $('#selectbox2').val();
+    console.log("야ㅕ기"+districtId);
+    
     var title = $('#title').val().trim();
     var content = $('#content').val().trim();
     
-    if (!districtId) {
+    if (districtId=="undefined") {
         showAlert("자치구를 선택하세요.");
         return false;
     }
@@ -83,7 +85,6 @@ function showAlert(message,redirect) {
 }
 
 $(document).ready(function() {
-    $('select').select2();
 
     var orginDistrictId = $("#districtId").val();
     districtId = orginDistrictId;
@@ -95,13 +96,17 @@ $(document).ready(function() {
     });
     
     //뒤로 가기 버튼 추가
-    $('.backbtn').click(function() {
+    $('.backbtn, .cancelbtn').click(function() {
     	 window.location.href = "/communityList";
     });
 
     // 게시글 업데이트
     $("#updateBtn").on("click", function(e) {
         e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
 
         var inputFile = $("input[name='uploadFile']");
         var files = inputFile[0].files;
@@ -257,6 +262,7 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
+<div th:replace="header :: headerFragment"></div>
 	<div class="container">
 		<div class="menu">
 			<div class="commutop">
@@ -313,14 +319,7 @@ $(document).ready(function() {
 								th:value="${name.districtName}" th:text="${name.districtName}"></option>
 						</th:block>
 					</select>
-
-
 				</div>
-				<hr>
-				<div class="textbox">
-					<h3 class="commutext2">게시글 작성</h3>
-				</div>
-				<div class="col-md-12">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label for="title">제목</label> <input type="text"
@@ -356,7 +355,7 @@ $(document).ready(function() {
 								</div>
 								<br>
 								<div class="d-flex">
-									<button type="button" class="btn"
+									<button type="button" class="cancelbtn btn"
 										style="background-color: #FAEBAC; margin-right: 10px;">Cancel</button>
 									<th:block th:if="${update}">
 										<button id="updateBtn" class="btn"
@@ -399,5 +398,6 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
+	
 </body>
 </html>

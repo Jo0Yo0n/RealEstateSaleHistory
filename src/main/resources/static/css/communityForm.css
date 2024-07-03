@@ -30,8 +30,8 @@
 /* 셀렉트 박스*/
 .selectboxes{
     display : flex;
-    justify-content: center;
     gap: 50px;
+    margin: 0px 32px 30px 15px;
 }
 
 #selectbox1 {
@@ -48,9 +48,6 @@
 #selectbox2 {
     width: 40%; /* 선택 상자의 너비 */
     height: 33px; /* 선택 상자의 높이 */
-    vertical-align: middle; /* 수직 가운데 정렬 */
-    padding-right: 10px; /* 내부 여백 설정 */
-    padding-left: 80px; /* 내부 여백 설정 */
 }
 
 /* 작성폼 */
@@ -96,4 +93,9 @@
 .backbtn {
     border: none; /* 테두리 제거 */
     background-color: transparent; /* 배경색 제거 */
+}
+
+hr{
+	width: 1016px;
+	margin-right:83px;
 }

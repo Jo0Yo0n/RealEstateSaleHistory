@@ -54,4 +54,6 @@ public interface ICommunityService {
 
   int getTotalPostsCountByUserId(Long userId);
 
+  List<PostDTO> searchOptionPosts(String searchText, int districtId);
+
 }

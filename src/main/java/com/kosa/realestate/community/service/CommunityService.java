@@ -233,4 +233,10 @@ public class CommunityService implements ICommunityService {
   public int getTotalPostsCountByUserId(Long userId) {
 		return communityRepository.getTotalPostsCountByUserId(userId);
 	}
+
+  @Override
+  public List<PostDTO> searchOptionPosts(String searchText, int districtId) {
+    List<PostDTO> postList = communityRepository.searchOptionPosts(searchText,districtId);
+    return postList;
+  }
 }

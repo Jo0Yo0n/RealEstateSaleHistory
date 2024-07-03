@@ -143,15 +143,11 @@
                     <div th:each="file : ${files}">
                         <img th:src="@{'/uploads/' + ${file.filePath} + ${file.fileName}}" th:alt="${file.fileOriginName}" style="max-width: 450px; max-height: 450px;"/>
                     </div>
-                    <!-- 좋아요 및 댓글 수 -->
-                    <div class="comment-header">
-                        <span class="likes">좋아요 27</span>
-                        <span class="comments">댓글 20</span>
-                    </div>
+ 
                     <!-- 댓글 입력 폼 -->
                     <div class="comment-box">
                         <input id="CommentText" type="text" placeholder="댓글을 입력해주세요." />
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">등록</button>
+                        <button type="button" class="commentbtn" data-bs-toggle="modal" data-bs-target="#commentModal">등록</button>
                     </div>
 
                     <!-- 댓글 섹션 -->
@@ -159,9 +155,6 @@
                         <div class="comment" th:each="comments : ${commentList}">
                             <div class="comment-nickname"><span th:text="${commuCard.nickname}"></span></div>
                             <div class="comment-text"><span th:text="${comments.comments}"></span></div>
-                            <div class="comment-meta">
-                                <span class="comment-reply">대댓글 달기 0</span>
-                            </div>
                         </div>
                         <hr>
                     </div>
@@ -221,7 +214,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary commentSub">등록</button>
+        <button type="button" class="commentbtn commentSub">등록</button>
       </div>
     </div>
   </div>
