@@ -56,29 +56,32 @@
 		#{fileOriginName})
 	</insert>
 
-<select id="communityCard" resultType="PostDTO" parameterType="long">
-    SELECT
-        p.post_id AS postId,
-        p.content,
-        p.user_id AS userId,
-        p.district_id AS districtId,
-        p.title,
-        TO_CHAR(p.created_at, 'yyyy-mm-dd hh24:mi:ss'),
-        TO_CHAR(p.updated_at, 'yyyy-mm-dd hh24:mi:ss'),
-        p.post_view AS postView,
-        u.user_id AS userId,
-        u.nickname AS nickname,
-        d.district_id AS districtId,
-        d.district_name AS districtName
-    FROM
-        post p
-    INNER JOIN
-        users u ON p.user_id = u.user_id
-    INNER JOIN
-        district d ON p.district_id = d.district_id
-    WHERE
-        p.post_id = #{postId}
-</select>
+	<select id="communityCard" resultType="PostDTO"
+		parameterType="long">
+		SELECT
+		p.post_id AS postId,
+		p.content,
+		p.user_id AS userId,
+		p.district_id AS districtId,
+		p.title,
+		TO_CHAR(p.created_at, 'yyyy-mm-dd
+		hh24:mi:ss'),
+		TO_CHAR(p.updated_at, 'yyyy-mm-dd hh24:mi:ss'),
+		p.post_view AS postView,
+		u.user_id AS userId,
+		u.nickname AS nickname,
+		d.district_id AS districtId,
+		d.district_name AS districtName
+		FROM
+		post p
+		INNER JOIN
+		users u ON p.user_id = u.user_id
+		INNER JOIN
+		district d ON
+		p.district_id = d.district_id
+		WHERE
+		p.post_id = #{postId}
+	</select>
 
 
 	<select id="selectFiles" parameterType="long"
@@ -113,18 +116,20 @@
 		post_id=#{postId}
 	</update>
 
-<select id="selectPostInfo" parameterType="Long" resultType="PostInfoDTO">
-    SELECT
-        post_id AS postId,
-        title,
-        content,
-        TO_CHAR(created_at, 'yyyy-mm-dd hh24:mi:ss')
-    FROM post
-    WHERE post_id = #{postId}
-</select>
+	<select id="selectPostInfo" parameterType="Long"
+		resultType="PostInfoDTO">
+		SELECT
+		post_id AS postId,
+		title,
+		content,
+		TO_CHAR(created_at,
+		'yyyy-mm-dd hh24:mi:ss')
+		FROM post
+		WHERE post_id = #{postId}
+	</select>
 
 
-			 
+
 	<update id="postDelete" parameterType="long">
 		update post set isdeleted
 		= 'Y'
@@ -134,14 +139,14 @@
 
 	<select id="selectNewPostList" resultType="PostInfoDTO">
 		select post_id
-				 , title
-				 , content
-			   , to_char(created_at, 'yyyy-mm-dd hh24:mi:ss')  created_at
-		  from post
-  	order by created_at desc
-  	fetch first 5 rows only		  				  
+		, title
+		, content
+		, to_char(created_at, 'yyyy-mm-dd hh24:mi:ss') created_at
+		from post
+		order by created_at desc
+		fetch first 5 rows only
 	</select>
- 
+
 
 	<select id="loadPostsByDistrict" parameterType="int"
 		resultType="PostDTO">
@@ -154,13 +159,14 @@
 		p.title,
 		p.created_at,
 		p.updated_at,
-		p.post_view AS "postView",
+		p.post_view
+		AS "postView",
 		u.user_id AS
 		"user.userId",
 		u.nickname AS "nickname",
 		d.district_id AS
 		"districtId",
-			 
+
 		d.district_name AS "districtName"
 		FROM
 		post p
@@ -168,9 +174,12 @@
 		users u ON
 		p.user_id = u.user_id
 		INNER JOIN
-		district d ON p.district_id =
+		district d ON
+		p.district_id =
 		d.district_id
-		where p.isdeleted = 'N'and p.district_id= #{districtId}
+		where p.isdeleted
+		= 'N'and p.district_id=
+		#{districtId}
 		ORDER
 		BY
 		p.created_at desc
@@ -188,12 +197,14 @@
 		SELECT
 		p.post_id AS "postId",
 		p.content,
-		p.user_id AS "userId",
+		p.user_id AS
+		"userId",
 		p.district_id,
 		p.title,
 		p.created_at,
 		p.updated_at,
-		p.post_view AS "postView",
+		p.post_view
+		AS "postView",
 		u.user_id AS "user.userId",
 		u.nickname AS
 		"nickname",
@@ -205,13 +216,119 @@
 		INNER JOIN
 		users u ON p.user_id = u.user_id
 		INNER JOIN
-		district d ON p.district_id = d.district_id
-		where p.isdeleted= 'N'and p.district_id= #{districtId}
+		district d
+		ON p.district_id = d.district_id
+		where p.isdeleted= 'N'and
+		p.district_id= #{districtId}
 		ORDER BY
 		p.post_view desc
 	</select>
-	
+
 	<select id="postViewList" resultType="PostDTO">
+		SELECT
+		p.post_id AS
+		"postId",
+		p.content,
+		p.user_id AS "userId",
+		p.district_id,
+		p.title,
+		p.created_at,
+		p.updated_at,
+		p.post_view AS "postView",
+		u.user_id AS
+		"user.userId",
+		u.nickname AS
+		"nickname",
+		d.district_id AS "districtId",
+		d.district_name
+		AS
+		"districtName"
+		FROM
+		post p
+		INNER JOIN
+		users u ON
+		p.user_id = u.user_id
+		INNER JOIN
+		district d ON p.district_id =
+		d.district_id
+		where p.isdeleted
+		= 'N'
+		ORDER BY
+		p.post_view DESC
+	</select>
+
+	<select id="searchPosts" parameterType="String"
+		resultType="PostDTO">
+		SELECT
+		p.post_id AS "postId",
+		p.content,
+		p.user_id AS
+		"userId",
+		p.district_id,
+		p.title,
+		p.created_at,
+		p.updated_at,
+		p.post_view
+		AS "postView",
+		u.user_id AS "user.userId",
+		u.nickname AS "nickname",
+		d.district_id AS "districtId",
+		d.district_name AS "districtName"
+		FROM
+		post p
+		INNER JOIN
+		users u ON p.user_id = u.user_id
+		INNER JOIN
+		district d
+		ON p.district_id = d.district_id
+		WHERE
+		p.title LIKE '%' || #{searchText}
+		|| '%'
+		OR p.content LIKE '%' || #{searchText} || '%'
+		ORDER BY
+		p.post_view DESC
+	</select>
+
+	<select id="getPostsByUserId" resultType="UserPostDTO">
+		SELECT
+		p.post_id,
+		p.content,
+		p.user_id,
+		p.district_id,
+		p.title,
+		p.created_at,
+		p.updated_at,
+		p.post_view,
+		u.nickname,
+		d.district_name,
+		c.city_name
+		FROM
+		post p
+		INNER JOIN
+		users u ON p.user_id = u.user_id
+		INNER JOIN
+		district d ON p.district_id
+		= d.district_id
+		INNER JOIN
+		city c ON c.city_id = d.city_id
+		where
+		p.isdeleted = 'N' and p.user_id =
+		#{userId}
+		ORDER BY
+		p.created_at desc
+		offset #{offset} rows fetch next #{pageSize} rows only
+	</select>
+
+	<select id="getTotalPostsCountByUserId" resultType="int">
+		select
+		count(*)
+		from post
+		where isdeleted = 'N' AND user_id = #{userId}
+	</select>
+
+	<!-- 게시글 검색 쿼리 설정 -->
+	<select id="searchOptionPosts" parameterType="map"
+		resultType="PostDTO">
 		SELECT
 		p.post_id AS "postId",
 		p.content,
@@ -222,81 +339,20 @@
 		p.updated_at,
 		p.post_view AS "postView",
 		u.user_id AS "user.userId",
-		u.nickname AS
-		"nickname",
+		u.nickname AS "nickname",
 		d.district_id AS "districtId",
-		d.district_name
-		AS
-		"districtName"
+		d.district_name AS "districtName"
 		FROM
 		post p
 		INNER JOIN
 		users u ON p.user_id = u.user_id
 		INNER JOIN
 		district d ON p.district_id = d.district_id
-		where p.isdeleted
-		= 'N'
-		ORDER BY
-		p.post_view DESC		  				   
-	</select>
-	
-	<select id="searchPosts" parameterType="String" resultType="PostDTO">
-    SELECT
-        p.post_id AS "postId",
-        p.content,
-        p.user_id AS "userId",
-        p.district_id,
-        p.title,
-        p.created_at,
-        p.updated_at,
-        p.post_view AS "postView",
-        u.user_id AS "user.userId",
-        u.nickname AS "nickname",
-        d.district_id AS "districtId",
-        d.district_name AS "districtName"
-    FROM
-        post p
-    INNER JOIN
-        users u ON p.user_id = u.user_id
-    INNER JOIN
-        district d ON p.district_id = d.district_id
-    WHERE
-        p.title LIKE '%' || #{searchText} || '%'
-        OR p.content LIKE '%' || #{searchText} || '%'
-    ORDER BY
-        p.post_view DESC
+		WHERE
+		d.district_id = #{districtId}
+		AND (p.title LIKE '%' || #{searchText} || '%'
+		OR p.content LIKE '%' || #{searchText} || '%')
+		ORDER BY p.created_at DESC
 	</select>
 
-	<select id="getPostsByUserId" resultType="UserPostDTO">
-		SELECT
-			p.post_id,
-			p.content,
-			p.user_id,
-			p.district_id,
-			p.title,
-			p.created_at,
-			p.updated_at,
-			p.post_view,
-			u.nickname,
-			d.district_name,
-			c.city_name
-		FROM
-			post p
-				INNER JOIN
-			users u ON p.user_id = u.user_id
-				INNER JOIN
-			district d ON p.district_id = d.district_id
-				INNER JOIN
-			city c ON c.city_id = d.city_id
-		where p.isdeleted = 'N' and p.user_id = #{userId}
-		ORDER BY
-			p.created_at desc
-		offset #{offset} rows fetch next #{pageSize} rows only
-	</select>
-
-	<select id="getTotalPostsCountByUserId" resultType="int">
-		select count(*)
-		from post
-		where isdeleted = 'N' AND user_id = #{userId}
-	</select>
 </mapper>

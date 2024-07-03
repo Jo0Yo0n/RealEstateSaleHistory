@@ -115,3 +115,13 @@
     font-size: 0.8rem;
     color: #999;
 }
+
+.commentbtn{
+   margin-left:18px;
+   width: 65px;
+   height: 40px;
+   background-color: #ffa500;
+   color: #fff;
+   border: none;
+   border-radius: 5px;
+   }
