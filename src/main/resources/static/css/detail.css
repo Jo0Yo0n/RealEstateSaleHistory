@@ -60,6 +60,7 @@ body, html {
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
+  gap: 50px;
 }
 
 .basic-chart, .shoulder-knee-chart {
@@ -203,6 +204,7 @@ td {
   .chart-container {
     flex-direction: column;
     align-items: center;
+    gap: 50px;
   }
 
   .basic-chart, .shoulder-knee-chart {
