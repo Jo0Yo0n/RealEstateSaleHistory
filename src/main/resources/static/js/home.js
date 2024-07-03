@@ -48,17 +48,17 @@ function createPagination(currentPage, totalPages) {
 
 	// '이전 10페이지' 버튼 생성
 	if (startPage > maxPage) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + (startPage - maxPage) + '">&lt;</button>';
+		paginationHtml += '<span class="page-item page-link" data-page="' + (startPage - maxPage) + '">&lt;</span>';
 	}
 
 	// 페이지 번호 버튼 생성
 	for (var i = startPage; i <= endPage; i++) {
-		paginationHtml += '<button class="page-item page-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
+		paginationHtml += '<span class="page-item page-link' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</span>';
 	}
 
 	// '다음 10페이지' 버튼 생성
 	if (endPage < totalPages) {
-		paginationHtml += '<button class="page-item page-link" data-page="' + (endPage + 1) + '">&gt;</button>';
+		paginationHtml += '<span class="page-item page-link" data-page="' + (endPage + 1) + '">&gt;</span>';
 	}
 
 	// '마지막' 페이지로 이동하는 버튼
