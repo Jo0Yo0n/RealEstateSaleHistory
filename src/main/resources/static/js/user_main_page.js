@@ -147,7 +147,7 @@ $(document).ready(function() {
 	function newCommunityData(data) {
 		const contentDiv = $('#new-post');
 		data.forEach(item => {
-			const postLink = $('<a></a>').attr('href', `/communityCard/${item.postId}`).addClass('post-link');
+			const postLink = $('<a></a>').attr('href', `/communityCard?postId=${item.postId}`).addClass('post-link');
 			const postTitle = $('<span></span>').addClass('post-title').text(item.title);
 			const postCreatedAt = $('<span></span>').addClass('post-create-date').text(item.createdAt);
 

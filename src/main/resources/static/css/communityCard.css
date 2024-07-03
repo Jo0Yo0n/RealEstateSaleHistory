@@ -10,7 +10,9 @@
 }
 .card {
     padding: 60px 270px 120px 270px;
+    border-width: 0;
 }
+
 .card-body {
     padding: 15px;
 }
