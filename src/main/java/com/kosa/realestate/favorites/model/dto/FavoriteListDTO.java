@@ -29,4 +29,6 @@ public class FavoriteListDTO {
   private String districtName;
   private Long cityId;
   private String cityName;
+  private Double lat;
+  private Double lng;
 }

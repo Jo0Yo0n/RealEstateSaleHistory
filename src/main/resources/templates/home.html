@@ -7,7 +7,7 @@
           integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
           crossorigin="anonymous"></script>
   <script type="text/javascript" th:src="@{/js/home.js}"></script>
-  <script type="text/javascript" th:src="@{/js/coordinate.js}"></script>
+<!--  <script type="text/javascript" th:src="@{/js/coordinate.js}"></script>-->
 
   <link rel='stylesheet' th:href='@{/css/home.css}' type='text/css'/>
 </head>
@@ -267,7 +267,11 @@
     var PriceMax = !maxPrice || maxPrice === '180' ? 180 : parseInt(maxPrice);
 
     var ExclusiveSizeMin = minArea === '0' ? 0 : parseInt(minArea);
-    var ExclusiveSizeMax = maxArea === 'max' ? 320 : maxArea === '0' ? 320 : parseInt(maxArea);
+    var ExclusiveSizeMax = maxArea === 'max'||!maxArea ? 320 : maxArea === '0' ? 320 : parseInt(maxArea);
+    
+   
+
+
 
     // 사용자가 선택한 가격 범위, 면적 범위, 도시, 구, 동에 따라 부동산 개수를 가져오는 함수
     getFilteredEstateCount(district, neighborhood, PriceMin, PriceMax, ExclusiveSizeMin,
