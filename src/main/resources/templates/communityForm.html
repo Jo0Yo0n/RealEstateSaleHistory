@@ -275,7 +275,7 @@ $(document).ready(function() {
 				</button>
 				<div class="commutoptext">
 					<h3>
-						<span th:text="${update != null} ? '게시글 수정' : '커뮤니티 작성'"></span>
+						<span style="font-weight: 900;" th:text="${update != null} ? '게시글 수정' : '게시글 작성'"></span>
 					</h3>
 				</div>
 			</div>
@@ -356,14 +356,14 @@ $(document).ready(function() {
 								<br>
 								<div class="d-flex">
 									<button type="button" class="cancelbtn btn"
-										style="background-color: #FAEBAC; margin-right: 10px;">Cancel</button>
+										style="background-color: #F9DE7B; margin-right: 10px;">Cancel</button>
 									<th:block th:if="${update}">
 										<button id="updateBtn" class="btn"
-											style="background-color: #F9DE7B; margin-right: 10px;">수정</button>
+											style="background-color: #fd7e14; margin-right: 10px;">수정</button>
 									</th:block>
 									<th:block th:unless="${update}">
 										<button id="uploadBtn" class="btn"
-											style="background-color: #F9DE7B; margin-right: 10px;">
+											style="background-color: #fd7e14; margin-right: 10px;">
 											Submit!<span th:text="${update}"></span>
 										</button>
 									</th:block>

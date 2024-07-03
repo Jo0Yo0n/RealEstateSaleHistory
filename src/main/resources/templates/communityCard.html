@@ -12,6 +12,44 @@
     <script>
         $(document).ready(function() {
         	
+            // 댓글 수정 버튼 클릭 이벤트
+            $(".comment-section").on("click", ".edit-comment", function(e) {
+                e.preventDefault();
+                var commentElement = $(this).closest(".comment");
+                commentElement.find(".edit-box").show();
+                commentElement.find(".comment-text").hide();
+                $(this).hide();
+            });
+
+            // 댓글 수정 저장 버튼 클릭 이벤트
+            $(".comment-section").on("click", ".save-edit", function() {
+                var commentElement = $(this).closest(".comment");
+                var commentId = $(this).data("comment-id");
+                var newCommentText = commentElement.find(".edit-input").val();
+
+                $.ajax({
+                    url: '/comments/commentUpdate/' + commentId,
+                    type: 'POST',
+                    data: { commentText: newCommentText },
+                    success: function(response) {
+                        commentElement.find(".comment-text").text(newCommentText).show();
+                        commentElement.find(".edit-box").hide();
+                        commentElement.find(".edit-comment").show();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("댓글 수정 실패: " + textStatus + " - " + errorThrown);
+                    }
+                });
+            });
+
+            // 댓글 수정 취소 버튼 클릭 이벤트
+            $(".comment-section").on("click", ".cancel-edit", function() {
+                var commentElement = $(this).closest(".comment");
+                commentElement.find(".edit-box").hide();
+                commentElement.find(".comment-text").show();
+                commentElement.find(".edit-comment").show();
+            });
+        	
             $(".commentSub").click(function() {
                 var postId = $('#postId').val();
                 var commentText = $("#CommentText").val(); 
@@ -35,7 +73,7 @@
                                     <div class="comment-nickname">${comment.nickname}</div>
                                     <div class="comment-text">${comment.comments}</div>
                                     <div class="comment-meta">
-                                        <span class="comment-reply">대댓글 달기 0</span>
+                                        <span class="comment-reply">삭제</span>
                                     </div>
                                 </div>
                                 <hr>
@@ -150,14 +188,29 @@
                         <button type="button" class="commentbtn" data-bs-toggle="modal" data-bs-target="#commentModal">등록</button>
                     </div>
 
-                    <!-- 댓글 섹션 -->
-                    <div class="comment-section">
-                        <div class="comment" th:each="comments : ${commentList}">
-                            <div class="comment-nickname"><span th:text="${commuCard.nickname}"></span></div>
-                            <div class="comment-text"><span th:text="${comments.comments}"></span></div>
-                        </div>
-                        <hr>
-                    </div>
+
+<!-- 댓글 섹션 -->
+<div class="comment-section">
+    <div class="comment" th:each="comments : ${commentList}">
+        <div class="comment-nickname"><span th:text="${commuCard.nickname}"></span></div>
+        <div class="comment-text" th:text="${comments.comments}"></div>
+        <div class="comment-meta">
+            <div th:if="${isAuthor}">
+                <a href="#" class="edit-comment" th:data-comment-id="${comments.commentId}">수정</a>
+                <span> | </span>
+                <a th:href="@{/comments/commentdelete(commentId=${comments.commentId})}">삭제</a>
+            </div>
+        </div>
+        <!-- 수정 입력 박스 -->
+        <div class="edit-box" style="display: none;">
+            <input type="text" class="edit-input" placeholder="수정할 댓글을 입력하세요" />
+            <button type="button" class="save-edit" th:data-comment-id="${comments.commentId}">저장</button>
+            <button type="button" class="cancel-edit">취소</button>
+        </div>
+    </div>
+    <hr>
+</div>
+
                 </div>
             </div>
         </div>

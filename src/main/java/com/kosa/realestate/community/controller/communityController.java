@@ -139,6 +139,7 @@ public class communityController {
     // 댓글
     List<CommentDTO> commentList = commentService.findCommentByPostId(postId);
     model.addAttribute("commentList", commentList);
+    System.out.println("commentList"+commentList);
 
     // 사용자 검증
     if (principal != null) {

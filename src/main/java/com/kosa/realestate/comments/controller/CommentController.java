@@ -33,7 +33,7 @@ public class CommentController {
   // 댓글 조회
   @GetMapping("/posts/{postId}")
   public ResponseEntity<List<CommentDTO>> commentList(@PathVariable("postId") Long postId) {
-
+    
     return ResponseEntity.ok(commentService.findCommentByPostId(postId));
   }
 
@@ -62,26 +62,28 @@ public class CommentController {
 
 
   // 댓글 수정
-  @PutMapping("{commentId}/posts/{postId}")
-  public String commentModify(@PathVariable("commentId") Long commentId,
-      @PathVariable("postId") Long postId, @RequestBody CommentForm commentForm, Model model,
+  @GetMapping("/commentUpdate")
+  @ResponseBody
+  public String commentModify(@RequestParam("commentId") Long commentId, Model model,
       Principal principal) {
-
-    commentService.modifyComment(commentId, postId, principal.getName(), commentForm);
+    System.out.println("commentId"+commentId);
+    
+    commentService.modifyComment(commentId);
 
     return "redirect:/";
   }
 
 
-  // 댓글 삭제 수정
-  @PutMapping("/{commentId}")
-  public String commentDeleteModify(@PathVariable("commentId") Long commentId, Model model,
-      Principal principal) {
-
-    commentService.modfiyDeleteComment(commentId, principal.getName());
-
-    return "redirect:/";
+  // 댓글 삭제
+  @ResponseBody
+      @GetMapping("/commentdelete")
+      public String deleteComment(@RequestParam("commentId") Long commentId) {
+          // 댓글 삭제 로직
+    System.out.println("commentId"+commentId);
+          return "redirect:/communityCard?postId=";
+      
   }
+
 }
 
 
