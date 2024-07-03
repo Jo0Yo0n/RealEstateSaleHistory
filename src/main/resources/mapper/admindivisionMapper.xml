@@ -32,36 +32,51 @@
 
 
 	<select id="selectAutoSearshList" resultType="AutoSearchDTO">
-        select 0            seq
-             , city_name    name
-             , null         lat
-             , null         lng
-          from city
-         union
+		select 0            seq
+			 , city_name    name
+			 , null         lat
+			 , null         lng
+			 , null         real_estate_id
+			 , null         sale_price
+		  from city
+		 union
 		select 1                                        seq
 			 , ci.city_name || ' ' || di.district_name  name
-             , null         lat
-             , null         lng
+			 , null         lat
+			 , null         lng
+			 , null         real_estate_id
+			 , null         sale_price
 		  from city     ci
-    inner join district di
+	inner join district di
 			on di.city_id = ci.city_id
 		 union
 		select 2                                               seq
 			 , di.district_name || ' ' || ne.neighborhood_name name
-             , null         lat
-             , null         lng
+			 , null         lat
+			 , null         lng
+			 , null         real_estate_id
+			 , null         sale_price
 		  from district         di
-    inner join neighborhood     ne
+	inner join neighborhood     ne
 			on ne.district_id   = di.district_id
 		 union
 		select 3                                                seq
 			 , ne.neighborhood_name || ' ' || re.complex_name   name
-             , re.lat         
-             , re.lng         
+			 , re.lat
+			 , re.lng
+			 , re.real_estate_id
+			 , max(res.sale_price) keep (dense_rank last order by res.contract_date) sale_price
 		  from neighborhood         ne
-    inner join real_estate          re
+	inner join real_estate          re
 			on re.neighborhood_id   = ne.neighborhood_id
-      order by seq
+	inner join real_estate_sale     res
+			on res.real_estate_id   = re.real_estate_id
+	  group by 3
+			 , ne.neighborhood_name || ' ' || re.complex_name
+			 , re.lat
+			 , re.lng
+			 , re.real_estate_id
+	  order by seq
 	</select>
 
 </mapper>

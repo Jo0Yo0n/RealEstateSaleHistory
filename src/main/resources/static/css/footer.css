@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .footer-container{
-	background: #F9DE7B;
+/* 	background: #F9DE7B; */
   flex-shrink: 0;
   height: 140px;
   width: 100%;

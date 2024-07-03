@@ -121,11 +121,9 @@ $(document).ready(function () {
       return;
     }
 
-    var buildingName = $(this).find('.building-name').text();
-    var neighborhood = $(this).find('.neighborhood').text().replace(' / ', '');
-    window.location.href = `/realestate?lo=` + neighborhood + " " + buildingName
-        + `&ms=`;
-
+	var lo = $(this).find('.neighborhood').text().replace(' / ', '') + ' ' +  $(this).find('.building-name').text();
+	var ms = $(this).find('.lat').text() +','+ $(this).find('.lng').text();
+    window.location.href = `/realestate?lo=` + lo + `&ms=` + ms;
   });
 
   // 즐겨찾기 삭제 버튼 기능
