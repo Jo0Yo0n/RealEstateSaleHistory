@@ -8,9 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	const cachedData = localStorage.getItem('autoCompleteData');
 	const cacheTimestamp = localStorage.getItem('autoCompleteDataTimestamp');
 	const now = Date.now();
+	
+	const urlParams = new URLSearchParams(window.location.search);
+	const lo = urlParams.get('lo');
+	const ms = urlParams.get('ms');
 
 	if (cachedData && cacheTimestamp && (now - cacheTimestamp < CACHE_EXPIRY_TIME)) {
+		console.log("?");
 		dataList = JSON.parse(cachedData);
+		markerCoordinates();
+		changeUrlCoordinate();
 	} else {
 		// 데이터가 캐시되지 않았거나 유효 기간이 지난 경우 서버에서 가져옴*/
 		newFetchData({ url: "/admindivison/auto/search", dataFunction: autoSearchData });
@@ -33,44 +40,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	/* 자동 완성 데이터 */
 	function autoSearchData(data) {
+		console.log(1);
 		data.forEach(item => {
 			dataList.push(item);
 		});
 		// 데이터 로컬스토리지에 저장
 		localStorage.setItem('autoCompleteData', JSON.stringify(dataList));
 		localStorage.setItem('autoCompleteDataTimestamp', Date.now());
+		markerCoordinates();
+		changeUrlCoordinate();
 	}
 
 
-
-	const urlParams = new URLSearchParams(window.location.search);
-	const lo = urlParams.get('lo');
-	const ms = urlParams.get('ms');
-
-
-	if (lo !== null) {
-		// 페이지 이동시 입력값
-		document.querySelector('.search-box').value = lo;
+	// URL 확인 후 URL 변경 밑 좌표 검색
+	function changeUrlCoordinate() {
+		
+		if (lo !== null) {
+			// 페이지 이동시 입력값
+			document.querySelector('.search-box').value = lo;
+		}
+		console.log(lo);
+		// 경도 위도가 있는경우
+		if (ms !== "" && ms !== null) {
+			
+			const [lat, lng] = ms.split(',');
+			updateUrlWithoutReload(lo, `${lat}`, `${lng}`);
+			mapCoordinate(`${lat}`, `${lng}`);
+			
+		} else if (lo !== "" && lo !== null) {
+			
+			geoCoder(document.querySelector(".search-box").value);
+		}
 	}
-
-
-	// 경도 위도가 없을 경우
-	if (ms !== "" && ms !== null) {
-
-		const [lat, lng] = ms.split(',');
-		updateUrlWithoutReload(lo, `${lat}`, `${lng}`);
-		mapCoordinate(`${lat}`, `${lng}`);
-	} else if (lo !== "" && lo !== null) {
-
-		geoCoder(document.querySelector(".search-box").value);
-	}
-
 
 	// 좌표 검색
 	function mapCoordinate(lat, lng) {
 
 		map.setZoom(18);
 		map.panTo(new naver.maps.LatLng(lat, lng));
+
+		// 검색된 마커 찾기
+		const markerId = `${lat}-${lng}`;
+		const markerElement = document.getElementById(markerId);
+
+		if (markerElement) {
+			// 기존 스타일 저장
+			markerElement.classList.add('searched-marker');
+
+			// 일정 시간 후 또는 특정 이벤트 후 원래대로 돌아가도록 설정
+			setTimeout(() => {
+				markerElement.classList.remove('searched-marker');
+			}, 10000); // 10초 후 원래대로 돌아가도록 설정
+		}
 	}
 
 
@@ -105,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 
+	// URL 맞춰주기 
 	function updateUrlWithoutReload(lo, lat, lng) {
 
 		const urlChange = new URL(window.location);
@@ -239,5 +261,119 @@ document.addEventListener("DOMContentLoaded", () => {
 				}
 			});
 		}
+	}
+
+	// 마커 설정
+	function markerCoordinates() {
+
+		// 좌표 데이터
+		var markers = [];
+
+		for (var i = 0, ii = dataList.length; i < ii; i++) {
+			var spot = dataList[i];
+
+			if (spot.seq === 3 && spot.grd_la !== null && spot.grd_lo !== null) {
+
+				var latlng = new naver.maps.LatLng(spot.lat, spot.lng);
+				var apt = spot.name;
+				var price = spot.salePrice;
+				var estateId = spot.realEstateId;
+
+				// 가격에 따라 클래스 결정
+				var priceClass;
+				if (price < 5) {
+					priceClass = 'price-default';
+				} else if (price < 10) {
+					priceClass = 'price-5';
+				} else if (price < 15) {
+					priceClass = 'price-10';
+				} else if (price < 20) {
+					priceClass = 'price-15';
+				} else {
+					priceClass = 'price-20';
+				}
+
+				var marker = new naver.maps.Marker({
+					position: latlng,
+					draggable: false,
+					clickable: true,
+					icon: {
+						content: [`<div id="${spot.lat}-${spot.lng}" class="marker-container">
+              						<div class="marker-name">${apt}</div>
+              						<div class="marker-price ${priceClass}">${price}억</div>
+              						<div class="disabled" style="display:none;">${estateId}</div>
+              		 		   </div>`].join(''),
+						size: new naver.maps.Size(40, 40),
+						anchor: new naver.maps.Point(20, 20)
+					}
+				});
+
+				markers.push(marker);
+
+				// 마커 클릭 이벤트 핸들러 추가
+				naver.maps.Event.addListener(marker, 'click', function(e) {
+					var clickedMarker = e.overlay;
+					var clickedApt = $(clickedMarker.getIcon().content).find('.marker-name').text();
+					var clickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
+
+					// 메뉴 내용을 클릭된 마커 정보로 업데이트 (clickedId를 사용하도록 수정)
+					$('#apt-info').html(
+						`<p>Clicked Marker Information</p><p>Apt: ${clickedApt}</p><p>Real Estate ID: ${clickedId}</p>`);
+
+					// 모든 메뉴를 닫고 apt-info 메뉴를 열기
+					$('.menu').removeClass('active');
+					$('#apt-info').addClass('active');
+
+					// 닫기 버튼 추가
+					var closeBtn = $('#close-btn-template').html();
+					$('#apt-info').prepend(closeBtn);
+
+					// 닫기 버튼에 클릭 이벤트 추가
+					$('.close-menu-img').click(function() {
+						$('#apt-info').removeClass('active');
+						$(this).remove(); // 닫기 버튼 제거
+					});
+				});
+			}
+		}
+
+		// 마커 클러스터링 html
+		var htmlMarker1 = {
+			content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-1.png);background-size:contain;"></div>`,
+			size: N.Size(50, 50),
+			anchor: N.Point(25, 25)
+		}, htmlMarker2 = {
+			content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-2.png);background-size:contain;"></div>`,
+			size: N.Size(50, 50),
+			anchor: N.Point(25, 25)
+		}, htmlMarker3 = {
+			content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-3.png);background-size:contain;"></div>`,
+			size: N.Size(50, 50),
+			anchor: N.Point(25, 25)
+		}, htmlMarker4 = {
+			content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-4.png);background-size:contain;"></div>`,
+			size: N.Size(50, 50),
+			anchor: N.Point(25, 25)
+		}, htmlMarker5 = {
+			content: `<div style="cursor:pointer;width:50px;height:50px;line-height:50px;font-size:10px;color:white;text-align:center;font-weight:bold;background-image:url(${clusterMarkerImagePath}cluster-marker-5.png);background-size:contain;"></div>`,
+			size: N.Size(50, 50),
+			anchor: N.Point(25, 25)
+		};
+
+		// 클러스터링 함수 -> markerClustering.js
+		var markerClustering = new MarkerClustering({
+			minClusterSize: 10,
+			maxZoom: 18,
+			map: map,
+			markers: markers,
+			disableClickZoom: false,
+			gridSize: 250,
+			icons: [htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4,
+				htmlMarker5],
+			indexGenerator: [50, 100, 200, 500, 1000],
+			stylingFunction: function(clusterMarker, count) {
+				$(clusterMarker.getElement()).find("div:first-child").text(count);
+			}
+		});
 	}
 });

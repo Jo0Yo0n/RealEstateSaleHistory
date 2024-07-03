@@ -27,6 +27,8 @@
          	 , di.district_name
          	 , ci.city_id
          	 , ci.city_name
+         	 , re.lat
+         	 , re.lng
 		  from favorite             fa
 	inner join real_estate          re
         	on re.real_estate_id    = fa.real_estate_id
@@ -55,6 +57,8 @@
 			 , di.district_name
 			 , ci.city_id
 			 , ci.city_name
+			 , re.lat
+         	 , re.lng
 		offset #{offset} rows fetch next #{pageSize} rows only
 	</select>
 
