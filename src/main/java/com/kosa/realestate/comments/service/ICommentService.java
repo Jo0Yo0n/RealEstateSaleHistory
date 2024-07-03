@@ -14,8 +14,8 @@ public interface ICommentService {
 	void addComments(CommentDTO cdto);
 
 	// 댓글 수정
-	void modifyComment(Long commentId, Long postId, String email, CommentForm commentForm);
+	void modifyComment(Long commentId);
 	
 	// 댓글 삭제 수정
-	void modfiyDeleteComment(Long commentId, String email);
+	void modfiyDeleteComment(Long commentId);
 }

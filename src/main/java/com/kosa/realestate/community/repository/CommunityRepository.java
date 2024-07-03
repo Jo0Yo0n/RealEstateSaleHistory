@@ -49,4 +49,7 @@ public interface CommunityRepository {
       @Param("pageSize") int pageSize); // 유저가 작성한 글 조회
 
   int getTotalPostsCountByUserId(@Param("userId") Long userId);
+
+    List<PostDTO> searchOptionPosts(@Param("searchText") String searchText, @Param("districtId") int districtId);
+
 }
