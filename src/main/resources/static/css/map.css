@@ -14,6 +14,7 @@ body, html {
   position: absolute;
 }
 
+
 .marker-container {
   height: 30px;
   padding: 2px 10px;
@@ -28,6 +29,8 @@ body, html {
   z-index: 1;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
+
+
 
 .marker-container:hover {
   z-index: 999;
@@ -111,6 +114,22 @@ body, html {
   transform: translateY(calc(100% + 160px)); /* 화면 아래로 숨김 */
 }
 
+.menu::-webkit-scrollbar {
+    width: 10px; /* 스크롤바의 너비 */
+}
+
+/* 스크롤바 막대(썸)에 대한 설정 */
+.menu::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1; /* 스크롤바 썸의 색상 */
+    border-radius: 5px; /* 스크롤바 썸의 모서리 둥글기 */
+    border: 2px solid white; /* 스크롤바 썸의 테두리 */
+}
+
+/* 스크롤바 트랙(경로)에 대한 설정 */
+.menu::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* 스크롤바 트랙의 색상 */
+    border-radius: 5px; /* 스크롤바 트랙의 모서리 둥글기 */
+}
 
 .menu.active {
   transform: translateY(0); /* 원래 위치로 이동 */
@@ -140,11 +159,11 @@ body, html {
   height: 15px;
 }
 
-.page-item.page-link.active {
-  background-color: #4CAF50; /* 활성 페이지의 배경색 */
-  color: white; /* 활성 페이지의 글자색 */
-  border: 1px solid #4CAF50; /* 활성 페이지의 테두리 */
-}
+/* .page-item.page-link.active {
+  background-color: #4CAF50; 활성 페이지의 배경색
+  color: white; 활성 페이지의 글자색
+  border: 1px solid #4CAF50; 활성 페이지의 테두리
+} */
 
 
 /* 검색창 */
@@ -247,4 +266,172 @@ body, html {
   background: #f8f8f8;
   padding: .2rem .6rem;
   cursor: pointer;
+}
+.menu-container{
+	display: flex;
+}
+
+
+
+
+
+
+
+.same-districtid-container{
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	padding: 20px;
+	position : absolute;
+	top: 170px; /* 헤더(80px) + 검색 컨테이너(80px) 아래에 위치 */
+	left: 451px;
+	width: 450px;
+	height: calc(100% - 170px);
+    display: none; 
+    overflow-y: scroll;
+}
+.closeable-container{
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 15px;	
+  position: relative;
+
+  padding-top: 10px; /* 상단 패딩 */
+  padding-bottom: 10px; /* 하단 패딩 */
+}
+.customPagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin-top: 5px;
+	margin-bottom: 30px;
+	border-radius: 4px;	
+	margin-top: 20px; 
+}
+
+.customPagination button {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 4px;	  
+}
+
+.customPagination button.active {
+	background-color: #ffa500;
+	color: #fff;
+	border-color: #ffa500;
+}
+
+
+/* 기본 스타일 */
+.estate-item {
+   	padding: 20px;
+	margin-top: 10px;
+	border: 1px solid #E0E0E0;
+	border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    animation: bottom-200 1s ease forwards;
+}
+
+.estate-header {
+	display:flex;
+	align-items: center;
+}
+
+.estate-label {
+  font-size: 0.3em;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  padding: 2px 3px;
+  margin-right: 5px;
+  border: 1px solid #E0E0E0;
+}
+
+.estate-name {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+.estate-salesId a{
+  position: relative;
+  top: 130px; 
+  left: 70px; 
+}
+
+@keyframes bottom-200 {
+    0% {
+        transform: translateY(200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes left-200 {
+    0% {
+        transform: translateX(-200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes right-200 {
+    0% {
+        transform: translateX(200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* '.same-districtid-container' 요소의 스크롤바 전체 영역에 대한 설정 */
+.same-districtid-container::-webkit-scrollbar {
+    width: 10px; /* 스크롤바의 너비 */
+}
+
+/* 스크롤바 막대(썸)에 대한 설정 */
+.same-districtid-container::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1; /* 스크롤바 썸의 색상 */
+    border-radius: 5px; /* 스크롤바 썸의 모서리 둥글기 */
+    border: 2px solid white; /* 스크롤바 썸의 테두리 */
+}
+
+/* 스크롤바 트랙(경로)에 대한 설정 */
+.same-districtid-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* 스크롤바 트랙의 색상 */
+    border-radius: 5px; /* 스크롤바 트랙의 모서리 둥글기 */
+}
+
+
+#close-button{
+	position : absolute;
+	top : 15px;
+	left: 80%; 
+	margin: 13px;
+	padding: 5px;
+	z-index: 2;
+}
+
+.closeable-container h4 {
+    padding: 15px;
+    font-weight: bold;
 }

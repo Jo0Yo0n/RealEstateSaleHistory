@@ -15,7 +15,7 @@ var estateTotalPages;
 
 		// id를 이용한 추가 작업을 여기에 작성
 	});
-});*/
+}); */
 
 // 페이지네이션 생성 함수
 function createPagination(currentPage, totalPages) {
@@ -200,7 +200,7 @@ function showRealEstate(response) {
                     <div class="sale-info">
                         <div>
                             <span class="sale-title">전체 매매가</span>
-                            <span class="min-price">${estate.minSalePrice}억</span> ~ <span class="max-price">${estate.maxSalePrice}억</span>
+                            <span class="sale-min-price">${estate.minSalePrice}억</span> ~ <span class="sale-max-price">${estate.maxSalePrice}억</span>
                         </div>
                     </div>
                 </div>
@@ -363,6 +363,8 @@ $('#district, #neighborhood').change(function () {
 });
 
     
+// 현재 선택된 건물의 ID를 저장할 변수
+let currentSelectedBuildingId = null;
 
 //상위 요소인 .district-list-container에 클릭 이벤트 리스너를 추가
 document.querySelector('.district-list-container').addEventListener('click', function(event) {
@@ -390,8 +392,51 @@ if (buildingElement) {
         minSalePrice: parseFloat(estateSaleInfoSpans[1].textContent.replace(/[^0-9.]/g, '')),
         maxSalePrice: parseFloat(estateSaleInfoSpans[2].textContent.replace(/[^0-9.]/g, '')),
     };
+    
+ 	
+  		// 클릭된 건물의 ID 추출
+        const clickedBuildingId = buildingElement.querySelector('.building-id').dataset.realEstateId;
+
+		if(currentSelectedBuildingId === clickedBuildingId){
+			// 같은 건물을 클릭했으므로, 함수를 호출하지 않고 컨테이너의 표시 상태를 토글합니다.
+			var container = document.getElementById('same-districtid-container');
+			container.style.display = (container.style.display === 'none' ? 'block' : 'none');
+		} else {
+	        // onBuildingClick 함수 내에서 Promise 처리
+	        onBuildingClick(estate).then(() => {
+	            // '.same-districtid-container' 요소 선택
+	            var container = document.getElementById('same-districtid-container');
 	
-    onBuildingClick(estate);
+	            // 이전에 선택된 건물과 같은지 확인
+	            if (currentSelectedBuildingId === clickedBuildingId) {
+	                // 같은 건물을 클릭했으므로 숨김
+	                container.style.display = 'none';
+	                // 선택된 건물 ID 초기화
+	                currentSelectedBuildingId = null;
+	            } else {
+	                // 다른 건물을 클릭했으므로 보임
+	                container.style.display = 'block';
+	                // 현재 선택된 건물 ID 업데이트
+	                currentSelectedBuildingId = clickedBuildingId;
+	            }
+	        }).catch(error => {
+	            console.error('데이터를 로드하는 데 실패했습니다:', error);
+	        });
+		}
+		
+     	// 순차적으로 나타나는 애니메이션 적용
+ 	    var items = document.querySelectorAll('.estate-item');
+        let delay = 0;
+        
+        items.forEach(function(item) {
+        	setTimeout(function() {
+	            item.style.opacity = '1'; // 요소를 보이게 합니다
+	            item.style.transform = 'translateY(0)'; // 요소를 위로 이동시킵니다
+        	}, delay);
+        	delay += 500; // 다음 요소의 애니메이션 딜레이를 0.5초씩 증가
+    	});
+
+    
     }
 });
 
@@ -400,6 +445,7 @@ if (buildingElement) {
   	// #homeIcon 클릭 시 데이터를 가져오는 함수와 전체 게시물 수를 가져오는 함수를 호출합니다.
 	$('#toggle-menu-btn').click(function () {
 		sendSearchCriteria();
+	  	$('#same-districtid-container').hide();
 	});
 
   });
@@ -407,7 +453,7 @@ if (buildingElement) {
 //아파트 정보를 클릭했을 때 실행될 리스너 함수
 function onBuildingClick(estate) {
    // getEstateCount 함수를 실행하여 총 데이터 개수를 가져옵니다.
-   getEstateCount({
+   return getEstateCount({
        districtName: estate.districtName,
        neighborhoodName: estate.neighborhoodName,
        minSalePrice: estate.minSalePrice,
@@ -418,8 +464,7 @@ function onBuildingClick(estate) {
        const pageSize = 6;
        estateTotalPages = Math.ceil(totalCount / pageSize); // 전역 변수에 totalPages를 할당합니다
        const currentPage = 1; // 현재 페이지 번호 초기화
-	   console.log(estateTotalPages);
-/*       generatePagination(currentPage, estate);*/
+       
        loadPage(currentPage, estate);
    }).catch(error => {
        console.error('데이터 개수를 가져오는 데 실패했습니다:', error);
@@ -442,8 +487,8 @@ function generatePagination(currentPage, estate) {
         prevButton.className = 'page-link';
         prevButton.innerText = '이전';
         prevButton.addEventListener('click', function() {
-            const newCurrentPage = startPage - pageGroupSize;
-            loadPage(newCurrentPage, estate);
+            //const newCurrentPage = startPage - pageGroupSize;
+            loadPage(currentPage-1, estate);
         });
         paginationContainer.appendChild(prevButton);
     }
@@ -451,11 +496,15 @@ function generatePagination(currentPage, estate) {
     // 페이지 번호 버튼 생성
     for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement('button');
-        pageButton.className = 'page-link';
+        pageButton.className = 'page-item';
         pageButton.innerText = i;
         pageButton.addEventListener('click', function() {
             loadPage(i, estate);
         });
+        // 현재 페이지에 해당하는 버튼에 'active' 클래스를 추가합니다.
+        if (i === currentPage) {
+            pageButton.classList.add('active');
+        }
         paginationContainer.appendChild(pageButton);
     }
 
@@ -465,8 +514,8 @@ function generatePagination(currentPage, estate) {
         nextButton.className = 'page-link';
         nextButton.innerText = '다음';
         nextButton.addEventListener('click', function() {
-            const newCurrentPage = endPage + 1;
-            loadPage(newCurrentPage, estate);
+            //const newCurrentPage = endPage + 1;
+            loadPage(currentPage+1, estate);
         });
         paginationContainer.appendChild(nextButton);
     }
@@ -490,9 +539,50 @@ function loadPage(pageNumber, estate) {
             realEstateId: estate.realEstateId
         }),
         success: function(data) {
-            // 데이터를 성공적으로 불러왔을 때의 처리 로직
-            console.log('Loaded data for page:', pageNumber, data);
-            // 여기에 데이터를 페이지에 뿌려주는 로직을 구현합니다.
+            // 컨테이너 비우기
+            $('#estate-list').empty();
+	        
+            data.forEach(function(estate) {
+	        	//  부동산 이름과 가격을 리스트 아이템으로 추가
+		        $('#estate-list').append(`
+					<div class="estate-item">
+                		<div class="estate-header">
+                    		<div class="estate-label">아파트</div>
+                    		<div class="estate-name">${estate.realEstate.complexName}</div>
+                    		<div class="estate-salesId"><a class="btn btn-warning" href=""/realestate/detail/${estate.realEstateSale.salesId}" role="button" style="color: white;">상세페이지 이동</a></div>
+                		</div>
+	                	<div class="building-info">
+		                    <div>
+		                        <span>${estate.cityName}</span>
+		                        <span> / ${estate.districtName}</span>
+		                        <span> / ${estate.neighborhoodName}</span>
+		                    </div>
+		                    <div>
+		                        <span>설립:${estate.constructionYear}</span>
+		                        <span> / 번지:${estate.address}</span>
+		                        <span> / 도로명:${estate.addressStreet}</span>
+		                    </div>
+	                	</div>
+		                <div class="building-sale">
+		                    <div>
+		                        <div class="lately-title">최근 매매 실거래가</div>
+		                        <div class="lately-price">${estate.latelySalePrice}억</div>
+							<div class="lately-info">
+							    <span class="lately-contract-date">${estate.latelyContractDate}</span>,
+							    <span class="lately-floor">${estate.latelyFloor}</span>,
+							    <span class="lately-exclusive-area">${estate.latelyExclusiveArea}</span>㎡
+							</div>
+		                    </div>
+		                    <div class="sale-info">
+		                        <div>
+		                            <span class="sale-title">전체 매매가</span>
+		                            <span class="sale-min-price">${estate.minSalePrice}억</span> ~ <span class="sale-max-price">${estate.maxSalePrice}억</span>
+		                        </div>
+		                    </div>
+		                </div> 
+	            	</div>
+		        `);
+	   	 	});
         },
         error: function(error) {
             console.error('페이지 데이터를 불러오는 데 실패했습니다:', error);

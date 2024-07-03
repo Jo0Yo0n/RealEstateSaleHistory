@@ -71,7 +71,6 @@ public class RealEstateSaleService implements IRealEstateSaleService {
 
     final int limit = 6;
     int offset = (currentPage - 1) * limit;
-    
     Map<String, Object> salePrice = new HashMap();
     salePrice.put("min", minPrice);
     salePrice.put("max", maxPrice);

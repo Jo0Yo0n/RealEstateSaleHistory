@@ -134,12 +134,13 @@
   </div>
   <!-- 페이지네이션을 위한 컨테이너 -->
   <div class="pagination"></div>
+  
 </div>
-	<!-- 페이지네이션 2 컨테이너 -->  
-  <div id="customPagination" class="customPagination">
-  
-  </div>
-  
+
+
+
+
+
 <script>
   // 팝업창 닫기 함수
   function closePopup() {
@@ -232,14 +233,14 @@
 
   // 페이지 로드 시 최대 가격 옵션 초기화 및 선택된 가격대 표시 업데이트
   document.addEventListener('DOMContentLoaded', function () {
-    updateMaxPriceOptions();
-    updateMaxAreaOptions();
+
     // 면적대 선택 버튼 클릭 이벤트 리스너
     document.getElementById('area-select-btn').addEventListener('click', function () {
       var popup = document.getElementById('area-range-popup');
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     });
-
+    updateMaxPriceOptions();
+    updateMaxAreaOptions();
   });
 
   // 최소 가격 선택박스 변경 시 최대 가격 옵션 업데이트 및 선택된 가격대 표시 업데이트
@@ -267,14 +268,14 @@
     var maxPrice = $('#max-price').val(); // 최대 가격을 가져옵니다. 
     var minArea = $('#min-area').val();
     var maxArea = $('#max-area').val();
+    
     // 서버에 전송할 가격대 데이터를 설정합니다.
     var PriceMin = !minPrice ? 0 : parseInt(minPrice);
     var PriceMax = !maxPrice || maxPrice === '180' ? 180 : parseInt(maxPrice);
 
     var ExclusiveSizeMin = minArea === '0'||null ? 0 : parseInt(minArea);
-    var ExclusiveSizeMax = maxArea === 'max'||null ? 320 : maxArea === '0' ? 320 : parseInt(maxArea);
+    var ExclusiveSizeMax = maxArea === 'max' || !maxArea ? 320 : parseInt(maxArea);
 
-    
  	// 사용자가 선택한 가격 범위, 면적 범위, 도시, 구, 동에 따라 부동산 개수를 가져오는 함수
     getFilteredEstateCount(district, neighborhood, PriceMin, PriceMax, ExclusiveSizeMin, ExclusiveSizeMax)
 		    .then(totalCount => {

@@ -95,8 +95,8 @@ public class RealEstateSaleController {
     String neighborhoodName = searchCriteria != null && searchCriteria.get("neighborhoodName") != null ? (String) searchCriteria.get("neighborhoodName") : null;
 
     // 가격 조건
-    Double minPrice = searchCriteria != null && searchCriteria.get("PriceMin") != null ? Double.valueOf(searchCriteria.get("PriceMin").toString()) : null;
-    Double maxPrice = searchCriteria != null && searchCriteria.get("PriceMax") != null ? Double.valueOf(searchCriteria.get("PriceMax").toString()) : null;
+    Double minPrice = searchCriteria != null && searchCriteria.get("minSalePrice") != null ? Double.valueOf(searchCriteria.get("minSalePrice").toString()) : null;
+    Double maxPrice = searchCriteria != null && searchCriteria.get("maxSalePrice") != null ? Double.valueOf(searchCriteria.get("maxSalePrice").toString()) : null;
 
     // currentPage
     Integer currentPage = searchCriteria != null && searchCriteria.get("page") != null ? ((Number)searchCriteria.get("page")).intValue() : 1; // 기본값을 1로 설정
