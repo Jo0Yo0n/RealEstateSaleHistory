@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/css/my-page.css">
   <link rel="stylesheet" href="/css/post-list.css">
   <link rel="stylesheet" href="/css/favorite-list.css">
-  <link rel='stylesheet' th:href='@{/css/footer.css}' type='text/css' />
+  <link rel="stylesheet" href="/css/modal.css">
   <script src="/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/js/my-page.js"></script>
@@ -27,8 +27,8 @@
           <span class="user-email value">[[${user.email}]]</span>
         </div>
         <div class="user-edit">
-          <button class="update">내 정보 수정</button>
-          <button class="agent">중개사 신청</button>
+          <button class="update btn btn-primary">내 정보 수정</button>
+          <button class="agent btn btn-primary">중개사 신청</button>
           <span class="delete"><a>회원 탈퇴</a></span>
         </div>
       </div>
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="pagination"></div>
-  <div th:replace="footer :: footerFragment"></div>
+  <div class="footer" th:replace="footer :: footerFragment"></div>
 </div>
 
 <!-- 모달 추가 -->

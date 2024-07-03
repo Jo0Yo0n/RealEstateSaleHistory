@@ -36,7 +36,11 @@ $(document).ready(function () {
         let paginationInfo = $("#pagination-info");
         let currentPage = parseInt(paginationInfo.data('current-page'));
         let totalPages = parseInt(paginationInfo.data('total-pages'));
-        updatePagination(currentPage, totalPages);
+        if (totalPages !== 0) {
+          updatePagination(currentPage, totalPages);
+        } else {
+          $(".pagination").text('');
+        }
       },
       error: function (xhr, status, error) {
         console.error('Error loading content: ', error);
@@ -66,7 +70,8 @@ $(document).ready(function () {
     // 페이지 번호
     for (let i = startPage; i <= endPage; i++) {
       if (i === currentPage) {
-        paginationHtml += `<span class="active" data-page="${i}">${i + 1}</span>`;
+        paginationHtml += `<span class="active" data-page="${i}">${i
+        + 1}</span>`;
       } else {
         paginationHtml += `<span data-page=${i}>${i + 1}</span>`;
       }
@@ -81,8 +86,7 @@ $(document).ready(function () {
 
     $('.pagination').html(paginationHtml);
   }
-  
-  
+
   // 회원 정보 수정 버튼 기능
   $(document).on('click', '.update', function () {
     $('.modal-name').text('회원 정보 수정');
@@ -108,54 +112,48 @@ $(document).ready(function () {
     $('#agentModalLabel').text('중개사 신청');
     $('#agentModal').modal('show');
   });
-  
-  
-  
-   // 즐겨찾기 클릭
+
+  // 즐겨찾기 클릭
   $(document).on('click', '.building', function () {
-	
-	// 특정 요소를 클릭한 경우 이벤트 중단
+
+    // 특정 요소를 클릭한 경우 이벤트 중단
     if ($(event.target).closest('.favorite-remove').length > 0) {
-        return;
+      return;
     }
-    
-   	var buildingName = $(this).find('.building-name').text();
-	var neighborhood = $(this).find('.neighborhood').text().replace(' / ', '');
-    window.location.href = `/realestate?lo=` + neighborhood + " " + buildingName + `&ms=`;
-	
+
+	var lo = $(this).find('.neighborhood').text().replace(' / ', '') + ' ' +  $(this).find('.building-name').text();
+	var ms = $(this).find('.lat').text() +','+ $(this).find('.lng').text();
+    window.location.href = `/realestate?lo=` + lo + `&ms=` + ms;
   });
-  
+
   // 즐겨찾기 삭제 버튼 기능
   $(document).on('click', '.favorite-remove', function () {
-	var favoriteId = $(this).closest('.building-header').find('.favorite-id').text();
-	$('.id').text(favoriteId);
+    var favoriteId = $(this).closest('.building-header').find(
+        '.favorite-id').text();
+    $('.id').text(favoriteId);
     $('#favoriteModalLabel').text('즐겨찾기 삭제');
     $('#favoriteModal').modal('show');
   });
-  
-  
-  
+
   // 게시글 클릭
   $(document).on('click', '.post', function () {
-	
-	// 특정 요소를 클릭한 경우 이벤트 중단
+
+    // 특정 요소를 클릭한 경우 이벤트 중단
     if ($(event.target).closest('.post-remove').length > 0) {
-        return;
+      return;
     }
-   	var postId = $(this).find('.post-id').text();
+    var postId = $(this).find('.post-id').text();
     window.location.href = '/communityCard?postId=' + postId;
   });
-  
+
   // 게시글 삭제 버튼 기능
   $(document).on('click', '.post-remove', function () {
-	var postId = $(this).closest('.post-header').find('.post-id').text();
-	console.log(postId);
-	$('.id').text(postId);
+    var postId = $(this).closest('.post-header').find('.post-id').text();
+    console.log(postId);
+    $('.id').text(postId);
     $('#postModalLabel').text('게시글 삭제');
     $('#postModal').modal('show');
   });
-
-
 
   // 폼 제출 이벤트 핸들러
   $(document).on('submit', '#form', function (event) {
@@ -188,16 +186,14 @@ $(document).ready(function () {
     $('#confirmModal').modal('hide');
     sendDeleteFavorite(document.querySelector('.id').textContent);
   });
-  
+
   // 게시글확인 모달의 "네" 버튼 클릭 이벤트
   $(document).on('click', '#postDelete', function () {
     $('#confirmModal').modal('hide');
     console.log(document.querySelector('.id').textContent);
-    
+
     sendDeletePost(document.querySelector('.id').textContent);
   });
-
-
 
   // 모달 닫힘 이벤트 처리
   $('#passwordModal').on('hidden.bs.modal', function () {
@@ -291,7 +287,7 @@ $(document).ready(function () {
       }
     });
   }
-  
+
   // 즐겨찾기 삭제 요청 처리
   function sendDeleteFavorite(delFavoriteId) {
     $.ajax({
@@ -317,7 +313,7 @@ $(document).ready(function () {
       }
     });
   }
-  
+
   // 게시글 삭제 요청 처리
   function sendDeletePost(postId) {
     $.ajax({

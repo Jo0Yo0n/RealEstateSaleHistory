@@ -47,7 +47,7 @@ public class AdminDivisonController {
     // 자동 완성 조회
     @GetMapping("/auto/search")
     public ResponseEntity<List<AutoSearchDTO>> autoSearshList() {
-
+System.out.println("여기 컨트롤러");
         return ResponseEntity.ok(admindivisionService.findAutoSearshList());
     }
 }

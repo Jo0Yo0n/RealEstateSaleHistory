@@ -8,6 +8,8 @@
     <div class="building">
       <div class="building-header">
       	<span class="favorite-id" th:text="${favorite.favoriteId}"></span>
+      	<span class="lat" th:text="${favorite.lat}"></span>
+      	<span class="lng" th:text="${favorite.lng}"></span>
         <div class="building-label" th:text="${favorite.buildingTypeName}"></div>
         <div class="building-name" th:text="${favorite.complexName}"></div>
         <div class="remove-header">
@@ -52,6 +54,7 @@
   <div id="pagination-info"
        th:data-current-page="${currentPage}"
        th:data-total-pages="${totalPages}"
-       style="display: none;"></div>
+       style="display: none;">
+  </div>
 </div>
 </html>

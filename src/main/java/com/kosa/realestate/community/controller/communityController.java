@@ -79,6 +79,9 @@ public class communityController {
   // 커뮤니티 작성폼
   @GetMapping("/communityForm")
   public String communityForm(Principal principal, Model model) {
+    if (principal == null) {
+      return "access_denied";
+    }
 
     String email = principal.getName();
     UserDTO udto = userService.findUserByEmail(email);
@@ -124,8 +127,6 @@ public class communityController {
   }
 
 
-
-
   // 게시판 상세
   @GetMapping("/communityCard")
   public String communityCard(@RequestParam("postId") Long postId, Model model, Principal principal,
@@ -138,6 +139,7 @@ public class communityController {
     // 댓글
     List<CommentDTO> commentList = commentService.findCommentByPostId(postId);
     model.addAttribute("commentList", commentList);
+    System.out.println("commentList"+commentList);
 
     // 사용자 검증
     if (principal != null) {
@@ -237,7 +239,7 @@ public class communityController {
   // 게시판 지역구 필터링
   @GetMapping("/loadPostsByDistrict")
   @ResponseBody
-  private List<PostDTO> loadPostsByDistrict(@RequestParam("districtId") int districtId) {
+  private List<PostDTO> loadPostsByDistrict(@RequestParam("districtId") int districtId, @RequestParam(value = "page", defaultValue = "1") int currentPage) {
 
     List<PostDTO> filterPostList = null;
 
@@ -272,7 +274,6 @@ public class communityController {
     System.out.println(districtId);
     List<PostDTO> filterOptionPostList = null;
 
-    System.out.println(filterOption);
 
     // 전체 최신순
     if (districtId == 0 && filterOption.equals("최신순")) {
@@ -310,11 +311,27 @@ public class communityController {
   // 게시글 검색
   @GetMapping("/searchPosts")
   @ResponseBody
-  public List<PostDTO> searchPosts(@RequestParam("searchText") String searchText) {
-      System.out.println(searchText);
-      List<PostDTO> posts = communityService.searchPosts(searchText);
-      System.out.println("게시글 검색"+posts);
+  public List<PostDTO> searchPosts(@RequestParam("searchText") String searchText,
+                                   @RequestParam(value = "districtId", required = false) int districtId) {
+     System.out.println(districtId+searchText);
+     
+     List<PostDTO> posts =null;
+      if(districtId==0) {        
+        posts = communityService.searchPosts(searchText);
+      }else {
+        posts = communityService.searchOptionPosts(searchText,districtId);
+      }
+
+      // 각 게시물의 생성일자 날짜 부분만 추출하여 새로운 속성에 설정
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
       
+      for (PostDTO postDTO : posts) {
+        LocalDateTime createdAt = postDTO.getCreatedAt();
+        if (createdAt != null) {
+          String dateOnly = createdAt.format(formatter);
+          postDTO.setDateOnly(dateOnly);
+        }
+      }
       return posts;
   }
 

@@ -2,6 +2,7 @@ let dataList = [];
 const CACHE_EXPIRY_TIME = 24 * 60 * 60 * 1000; // 캐시 유효 기간: 24시간
 
 $(document).ready(function() {
+
 	// 캐시된 데이터 확인
 	const cachedData = localStorage.getItem('autoCompleteData');
 	const cacheTimestamp = localStorage.getItem('autoCompleteDataTimestamp');
@@ -34,7 +35,7 @@ $(document).ready(function() {
 			contentType: 'application/json',
 			success: function(data) {
 				const { labels, datasets } = dataFunction(data, label);
-				renderChart(chartId, chartType, labels, datasets);
+				renderChart(chartId, chartType, labels, datasets, label);
 			},
 			error: function(error) {
 				$('#' + chartId).text(`통계 ${chartId.slice(-1)}: 데이터 가져오기 실패`);
@@ -44,7 +45,7 @@ $(document).ready(function() {
 	}
 
 	/* 차트 */
-	function renderChart(chartId, chartType, labels, datasets) {
+	function renderChart(chartId, chartType, labels, datasets, title) {
 		const ctx = document.getElementById(chartId).getContext('2d');
 		new Chart(ctx, {
 			type: chartType,
@@ -53,9 +54,48 @@ $(document).ready(function() {
 				datasets: datasets
 			},
 			options: {
+				plugins: {
+					title: {
+						display: true,
+						text: title,
+						color: '#000000', // 타이틀 글자 색상
+						font: {
+							size: 20, // 타이틀 글자 크기
+							weight: 'bold' // 타이틀 글자 굵기
+						}
+					},
+					legend: {
+						labels: {
+							color: '#000000', // 범례 글자 색상
+							font: {
+								size: 14, // 범례 글자 크기
+								weight: 'bold' // 범례 글자 굵기
+							}
+						}
+					}
+				},
 				scales: {
+					x: {
+						ticks: {
+							color: '#000000', // X축 항목 글자 색상
+							font: {
+								size: 12, // X축 항목 글자 크기
+								weight: 'bold' // X축 항목 글자 굵기
+							}
+						}
+					},
 					y: {
-						beginAtZero: true
+						beginAtZero: true,
+						ticks: {
+							color: '#000000', // Y축 항목 글자 색상
+							font: {
+								size: 12, // Y축 항목 글자 크기
+								weight: 'bold' // Y축 항목 글자 굵기
+							},
+							callback: function(value) {
+								return value + '(억)';
+							}
+						}
 					}
 				}
 			}
@@ -71,9 +111,9 @@ $(document).ready(function() {
 			datasets: [{
 				label: datasetLabel,
 				data: values,
-				backgroundColor: 'rgba(249, 222, 123)',
-				borderColor: 'rgba(234, 227, 161)',
-				borderWidth: 1
+				backgroundColor: '#FEDF04',
+				borderColor: '#000000',
+				borderWidth: 1.2
 			}]
 		};
 	}
@@ -87,9 +127,9 @@ $(document).ready(function() {
 			datasets: [{
 				label: datasetLabel,
 				data: values,
-				backgroundColor: 'rgba(249, 222, 123)',
-				borderColor: 'rgba(234, 227, 161)',
-				borderWidth: 1
+				backgroundColor: '#FEDF04',
+				borderColor: '#000000',
+				borderWidth: 1.2
 			}]
 		};
 	}
@@ -106,23 +146,25 @@ $(document).ready(function() {
 				{
 					label: `가장 작은 매매가`,
 					data: minPrices,
-					backgroundColor: 'rgba(249, 222, 123)',
-					borderColor: 'rgba(234, 227, 161)',
-					borderWidth: 1
+					backgroundColor: '#2350A3',
+					borderColor: '#000000',
+					borderWidth: 1.2,
+					hidden: true
 				},
 				{
 					label: `가장 큰 매매가`,
 					data: maxPrices,
-					backgroundColor: 'rgba(190, 190, 129)',
-					borderColor: 'rgba(234, 227, 161)',
-					borderWidth: 1
+					backgroundColor: '#DC143C',
+					borderColor: '#000000',
+					borderWidth: 1.2,
+					hidden: true
 				},
 				{
 					label: `차이`,
 					data: diffPrices,
-					backgroundColor: 'rgba(255, 0, 0, 0.7)',
-					borderColor: 'rgba(234, 227, 161)',
-					borderWidth: 1
+					backgroundColor: '#FEDF04',
+					borderColor: '#000000',
+					borderWidth: 1.2
 				},
 			]
 		};
@@ -147,7 +189,7 @@ $(document).ready(function() {
 	function newCommunityData(data) {
 		const contentDiv = $('#new-post');
 		data.forEach(item => {
-			const postLink = $('<a></a>').attr('href', `/communityCard/${item.postId}`).addClass('post-link');
+			const postLink = $('<a></a>').attr('href', `/communityCard?postId=${item.postId}`).addClass('post-link');
 			const postTitle = $('<span></span>').addClass('post-title').text(item.title);
 			const postCreatedAt = $('<span></span>').addClass('post-create-date').text(item.createdAt);
 
@@ -201,6 +243,7 @@ $(document).ready(function() {
 
 	/* 자동 완성 데이터 */
 	function autoSearchData(data) {
+
 		data.forEach(item => {
 			dataList.push(item);
 		});

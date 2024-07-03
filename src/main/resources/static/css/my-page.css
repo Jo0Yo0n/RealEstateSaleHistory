@@ -1,9 +1,19 @@
 /* 유저 마이페이지, 중개사 마이페이지에 적용되는 css */
-body {
-  font-family: Arial, sans-serif;
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-wrapper {
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
 }
@@ -73,6 +83,10 @@ body {
   cursor: pointer;
 }
 
+.user-edit .delete:hover {
+  color: #cc0000;
+}
+
 .favorite-count-box {
   display: flex;
   flex-direction: column;
@@ -110,6 +124,10 @@ body {
   border-bottom: 2px solid #ffa500;
 }
 
+.tab:hover {
+
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -124,6 +142,7 @@ body {
   padding: 5px 10px;
   border: 1px solid #ddd;
   background-color: #fff;
+  color: black;
 }
 
 .pagination .active {
@@ -131,3 +150,7 @@ body {
   color: #fff;
   border-color: #ffa500;
 }
+
+/*.footer {*/
+/*  flex-shrink: 0;*/
+/*}*/

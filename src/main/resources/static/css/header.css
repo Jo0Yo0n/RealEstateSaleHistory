@@ -3,6 +3,11 @@ body, html {
 	margin: 0;
 }
 
+.logo {
+	height: 80px;
+	width: 80px;
+}
+
 .header-container{
 	/*background: #F9DE7B;*/
 	height: 80px;
@@ -11,6 +16,10 @@ body, html {
 	margin:0;
 	display: flex;
 	justify-content:center;
+}
+
+.logo-container {
+	margin-right: 20px; /* 로고와 메뉴 사이 간격 추가 */
 }
 
 .header-inner-container{
@@ -22,18 +31,28 @@ body, html {
 	justify-content: space-between;
 }
 
-.header-left-inner-container{
+.header-left-inner-container {
 	display: flex;
 	flex-direction: row;
-	width: 400px;
-	justify-content: space-between;
+	align-items: center; /* 세로 중앙 정렬 추가 */
+	width: auto; /* 고정 너비 제거 */
 }
 
-.menu-container{
+.menu-container {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	width: 250px;
+	width: 250px; /* 고정 너비 제거 */
+	align-items: center; /* 세로 중앙 정렬 추가 */
+	margin-left: 20px;
+}
+
+.menu-container span {
+	margin-right: 20px; /* 메뉴 항목 사이 간격 추가 */
+}
+
+.menu-container span:last-child {
+	margin-right: 0; /* 마지막 메뉴 항목의 오른쪽 마진 제거 */
 }
 
 .header-right-inner-container{

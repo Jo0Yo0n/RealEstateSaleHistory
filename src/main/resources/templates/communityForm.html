@@ -24,9 +24,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JavaScript 파일 포함 -->
 
-<!-- Select2 초기화 스크립트 -->
 <script type="text/javascript">
 // 허용할 파일 확장자 리스트(화이트리스트)
 var allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
@@ -50,10 +48,12 @@ function checkExtension(fileName, fileSize) {
 //폼 검증 함수
 function validateForm() {
     var districtId = $('#selectbox2').val();
+    console.log("야ㅕ기"+districtId);
+    
     var title = $('#title').val().trim();
     var content = $('#content').val().trim();
     
-    if (!districtId) {
+    if (districtId=="undefined") {
         showAlert("자치구를 선택하세요.");
         return false;
     }
@@ -85,7 +85,6 @@ function showAlert(message,redirect) {
 }
 
 $(document).ready(function() {
-    $('select').select2();
 
     var orginDistrictId = $("#districtId").val();
     districtId = orginDistrictId;
@@ -95,10 +94,19 @@ $(document).ready(function() {
     $('#selectbox2').change(function() {
         districtId = $(this).children('option:selected').attr('id'); // 구 아이디 저장
     });
+    
+    //뒤로 가기 버튼 추가
+    $('.backbtn, .cancelbtn').click(function() {
+    	 window.location.href = "/communityList";
+    });
 
     // 게시글 업데이트
     $("#updateBtn").on("click", function(e) {
         e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
 
         var inputFile = $("input[name='uploadFile']");
         var files = inputFile[0].files;
@@ -254,10 +262,11 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
+<div th:replace="header :: headerFragment"></div>
 	<div class="container">
 		<div class="menu">
 			<div class="commutop">
-				<button class="btn btn-custom">
+				<button class="backbtn">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 						fill="currentColor" class="bi bi-arrow-left-short custom-svg"
 						viewBox="0 0 16 16">
@@ -266,7 +275,7 @@ $(document).ready(function() {
 				</button>
 				<div class="commutoptext">
 					<h3>
-						<span th:text="${update != null} ? '게시글 수정' : '커뮤니티 작성'"></span>
+						<span style="font-weight: 900;" th:text="${update != null} ? '게시글 수정' : '게시글 작성'"></span>
 					</h3>
 				</div>
 			</div>
@@ -285,7 +294,8 @@ $(document).ready(function() {
 						class="form-control pt-1 mt-4"
 						style="height: 33px; width: 40%; vertical-align: middle;">
 						<option value="" disabled selected>서울특별시</option>
-					</select> <select id="selectbox2" name="selectbox"
+					</select>
+					<select id="selectbox2" name="selectbox"
 						class="form-control pt-1 mt-4"
 						style="height: 33px; width: 40%; vertical-align: middle;"
 						th:if="${update == null}">
@@ -309,14 +319,7 @@ $(document).ready(function() {
 								th:value="${name.districtName}" th:text="${name.districtName}"></option>
 						</th:block>
 					</select>
-
-
 				</div>
-				<hr>
-				<div class="textbox">
-					<h3 class="commutext2">게시글 작성</h3>
-				</div>
-				<div class="col-md-12">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label for="title">제목</label> <input type="text"
@@ -352,15 +355,15 @@ $(document).ready(function() {
 								</div>
 								<br>
 								<div class="d-flex">
-									<button type="button" class="btn"
-										style="background-color: #FAEBAC; margin-right: 10px;">Cancel</button>
+									<button type="button" class="cancelbtn btn"
+										style="background-color: #F9DE7B; margin-right: 10px;">Cancel</button>
 									<th:block th:if="${update}">
 										<button id="updateBtn" class="btn"
-											style="background-color: #F9DE7B; margin-right: 10px;">수정</button>
+											style="background-color: #fd7e14; margin-right: 10px;">수정</button>
 									</th:block>
 									<th:block th:unless="${update}">
 										<button id="uploadBtn" class="btn"
-											style="background-color: #F9DE7B; margin-right: 10px;">
+											style="background-color: #fd7e14; margin-right: 10px;">
 											Submit!<span th:text="${update}"></span>
 										</button>
 									</th:block>
@@ -370,10 +373,11 @@ $(document).ready(function() {
 							
 						</div>
 					</div>
+				</div>
 			</form>
 		</div>
 	</div>
-
+	<div class="footer" th:replace="footer :: footerFragment"></div>
 	<!-- 알림 모달 -->
 	<div class="modal fade" id="alertModal" tabindex="-1" role="dialog"
 		aria-labelledby="alertModalLabel" aria-hidden="true">
@@ -395,5 +399,6 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
+	
 </body>
 </html>

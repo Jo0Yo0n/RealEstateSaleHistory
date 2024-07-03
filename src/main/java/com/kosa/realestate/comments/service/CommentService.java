@@ -42,29 +42,13 @@ public class CommentService implements ICommentService {
 
     // 댓글 수정
     @Transactional
-    public void modifyComment(Long commentId, Long postId, String email, CommentForm commentForm) {
-
-//        UserDTO user = userService.findUserByEmail(email);
-//        CommentDTO comment = commentRepository.selectCommentByCommentId(commentId);
-//        
-//        if (!user.getUserId().equals(comment.getUserId())) {
-//            throw new RuntimeException("댓글 작성자가 아닙니다.");
-//        }
-//        communityService.findPostInfo(postId);
-
-        commentRepository.modifyComment(commentId, commentForm);
+    public void modifyComment(Long commentId) {
+        commentRepository.modifyComment(commentId);
     }
     
     
     // 댓글 삭제 수정
-    public void modfiyDeleteComment(Long commentId, String email) {
-    	
-//    	UserDTO user = userService.findUserByEmail(email);
-//    	CommentDTO comment = commentRepository.selectCommentByCommentId(commentId);
-//    	
-//    	if (!user.getUserId().equals(comment.getUserId())) {
-//            throw new RuntimeException("댓글 작성자가 아닙니다.");
-//        }
+    public void modfiyDeleteComment(Long commentId) {
     	
     	commentRepository.modifyCommentDelete(commentId);
     }

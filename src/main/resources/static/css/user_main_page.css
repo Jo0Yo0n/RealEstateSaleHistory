@@ -65,7 +65,7 @@
 
 .auto-complete > div:hover, .auto-complete > div.hover {
   background: #666;
-  color: white;;
+  color: white;
 }
 
 .auto-complete > div {
@@ -85,7 +85,7 @@
 
 /* 차트 */
 .chart {
-  border: 1px solid #F4CA74;
+  border: 1.2px solid #000000;
   border-radius: 10px;
   margin: 10px;
 }
@@ -125,7 +125,7 @@
 }
 
 .manual-btn {
-  border: 1px solid #BDBDBD;
+  border: 1px solid #000000;
   padding: 5px;
   border-radius: 10px;
   cursor: pointer;
@@ -168,10 +168,10 @@
 }
 
 #radio1:checked ~ .navigation-auto .auto-btn1 {
-  background: #F9DE7B;
+  background: #FEDF04;
 }
 #radio2:checked ~ .navigation-auto .auto-btn2 {
-  background: #F9DE7B;
+  background: #FEDF04;
 }
 
 
@@ -184,7 +184,7 @@
 
 /* 최근 게시물 */
 .post-info {
-  border: 1px solid #F4CA74;
+  border: 1px solid #000000;
   padding: 10px;
   width: 65%;
   margin: 0px 20px 0px 0px;
@@ -194,29 +194,32 @@
 .info-title {
   font-weight: bold;
   font-size: 1.2em;
-  color: #616161;
+  color: #000000;
   display: inline-block;
-  border-bottom: 2px solid #616161;
+  border-bottom: 2px solid #000000;
   padding-bottom: 5px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .post-link {
   display: flex;
   justify-content: space-between;
   text-decoration: none;
-  color: black;
+  color: #000000;
   padding: 5px;
   margin: 5px 10px 0px 10px;
-  border: 1px solid #BDBDBD;
+  border: 1px solid #000000;
   border-radius: 5px;
 }
 
 .post-link:hover {
-  background-color: #F9DE7B;
+  background-color: #FEDF04;
 }
 
 .post-title {
-  color: #616161;
+  color: #000000;
   font-size: 0.8em;
 }
 
@@ -233,7 +236,7 @@
 
 /* 최근 매물 */
 .estate-info {
-  border: 1px solid #F4CA74;
+  border: 1px solid #000000;
   padding: 10px;
   width: 35%;
   border-radius: 10px;
@@ -242,11 +245,13 @@
 .building {
   padding: 10px;
   margin-top: 10px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  background-color: #f8f8f8;
 }
 
 .building-background {
-  background-color: #FAEBAC;
+  background-color: #000000;
 }
 
 .building-header {
@@ -264,7 +269,7 @@
 }
 
 .building-name {
-  font-size: 0.7em;
+  font-size: 0.8em;
   font-weight: bold;
 }
 

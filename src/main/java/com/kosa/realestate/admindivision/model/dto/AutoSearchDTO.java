@@ -11,4 +11,6 @@ public class AutoSearchDTO {
     private String name;
     private Double lat;
     private Double lng;
+    private Long realEstateId;
+    private Double salePrice;
 }
