@@ -507,7 +507,7 @@ function generatePagination(currentPage, estate) {
     if (startPage > 1) {
         const prevButton = document.createElement('button');
         prevButton.className = 'page-link';
-        prevButton.innerText = '이전';
+        prevButton.innerText = '«';
         prevButton.addEventListener('click', function() {
             //const newCurrentPage = startPage - pageGroupSize;
             loadPage(currentPage-1, estate);
@@ -534,7 +534,7 @@ function generatePagination(currentPage, estate) {
     if (endPage < estateTotalPages) {
         const nextButton = document.createElement('button');
         nextButton.className = 'page-link';
-        nextButton.innerText = '다음';
+        nextButton.innerText = '»';
         nextButton.addEventListener('click', function() {
             //const newCurrentPage = endPage + 1;
             loadPage(currentPage+1, estate);
@@ -609,7 +609,7 @@ function loadPage(pageNumber, estate) {
 							</div>
 		                    <div>
 		                       <div class="lately-title">실거래가 : <span class="lately-price" style="color: red;">${estate.realEstateSale.salePrice}억</span></div>
-				                <a class="btn btn-warning" href="/realestate/detail/${estate.realEstateSale.salesId}" role="button" style="color: white;">매매 기록 보기</a>
+				                <a class="btn btn-warning" href="/realestate/detail/${estate.realEstateSale.salesId}" role="button" style="color: black;">매매 기록 보기</a>
 		                    </div>
 		                </div>
 	            	</div>
