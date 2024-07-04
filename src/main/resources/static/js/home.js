@@ -367,11 +367,12 @@ let currentSelectedBuildingId = null;
 document.querySelector('.district-list-container').addEventListener('click', function(event) {
 	 // 클릭된 요소가 별 모양인지 확인
   if (event.target.classList.contains('fa-regular') && event.target.classList.contains('fa-star')) {
+	// 클릭된 별의 클래스를 'fa-regular'에서 'fa-solid'로 변경합니다.
+    event.target.classList.replace('fa-regular', 'fa-solid');
     // .building-header 요소를 찾습니다.
     var buildingHeader = event.target.closest('.building-header');
     // .building-header 요소 내부에서 .building-id 요소를 찾습니다.
     var realEstateId = buildingHeader.querySelector('.building-id').getAttribute('data-real-estate-id');
-    console.log(realEstateId);
     
     // AJAX 요청을 통해 서버에 즐겨찾기 추가
     var xhr = new XMLHttpRequest();
@@ -383,13 +384,36 @@ document.querySelector('.district-list-container').addEventListener('click', fun
         if (this.status === 200) {
           console.log(this.responseText); // 성공 메시지 출력
         } else {
-          console.error('즐겨찾기 추가에 실패했습니다.'); // 오류 메시지 출력
           alert('로그인해주세요');
         }
       }
     };
     
     xhr.send();
+    return;
+  } else if (event.target.classList.contains('fa-solid')) {
+	// 클릭된 별의 클래스를'fa-solid'에서 'fa-regular'로 변경합니다.
+    event.target.classList.replace('fa-solid', 'fa-regular');
+     var buildingHeader = event.target.closest('.building-header');
+    // .building-header 요소 내부에서 .building-id 요소를 찾습니다.
+    var realEstateId = buildingHeader.querySelector('.building-id').getAttribute('data-real-estate-id');
+    
+    // AJAX 요청을 통해 서버에 즐겨찾기 추가
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'favorites/' + realEstateId, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onreadystatechange = function() {
+      if (this.readyState === XMLHttpRequest.DONE) {
+        if (this.status === 200) {
+          console.log(this.responseText); // 성공 메시지 출력
+        } else {
+          alert('로그인해주세요');
+        }
+      }
+    };
+    xhr.send();
+    return;
   }
   
 let buildingElement = event.target.closest('.building');

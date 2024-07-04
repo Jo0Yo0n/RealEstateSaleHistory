@@ -71,8 +71,8 @@ public class FavoriteController {
     
     try {
 
-      favoriteService.addFavorite(realEstateId, principal.getName());
-      return ResponseEntity.ok().body("즐겨찾기가 추가되었습니다.");
+      String result = favoriteService.addFavorite(realEstateId, principal.getName());
+      return ResponseEntity.ok().body(result);
       
     } catch (Exception e) {
       

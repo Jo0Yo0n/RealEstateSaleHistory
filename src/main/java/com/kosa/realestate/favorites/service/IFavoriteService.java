@@ -17,7 +17,7 @@ public interface IFavoriteService {
   List<FavoriteDetailListDTO> findFavoriteDetailList(int page, Long realEstateId);
 
   // 즐겨찾기 추가
-  void addFavorite(Long realEstateId, String email);
+  String addFavorite(Long realEstateId, String email);
 
   // 즐겨찾기 삭제
   void removeFavorite(Long favoriteId);
