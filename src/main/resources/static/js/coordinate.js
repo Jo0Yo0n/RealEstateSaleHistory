@@ -328,20 +328,20 @@ document.addEventListener("DOMContentLoaded", () => {
 					var clickedMarker = e.overlay;
 					var clickedApt = $(clickedMarker.getIcon().content).find('.marker-name').text();
 					var clickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
-
+					let intNumber = parseInt(clickedId);
 					
 					let addressParts = clickedApt.split(" ");
 					
 					var neiborhoodName = addressParts[0];
 					var aptName = addressParts[1];
-					console.log(neiborhoodName, aptName, clickedId);
+					console.log(neiborhoodName, aptName, intNumber);
 					var estate = null;
 					generatePagination(1, {
 				       districtName: null,
 				       neighborhoodName: neiborhoodName,
 				       minSalePrice: 0,
 				       maxSalePrice: 100,
-				       realEstateId: clickedId
+				       realEstateId: intNumber
 					});
 				    // AJAX 요청을 사용하여 페이지 번호에 해당하는 데이터를 불러옵니다.
 				    $.ajax({
@@ -354,7 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				           	minSalePrice: 0,
 				       		maxSalePrice: 180,
 				            page: 1,
-				            realEstateId: clickedId
+				            realEstateId: intNumber
 				        }),
 				        success: function(data) {
 				            // 컨테이너 비우기

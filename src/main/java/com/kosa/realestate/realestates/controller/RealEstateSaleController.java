@@ -104,7 +104,17 @@ public class RealEstateSaleController {
     // realEstateId
     Integer realEstateId = null;
     if (searchCriteria.get("realEstateId") != null) {
-      realEstateId = ((Number)searchCriteria.get("realEstateId")).intValue();
+      Object realEstateIdObj = searchCriteria.get("realEstateId");
+      if (realEstateIdObj instanceof Number) {
+        realEstateId = ((Number) realEstateIdObj).intValue();
+      } else if (realEstateIdObj instanceof String) {
+        try {
+          realEstateId = Integer.parseInt((String) realEstateIdObj);
+        } catch (NumberFormatException e) {
+          // 로그 기록 또는 예외 처리
+          // 예: log.error("Invalid realEstateId format", e);
+        }
+      }
     }
     List<RealEstateWithSaleDTO> results = realEstateSaleService.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, minPrice, maxPrice, currentPage, realEstateId);
 
