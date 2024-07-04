@@ -71,6 +71,7 @@
 
 /* 내용 입력란의 높이를 200px로 크게 조정하고, 세로 스크롤이 필요할 때만 스크롤 표시 */
 #content {
+    white-space: pre-wrap; /* 줄바꿈과 공백을 그대로 유지 */
     width: 300%;
     height: 400px;
     overflow-y: auto;
