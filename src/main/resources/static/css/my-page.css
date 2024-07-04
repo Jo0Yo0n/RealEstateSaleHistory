@@ -5,12 +5,9 @@ html, body {
   padding: 0;
 }
 
-/* body {
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-} */
+body {
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
 
 .page-wrapper {
   flex: 1 0 auto;

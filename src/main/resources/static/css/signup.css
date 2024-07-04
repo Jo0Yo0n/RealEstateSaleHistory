@@ -10,11 +10,9 @@ html {
   overflow-y: scroll;
 }
 
-/*body {*/
-/*  font-family: Arial, sans-serif;*/
-/*  display: flex;*/
-/*  flex-direction: column;*/
-/*}*/
+body {
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
 
 .page-wrapper {
   display: flex;
