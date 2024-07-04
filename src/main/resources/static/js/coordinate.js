@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					var clickedMarker = e.overlay;
 					var clickedApt = $(clickedMarker.getIcon().content).find('.marker-name').text();
 					var clickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
-
+					getFilteredEstateCount();
 
 					
 /*					// 메뉴 내용을 클릭된 마커 정보로 업데이트 (clickedId를 사용하도록 수정)
