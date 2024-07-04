@@ -316,7 +316,9 @@ document.addEventListener("DOMContentLoaded", () => {
 					var clickedApt = $(clickedMarker.getIcon().content).find('.marker-name').text();
 					var clickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
 
-					// 메뉴 내용을 클릭된 마커 정보로 업데이트 (clickedId를 사용하도록 수정)
+
+					
+/*					// 메뉴 내용을 클릭된 마커 정보로 업데이트 (clickedId를 사용하도록 수정)
 					$('#apt-info').html(
 						`<p>Clicked Marker Information</p><p>Apt: ${clickedApt}</p><p>Real Estate ID: ${clickedId}</p>`);
 
@@ -332,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					$('.close-menu-img').click(function() {
 						$('#apt-info').removeClass('active');
 						$(this).remove(); // 닫기 버튼 제거
-					});
+					});*/
 				});
 			}
 		}

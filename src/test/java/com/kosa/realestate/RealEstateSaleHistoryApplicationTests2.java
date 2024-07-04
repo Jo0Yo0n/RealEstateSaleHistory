@@ -17,6 +17,6 @@ class RealEstateSaleHistoryApplicationTests2 {
   
   @Test
   void selectList() {
-    System.out.println(controller.estateCount(0));
+  
   }
 }
