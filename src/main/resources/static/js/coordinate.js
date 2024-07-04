@@ -328,26 +328,101 @@ document.addEventListener("DOMContentLoaded", () => {
 					var clickedMarker = e.overlay;
 					var clickedApt = $(clickedMarker.getIcon().content).find('.marker-name').text();
 					var clickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
-					getFilteredEstateCount();
+
+					
+					let addressParts = clickedApt.split(" ");
+					
+					var neiborhoodName = addressParts[0];
+					var aptName = addressParts[1];
+					console.log(neiborhoodName, aptName, clickedId);
+					var estate = null;
+					generatePagination(1, {
+				       districtName: null,
+				       neighborhoodName: neiborhoodName,
+				       minSalePrice: 0,
+				       maxSalePrice: 100,
+				       realEstateId: clickedId
+					});
+				    // AJAX 요청을 사용하여 페이지 번호에 해당하는 데이터를 불러옵니다.
+				    $.ajax({
+				        url: 'realestate/search/byCriteria', // 서버의 엔드포인트
+				        type: 'POST',
+				        contentType: 'application/json',
+				        data: JSON.stringify({
+				            districtName: null,
+				            neighborhoodName: neiborhoodName,
+				           	minSalePrice: 0,
+				       		maxSalePrice: 180,
+				            page: 1,
+				            realEstateId: clickedId
+				        }),
+				        success: function(data) {
+				            // 컨테이너 비우기
+				            $('.district-list-container').empty();
+				            // 결과 띄워주기
+				            
+				            
+				            var realEstateHtml = data.map(function(estate) {
+					        return `
+					            <div class="building">
+					                <div class="building-header">
+					                	<div class="building-id" data-real-estate-id="${estate.realEstate.realEstateId}"></div>
+					                    <div class="building-label">아파트</div>
+					                    <div class="building-name">${estate.realEstate.complexName}</div>
+					                    <div class="building-favorite"><i class="fa-regular fa-star"></i></div>
+					                </div>
+					                <div class="building-info">
+					                    <div>
+					                        <span>${estate.estateExtra.cityName}</span>
+					                        <span> / ${estate.estateExtra.districtName}</span>
+					                        <span> / ${estate.estateExtra.neighborhoodName}</span>
+					                    </div>
+					                    <div>
+					                        <span>설립:${estate.realEstate.constructionYear}</span>
+					                        <span> / 번지:${estate.realEstate.address}</span>
+					                        <span> / 도로명:${estate.realEstate.addressStreet}</span>
+					                    </div>
+					                </div>
+					                <div class="building-sale">
+					                    <div>
+					                        <div class="lately-title">최근 매매 실거래가</div>
+					                        <div class="lately-price">${estate.realEstateSale.salePrice}억</div>
+										<div class="lately-info">
+										    <span class="lately-contract-date">${estate.realEstateSale.contractDate}</span>,
+										    <span class="lately-floor">${estate.realEstateSale.floor}</span>,
+										    <span class="lately-exclusive-area">${estate.realEstateSale.exclusiveArea}</span>㎡
+										</div>
+					                    </div>
+					                    <div class="sale-info">
+					                        <div>
+					                            <span class="sale-title">전체 매매가</span>
+					                            <span class="sale-min-price">${estate.estateExtra.allPrice}</span>
+					                            
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+					        `;
+					    }).join('');
+					    
+					    // 생성된 HTML을 district-list-container에 삽입합니다.
+					    $('.district-list-container').html(realEstateHtml);
+					      // 현재 메뉴가 화면 아래로 숨겨져 있는지 확인합니다.
+					      var $homeMenu = $("#home-menu");
+						  var $toggleBtn = $("#toggle-menu-btn");
+					      var isActive = $homeMenu.hasClass("active");
+
+						  if (!isActive) {
+						    $homeMenu.addClass("active");
+				            $toggleBtn.addClass("active");
+						  } else {
+					        $homeMenu.removeClass("active");
+					        $toggleBtn.removeClass("active");
+					      }
+						}
+				    });
 
 
-					/*					// 메뉴 내용을 클릭된 마커 정보로 업데이트 (clickedId를 사용하도록 수정)
-										$('#apt-info').html(
-											`<p>Clicked Marker Information</p><p>Apt: ${clickedApt}</p><p>Real Estate ID: ${clickedId}</p>`);
-					
-										// 모든 메뉴를 닫고 apt-info 메뉴를 열기
-										$('.menu').removeClass('active');
-										$('#apt-info').addClass('active');
-					
-										// 닫기 버튼 추가
-										var closeBtn = $('#close-btn-template').html();
-										$('#apt-info').prepend(closeBtn);
-					
-										// 닫기 버튼에 클릭 이벤트 추가
-										$('.close-menu-img').click(function() {
-											$('#apt-info').removeClass('active');
-											$(this).remove(); // 닫기 버튼 제거
-										});*/
 				});
 			}
 		}
