@@ -396,12 +396,14 @@ body, html {
   display: flex;
   align-items: center;
 }
-.btn-warning {
-  margin-left: auto; /* 오른쪽 끝으로 이동 */
+.sales-history-btn {
+  margin-left: -10px; /* 오른쪽 끝으로 이동 */
   background-color: #fedf04; /* 기본 배경 색상 변경 */
+  width: 130px;
+  font-size: 1em;
 }
 
-.btn-warning:hover {
+.sales-history-btn:hover {
   background-color: #ffc107; /* 호버 시 배경 색상 변경 */
 }
 

@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 카드</title>
+
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel='stylesheet' href='../css/communityCard.css' type='text/css'/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
-        	
+
+        $(document).ready(function() {     	
             // 댓글 수정 버튼 클릭 이벤트
             $(".comment-section").on("click", ".edit-comment", function(e) {
                 e.preventDefault();
@@ -30,13 +36,66 @@
                 $(this).hide();
             });
 
-            // 댓글 수정 취소 버튼 클릭 이벤트
+            // 댓글 수정 취소
             $(".comment-section").on("click", ".cancel-edit", function() {
                 var commentElement = $(this).closest(".comment");
                 commentElement.find(".edit-box").hide();
                 commentElement.find(".comment-text").show();
                 commentElement.find(".edit-comment").show();
             });
+            
+		 //댓글 수정
+		$(".comment-section").on("click", ".save-edit", function() {
+		    var commentElement = $(this).closest(".comment");
+		    var editBox = commentElement.find(".edit-box");
+		    var commentTextElement = commentElement.find(".comment-text");
+		    var editInput = editBox.find(".edit-input");
+		    var commentId = $(this).data("comment-id");
+		    var newCommentText = editInput.val();
+		    var postId = $('#postId').val(); // postId 가져오기
+		    
+		    // 수정 확인 모달을 보여줍니다.
+		    $("#commentUpModal").modal('show');
+		    
+		    // 확인 모달에서 "수정" 버튼을 클릭할 때의 동작을 처리합니다.
+		    $(".commentUpSub").off('click').on('click', function() {
+		        // 댓글을 업데이트하는 AJAX 요청을 수행합니다.
+		        $.ajax({
+		            url: '/comments/commentUpdate',
+		            type: 'POST',
+		            data: {
+		                commentId: commentId,
+		                commentText: newCommentText
+		            },
+		            success: function() {
+		                // 페이지 상의 댓글 텍스트를 업데이트합니다.
+		                commentTextElement.text(newCommentText);
+		                editBox.hide();
+		                commentTextElement.show();
+		                commentElement.find(".edit-comment").show();
+		
+		                // 첫 번째 모달 (확인 모달)을 닫습니다.
+		                $("#commentUpModal").modal('hide');
+		                
+		                // 두 번째 모달 (수정 성공 모달)을 보여줍니다.
+		                $("#updateSuccessModal").modal('show');
+		            },
+		            error: function(jqXHR, textStatus, errorThrown) {
+		                console.error("댓글 수정 실패: " + textStatus + " - " + errorThrown);
+		            }
+		        });
+		        
+		        // .commentUpSub 버튼 클릭 이벤트를 한 번만 처리하기 위해 off('click') 사용
+		        $(this).off('click');
+		    });
+		    
+		    // 수정 성공 모달이 닫힐 때의 동작을 처리합니다.
+		    $("#updateSuccessModal").on('hidden.bs.modal', function () {
+		        // 페이지를 리다이렉트합니다.
+		        window.location.href = '/communityCard?postId=' + postId;
+		    });
+		});
+
             
         	//댓글 등록
             $(".commentSub").click(function() {
@@ -67,7 +126,7 @@
                 $('#commentModal').modal('hide'); // 모달 닫기
             }
             
-            // 삭제 모달 띄우기
+            // 게시글 삭제 모달 띄우기
             $(".delete-post").click(function(e) {
                 e.preventDefault();
                 var postId = $(this).data('post-id');
@@ -90,33 +149,47 @@
                 });
             });
 
-            
-            // 댓글 삭제 모달 띄우기
-            $(".delete-comment").click(function(e) {
-            	
-                e.preventDefault();
-                
-                var postId = $('#postId').val();
-                var commentId = $(this).siblings(".edit-comment").data("comment-id");
-                
-                $("#commentdeleteModal").modal('show');
+		// 댓글 삭제
+		$(".comment-section").on("click", ".delete-comment", function(e) {
+		    var postId = $('#postId').val();
+		    e.preventDefault();
+		    
+		    var commentElement = $(this).closest(".comment");
+		    var postId = $('#postId').val();
+		    var commentId = $(this).siblings(".edit-comment").data("comment-id");
+		    
+		    // 함수로 추출하여 중복을 줄입니다.
+		    handleCommentDelete(commentId, postId);
+		});
 
-                // 확인 버튼 클릭 시 DELETE 요청 보내기
-                $("#commentsdelbtn").click(function() {
-                    $.ajax({
-                        url: '/comments/commentdelete?commentId='+commentId,
-                        type: 'DELETE',
-                        success: function() {
-                            $("#confirmDeleteModal").modal('hide'); // 모달 닫기
-                            window.location.href = '/communityCard?postId='+postId; 
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            console.error("게시글 삭제 실패: " + textStatus + " - " + errorThrown);
-                        }
-                    });
-                });
-            });
-            
+		function handleCommentDelete(commentId, postId) {
+		    $("#commentdeleteModal").modal('show');
+		
+		    // 확인 버튼 클릭 시 DELETE 요청 보내기
+		    $("#commentsdelbtn").off('click').on('click', function() {
+		        $.ajax({
+		            url: '/comments/commentdelete?commentId=' + commentId,
+		            type: 'DELETE',
+		            success: function() {
+		                $("#commentdeleteModal").modal('hide'); // 모달 닫기
+		                $("#deleteSuccessModal").modal('show'); // 삭제 성공 모달 띄우기
+		            },
+		            error: function(jqXHR, textStatus, errorThrown) {
+		                console.error("댓글 삭제 실패: " + textStatus + " - " + errorThrown);
+		            }
+		        });
+		        
+		        $(this).off('click');
+		    });
+		    
+		    // 수정 성공 모달이 닫힐 때의 동작을 처리합니다.
+		    $("#deleteSuccessModal").on('hidden.bs.modal', function () {
+		        // 페이지를 리다이렉트합니다.
+		        window.location.href = '/communityCard?postId=' + postId;
+		    });
+		    
+		} 
+		            
             // 게시글 등록 모달 띄우기
             $("#openCreatePostModal").click(function(e) {
                 e.preventDefault();
@@ -143,7 +216,8 @@
                         console.error("게시글 등록 실패: " + textStatus + " - " + errorThrown);
                     }
                 });
-            });
+            });	 
+	
         });
     </script>
 </head>
@@ -152,8 +226,9 @@
 <div th:replace="~{header :: headerFragment}"></div>
 <div class="menu-wrapper">
     <div class="menu">
+    <div class = "bcontainer">
         <!-- 게시글 카드 -->
-        <div class="card">
+
             <div class="card-body">
                 <!-- 게시글 헤더 -->
                 <button class="backbtn">
@@ -162,26 +237,26 @@
                          viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
                               d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" /></svg>
-                </button>
-                <div class="card-header">
-                    <div class="nickname"><span th:text="${commuCard.nickname}"></span></div>
-                    <div class="time"></div>
-                    <div class="status"></div>
-                    <div class="view-count">
-                        <input type="hidden" id="postId" th:value="${commuCard.postId}">
-                        <div th:if="${isAuthor}">
-                            <a th:href="@{/commuUpdate(postId=${commuCard.postId})}">수정</a>
-                            <span> | </span>
-                            <a href="#" class="delete-post" th:data-post-id="${commuCard.postId}">삭제</a>
-                        </div>
-                        <div th:unless="${isAuthor}">
-                        </div>
-                    </div>
-                </div>
+		                </button>
+		                <div class="card-header">
+		                    <div class="nickname"><span th:text="${commuCard.nickname}"></span></div>
+		                    <div class="time"></div>
+		                    <div class="status"></div>
+		                    <div class="view-count">
+		                        <input type="hidden" id="postId" th:value="${commuCard.postId}">
+		                        <div th:if="${isAuthor}">
+		                            <a th:href="@{/commuUpdate(postId=${commuCard.postId})}">수정</a>
+		                            <span> | </span>
+		                            <a href="#" class="delete-post" th:data-post-id="${commuCard.postId}">삭제</a>
+		                        </div>
+		                        <div th:unless="${isAuthor}">
+		                        </div>
+		                    </div>
+		                </div>
                 <!-- 게시글 제목 및 내용 -->
                 <div class="card-title"><span th:text="${commuCard.title}"></span></div>
                 <div class="card-text">
-                    <span th:text="${commuCard.content}"></span>
+                    <pre th:text="${commuCard.content}"></pre>
                 </div>
                 <div>
                     <!-- 파일 첨부 -->
@@ -197,14 +272,15 @@
 					<!-- 댓글 섹션 -->
 					<div class="comment-section">
 					    <div class="comment" th:each="comments : ${commentList}">
-					        <div class="comment-nickname"><span th:text="${commuCard.nickname}"></span></div>
+					        <div class="comment-nickname"><span th:text="${comments.nickname}"></span></div>
 					        <div class="comment-text" th:text="${comments.comments}"></div>
 					        <div class="comment-meta">
-					            <div th:if="${isAuthor}">
+					                <div class="commentDate"><span th:text="${comments.dateOnly}"></span></div>
+					            <div th:if="${#authentication.principal.userId == comments.userId}">
 					                <a href="#" class="edit-comment commentbtnn" th:data-comment-id="${comments.commentId}" th:data-post-id="${commuCard.postId}">수정</a>
 					                <span> | </span>
 					                <a href="#" class="delete-comment commentbtnn">삭제</a>
-					            </div>
+					            </div>											  			   
 					        </div>
 					        <!-- 수정 입력 박스 -->
 					        <div class="edit-box" style="display: none;">
@@ -213,12 +289,11 @@
 					            <button type="button" class="save-edit commentbtn2" th:data-comment-id="${comments.commentId}">저장</button>
 					        </div>
 					    </div>
-					    <hr>
 					</div>
-                </div>
-            </div>
-        </div>
-    </div>
+                </div>									  
+           </div>										  										   
+        </div>																									   																																
+   </div>																												   
 </div>
 <div class="footer" th:replace="footer :: footerFragment"></div>
 
@@ -235,12 +310,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" id="confirmDeleteBtn" class="btn btn-danger" style="background-color: #FEDF04;border: none; ">삭제</button>
+                <button type="button" id="confirmDeleteBtn" class="btn btn-danger" style="background-color: #FEDF04; color:black; border: none; ">삭제</button>
             </div>
         </div>
     </div>
-</div>
-
+</div>				  
 
 <!-- 댓글 삭제 확인 모달 -->
 <div class="modal fade" id="commentdeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -255,32 +329,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" id="commentsdelbtn" class="btn btn-danger" style="background-color: #FEDF04;border: none; ">삭제</button>
+                <button type="button" id="commentsdelbtn" class="btn btn-danger" style="color:black; background-color: #FEDF04;border: none; ">삭제</button>				  				  
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- 삭제 성공 모달 -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">삭제 성공</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                 삭제되었습니다.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
+<!-- 댓글 등록 모달 -->
 <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -291,13 +346,83 @@
         댓글을 등록하시겠습니까?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
         <button type="button" class="commentbtn commentSub">등록</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- 댓글 수정 모달 -->
+<div class="modal fade" id="commentUpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        댓글을 수정하시겠습니까?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="button" class="commentbtn commentUpSub">수정</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 삭제 성공 모달 -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">삭제 성공</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 삭제되었습니다.															 																			   
+            </div>			  
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>		  
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 댓글 수정 확인 모달 -->
+<div class="modal fade" id="updateSuccessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">댓글 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 수정되었습니다.															 																			   
+            </div>			  
+            <div class="modal-footer">
+                <button type="button" style="background-color: #FEDF04; color:black; border: none;" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>		  
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 삭제 성공 모달 -->
+<div class="modal fade" id="deleteSuccessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">댓글 삭제</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 삭제되었습니다.
+            </div>			  
+            <div class="modal-footer">
+                <button type="button" style="background-color: #FEDF04; color:black; border: none;" id="deleteSuccessBtn" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>		  
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     //뒤로 가기 버튼 기능 추가
     $('.backbtn').click(function() {

@@ -9,6 +9,9 @@
   <script type="text/javascript" th:src="@{/js/home.js}"></script>
 <!--  <script type="text/javascript" th:src="@{/js/coordinate.js}"></script>-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
 
   <link rel='stylesheet' th:href='@{/css/home.css}' type='text/css'/>
 </head>
@@ -234,12 +237,6 @@
 
   // 페이지 로드 시 최대 가격 옵션 초기화 및 선택된 가격대 표시 업데이트
   document.addEventListener('DOMContentLoaded', function () {
-
-    // 면적대 선택 버튼 클릭 이벤트 리스너
-    document.getElementById('area-select-btn').addEventListener('click', function () {
-      var popup = document.getElementById('area-range-popup');
-      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    });
     updateMaxPriceOptions();
     updateMaxAreaOptions();
   });

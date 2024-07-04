@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>커뮤니티 리스트</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
   <link rel='stylesheet' href='../css/communityList.css' type='text/css'/>
   <!-- 부트스트랩 CSS 링크 -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -136,7 +140,6 @@
         <input class="searchBox" type='text' placeholder='검색어 입력 (제목+내용)'/>
       </div>
     </div>
-    <hr class="hrs">
     <div class="select-row">
       <select class="form-control pt-1 mt-4 selectbox">
         <option selected>서울특별시</option>
@@ -153,7 +156,8 @@
       </select>
     </div>
     <div class="go-post">
-      <button class="btn writeBtn" style="background-color: #ffa500; color: #fff;" 
+
+      <button class="btn writeBtn" style="background-color: #fedf04; color: #000000;"
               th:onclick="'window.location.href=\'' + @{/communityForm} + '\''">글 작성하기
       </button>
     </div>
@@ -163,7 +167,7 @@
     <div th:each="post : ${postList}" class="card">
       <div class="card-body">
         <div class="card-header">
-          <span th:text="작성자_+${post.nickname}"></span>
+		<span th:text="'작성자: ' + ${post.nickname}"></span>
           <div class="location">서울특별시 · <span class="postcon" th:text="${post.districtName}"></span>
           </div>
         </div>

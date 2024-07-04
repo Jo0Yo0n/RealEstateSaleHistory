@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
+	
+	
+	// 시작 위치 - 서울 시청
+	var map = new naver.maps.Map("map", {
+		zoom: 11,
+		center: new naver.maps.LatLng(37.5664056, 126.9778222),
+		zoomControl: true,
+		zoomControlOptions: {
+			position: naver.maps.Position.TOP_RIGHT,
+			style: naver.maps.ZoomControlStyle.SMALL,
+		},
+	});
+	
 
 	let dataList = [];
 	// 캐시 유효 기간: 24시간
@@ -8,16 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	const cachedData = localStorage.getItem('autoCompleteData');
 	const cacheTimestamp = localStorage.getItem('autoCompleteDataTimestamp');
 	const now = Date.now();
-	
+
 	const urlParams = new URLSearchParams(window.location.search);
 	const lo = urlParams.get('lo');
 	const ms = urlParams.get('ms');
 
 	if (cachedData && cacheTimestamp && (now - cacheTimestamp < CACHE_EXPIRY_TIME)) {
-		console.log("?");
+
 		dataList = JSON.parse(cachedData);
-		markerCoordinates();
-		changeUrlCoordinate();
+		markerCoordinates()
+		setTimeout(() => { changeUrlCoordinate() }, 100);
 	} else {
 		// 데이터가 캐시되지 않았거나 유효 기간이 지난 경우 서버에서 가져옴*/
 		newFetchData({ url: "/admindivison/auto/search", dataFunction: autoSearchData });
@@ -40,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	/* 자동 완성 데이터 */
 	function autoSearchData(data) {
-		console.log(1);
+
 		data.forEach(item => {
 			dataList.push(item);
 		});
@@ -48,27 +61,27 @@ document.addEventListener("DOMContentLoaded", () => {
 		localStorage.setItem('autoCompleteData', JSON.stringify(dataList));
 		localStorage.setItem('autoCompleteDataTimestamp', Date.now());
 		markerCoordinates();
-		changeUrlCoordinate();
+		setTimeout(() => { changeUrlCoordinate() }, 100);
 	}
 
 
 	// URL 확인 후 URL 변경 밑 좌표 검색
 	function changeUrlCoordinate() {
-		
+
 		if (lo !== null) {
 			// 페이지 이동시 입력값
 			document.querySelector('.search-box').value = lo;
 		}
-		console.log(lo);
+
 		// 경도 위도가 있는경우
 		if (ms !== "" && ms !== null) {
-			
+
 			const [lat, lng] = ms.split(',');
 			updateUrlWithoutReload(lo, `${lat}`, `${lng}`);
 			mapCoordinate(`${lat}`, `${lng}`);
-			
+
 		} else if (lo !== "" && lo !== null) {
-			
+
 			geoCoder(document.querySelector(".search-box").value);
 		}
 	}
@@ -315,6 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					var clickedMarker = e.overlay;
 					var clickedApt = $(clickedMarker.getIcon().content).find('.marker-name').text();
 					var clickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
+
 					
 					let addressParts = clickedApt.split(" ");
 					
@@ -324,10 +338,10 @@ document.addEventListener("DOMContentLoaded", () => {
 					var estate = null;
 					generatePagination(1, {
 				       districtName: null,
-				       neighborhoodName: '수색동',
+				       neighborhoodName: neiborhoodName,
 				       minSalePrice: 0,
 				       maxSalePrice: 100,
-				       realEstateId: 231
+				       realEstateId: clickedId
 					});
 				    // AJAX 요청을 사용하여 페이지 번호에 해당하는 데이터를 불러옵니다.
 				    $.ajax({
@@ -336,11 +350,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				        contentType: 'application/json',
 				        data: JSON.stringify({
 				            districtName: null,
-				            neighborhoodName: '수색동',
+				            neighborhoodName: neiborhoodName,
 				           	minSalePrice: 0,
 				       		maxSalePrice: 180,
 				            page: 1,
-				            realEstateId: 231//parseInt(clickedId)
+				            realEstateId: clickedId
 				        }),
 				        success: function(data) {
 				            // 컨테이너 비우기
@@ -383,6 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					                        <div>
 					                            <span class="sale-title">전체 매매가</span>
 					                            <span class="sale-min-price">${estate.estateExtra.allPrice}</span>
+					                            
 					                        </div>
 					                    </div>
 					                </div>
@@ -406,6 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					      }
 						}
 				    });
+
 
 				});
 			}

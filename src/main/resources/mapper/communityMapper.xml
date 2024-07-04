@@ -141,7 +141,7 @@
 		select post_id
 		, title
 		, content
-		, to_char(created_at, 'yyyy-mm-dd hh24:mi:ss') created_at
+		, to_char(created_at, 'yyyy-mm-dd hh24:mi') created_at
 		from post
 		where isdeleted = 'N'
 		order by created_at desc
