@@ -70,8 +70,8 @@ public class FavoriteController {
   public ResponseEntity<?> favoriteAdd(Principal principal, @PathVariable("realEstateId") Long realEstateId) {
     
     try {
-      System.out.println("gd");
-      favoriteService.addFavorite(realEstateId, "o.d.g@gmail.com");
+
+      favoriteService.addFavorite(realEstateId, principal.getName());
       return ResponseEntity.ok().body("즐겨찾기가 추가되었습니다.");
       
     } catch (Exception e) {
