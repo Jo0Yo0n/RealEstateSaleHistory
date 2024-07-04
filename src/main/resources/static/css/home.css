@@ -18,7 +18,7 @@ body {
 }
 .select-box select {
   width: 100%;
-  padding: 5px;
+  padding: 0;
   border: 1px solid #ced4da;
   border-radius: 4px;
 }
