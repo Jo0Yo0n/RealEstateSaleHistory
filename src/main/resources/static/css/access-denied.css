@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "IBM Plex Sans KR", sans-serif;
   display: flex;
   flex-direction: column;
   background-color: #f8f9fa;
@@ -67,7 +67,7 @@ p {
   color: #000 !important;
 }
 
-..btn-primary {
+.btn-primary {
   background-color: #fedf04;
   border-color: #fedf04;
   color: #000;
