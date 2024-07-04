@@ -598,6 +598,7 @@ function loadPage(pageNumber, estate) {
 	        
             data.forEach(function(estate) {
 				var formattedContractDate = formatDate(estate.realEstateSale.contractDate);
+
 	        	//  부동산 이름과 가격을 리스트 아이템으로 추가
 		        $('#estate-list').append(`
 					<div class="estate-item">
