@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>게시글 카드</title>
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel='stylesheet' href='../css/communityCard.css' type='text/css'/>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
-<script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 카드</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel='stylesheet' href='../css/communityCard.css' type='text/css'/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script>
+
         $(document).ready(function() {     	
             // 댓글 수정 버튼 클릭 이벤트
             $(".comment-section").on("click", ".edit-comment", function(e) {

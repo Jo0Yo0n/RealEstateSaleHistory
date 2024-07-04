@@ -9,9 +9,11 @@ import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
 import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 import com.kosa.realestate.realestates.repository.RealEstateSaleRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class RealEstateSaleService implements IRealEstateSaleService {
 
   private final RealEstateSaleRepository estateSaleRepository; 
@@ -27,15 +29,13 @@ public class RealEstateSaleService implements IRealEstateSaleService {
   }
   
   @Override
-  public int estateCountByCriteria(int districtName, String neighborhoodName, int minPrice,
-      int maxPrice, int minExclusiveSize, int maxExclusiveSize) {
+  public int estateCountByCriteria(String districtName, String neighborhoodName, Double minPrice,
+      Double maxPrice, int realEstateId) {
     Map<String, Object> salePrice = new HashMap();
     salePrice.put("min", minPrice);
     salePrice.put("max", maxPrice);
-    Map<String, Object> exclusiveArea = new HashMap();
-    exclusiveArea.put("min", minExclusiveSize);
-    exclusiveArea.put("max", maxExclusiveSize);
-    return estateSaleRepository.estateCountByCriteria(districtName, neighborhoodName, salePrice, exclusiveArea);
+
+    return estateSaleRepository.estateCountByCriteria(districtName, neighborhoodName, salePrice, realEstateId);
   }
   
   @Override
@@ -52,10 +52,6 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.selectRealEstateWithSales(params);
   }
 
-  @Override
-  public List<Map<String, Object>> getAllDestrictId() {
-    return estateSaleRepository.getAllDestrictId();
-  }
 
   @Override
   public List<RealEstateWithSaleDTO> getRealEstateDetail(int salesId) {
@@ -67,27 +63,20 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     return estateSaleRepository.getRealEstatePrice(salesId);
   }
 
-  @Override
-  public List<Map<String, Object>> getAllNeighborhood(int destrictId) {
-    return estateSaleRepository.getAllNeighborhood(destrictId);
-  }
+
 
   @Override
-  public List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(int districtName,
-      String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize, int currentPage) {
-
+  public List<RealEstateWithSaleDTO> selectRealEstateWithSalesByCondition(String districtName,
+      String neighborhoodName, Double minPrice, Double maxPrice, int currentPage, int realEstateId) {
 
     final int limit = 6;
     int offset = (currentPage - 1) * limit;
-    
     Map<String, Object> salePrice = new HashMap();
     salePrice.put("min", minPrice);
     salePrice.put("max", maxPrice);
-    Map<String, Object> exclusiveArea = new HashMap();
-    exclusiveArea.put("min", minExclusiveSize);
-    exclusiveArea.put("max", maxExclusiveSize);
 
-    return estateSaleRepository.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, salePrice, exclusiveArea,  offset, limit);
+
+    return estateSaleRepository.selectRealEstateWithSalesByCondition(districtName, neighborhoodName, salePrice,   offset, limit, realEstateId);
   }
 
 
@@ -96,6 +85,7 @@ public class RealEstateSaleService implements IRealEstateSaleService {
 
     return estateSaleRepository.selectNewRealEstateSale();
   }
+  
   //아파트 중복 없이 검색
   @Override
   public List<Map<String, Object>> selectRealEstate(int districtName, String neighborhoodName,
@@ -110,6 +100,19 @@ public class RealEstateSaleService implements IRealEstateSaleService {
     exclusiveArea.put("min", minExclusiveSize);
     exclusiveArea.put("max", maxExclusiveSize);
     return estateSaleRepository.selectRealEstate(districtName, neighborhoodName, salePrice, exclusiveArea,  offset, limit);
+  }
+  
+  //아파트 중복 없이 총 개수 조회
+  @Override
+  public int selectRealEstateCount(int districtName, String neighborhoodName, int minPrice,
+      int maxPrice, int minExclusiveSize, int maxExclusiveSize) {
+    Map<String, Object> salePrice = new HashMap();
+    salePrice.put("min", minPrice);
+    salePrice.put("max", maxPrice);
+    Map<String, Object> exclusiveArea = new HashMap();
+    exclusiveArea.put("min", minExclusiveSize);
+    exclusiveArea.put("max", maxExclusiveSize);
+    return estateSaleRepository.selectRealEstateCount(districtName, neighborhoodName, salePrice, exclusiveArea);
   }
 
 

@@ -9,14 +9,18 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" th:src="@{/js/user_main_page.js}"></script>
 
+  <link rel="stylesheet" th:href='@{/css/bootstrap.min.css}' type='text/css'>
   <link rel='stylesheet' th:href='@{/css/user_main_page.css}' type='text/css'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
 
   <title>부동산사조</title>
 </head>
 <body>
 
-  <div th:replace="header :: headerFragment"></div>
-
+<div th:replace="header :: headerFragment"></div>
+<div class="container">
   <div class="main-container">
     <div class="body-container">
       <div>
@@ -33,12 +37,12 @@
           <input type="radio" name="radio-btn" id="radio2">
 
           <div class="slide first">
-            <canvas class="chart" id="chart1" width="530" height="300"></canvas>
-            <canvas class="chart" id="chart2" width="530" height="300"></canvas>
+            <canvas class="chart" id="chart1" width="510" height="300"></canvas>
+            <canvas class="chart" id="chart2" width="510" height="300"></canvas>
           </div>
           <div class="slide">
-            <canvas class="chart" id="chart3" width="530" height="300"></canvas>
-            <canvas class="chart" id="chart4" width="530" height="300"></canvas>
+            <canvas class="chart" id="chart3" width="505" height="300"></canvas>
+            <canvas class="chart" id="chart4" width="505" height="300"></canvas>
           </div>
 
           <div class="navigation-auto">
@@ -56,8 +60,7 @@
       <div class="detail-info">
         <div class="post-info">
           <span class="info-title">최근 게시글</span>
-          <div id="new-post">
-
+          <div class="new-post" id="new-post">
           </div>
         </div>
 
@@ -66,11 +69,11 @@
 
           <div class="auto-slider">
             <div class="estate-slider" style="
-              --width: 280px;
-              --height: 160px;
+              --width: 300px;
+              --height: 175px;
               --quantity: 5;
             ">
-              <div class = "estate-list">
+              <div class="estate-list">
 
               </div>
             </div>
@@ -79,6 +82,7 @@
       </div>
     </div>
   </div>
-  <div th:replace="footer :: footerFragment"></div>
+</div>
+<div th:replace="footer :: footerFragment"></div>
 </body>
 </html>

@@ -8,6 +8,10 @@
           crossorigin="anonymous"></script>
   <script type="text/javascript" th:src="@{/js/home.js}"></script>
 <!--  <script type="text/javascript" th:src="@{/js/coordinate.js}"></script>-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
 
   <link rel='stylesheet' th:href='@{/css/home.css}' type='text/css'/>
 </head>
@@ -134,7 +138,12 @@
   </div>
   <!-- 페이지네이션을 위한 컨테이너 -->
   <div class="pagination"></div>
+  
 </div>
+
+
+
+
 
 <script>
   // 팝업창 닫기 함수
@@ -228,13 +237,14 @@
 
   // 페이지 로드 시 최대 가격 옵션 초기화 및 선택된 가격대 표시 업데이트
   document.addEventListener('DOMContentLoaded', function () {
-    updateMaxPriceOptions();
-    updateMaxAreaOptions();
+
     // 면적대 선택 버튼 클릭 이벤트 리스너
     document.getElementById('area-select-btn').addEventListener('click', function () {
       var popup = document.getElementById('area-range-popup');
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     });
+    updateMaxPriceOptions();
+    updateMaxAreaOptions();
   });
 
   // 최소 가격 선택박스 변경 시 최대 가격 옵션 업데이트 및 선택된 가격대 표시 업데이트
@@ -262,15 +272,24 @@
     var maxPrice = $('#max-price').val(); // 최대 가격을 가져옵니다. 
     var minArea = $('#min-area').val();
     var maxArea = $('#max-area').val();
+    
     // 서버에 전송할 가격대 데이터를 설정합니다.
     var PriceMin = !minPrice ? 0 : parseInt(minPrice);
     var PriceMax = !maxPrice || maxPrice === '180' ? 180 : parseInt(maxPrice);
 
-    var ExclusiveSizeMin = minArea === '0' ? 0 : parseInt(minArea);
-    var ExclusiveSizeMax = maxArea === 'max'||!maxArea ? 320 : maxArea === '0' ? 320 : parseInt(maxArea);
-    
-   
+    var ExclusiveSizeMin = minArea === '0'||null ? 0 : parseInt(minArea);
+    var ExclusiveSizeMax = maxArea === 'max' || !maxArea ? 320 : parseInt(maxArea);
 
+ 	// 사용자가 선택한 가격 범위, 면적 범위, 도시, 구, 동에 따라 부동산 개수를 가져오는 함수
+    getFilteredEstateCount(district, neighborhood, PriceMin, PriceMax, ExclusiveSizeMin, ExclusiveSizeMax)
+		    .then(totalCount => {
+		        // totalCount를 사용하여 페이지네이션을 생성합니다.
+		        createPagination(currentPageNumber, Math.ceil(totalCount / 10)); // 여기서 10은 한 페이지에 표시할 게시물 수입니다.
+		        
+		    })
+		    .catch(error => {
+		        console.error('Error fetching total count:', error);
+		    });
 
 
     // 사용자가 선택한 가격 범위, 면적 범위, 도시, 구, 동에 따라 부동산 개수를 가져오는 함수
@@ -368,103 +387,7 @@
     updateAreaDisplay();
   });
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const citySelect = document.getElementById('city');
-    const districtSelect = document.getElementById('district');
-    const neighborhoodSelect = document.getElementById('neighborhood');
 
-    // 초기 가격대 선택을 비활성화합니다.
-    document.getElementById('min-price').selectedIndex = 0; // "0" 옵션을 선택합니다.
-    document.getElementById('max-price').innerHTML = ''; // 최대 가격 옵션을 비웁니다.
-    updatePriceDisplay(); // 선택된 가격대 표시를 업데이트합니다.
-
-    // Fetch cities and populate city select box
-    fetch('/admindivison/cities')
-    .then(response => response.json())
-    .then(data => {
-      data.forEach(city => {
-        const option = document.createElement('option');
-        option.value = city.cityId;
-        option.text = city.cityName;
-        citySelect.appendChild(option);
-      });
-    });
-
-    // 행정구역 선택 시 이벤트 리스너
-    citySelect.addEventListener('change', function () {
-      const selectedCityId = this.value;
-      districtSelect.innerHTML = '<option value="" disabled selected>자치구</option>'; // 기본 옵션 초기화
-
-      // "전체" 옵션을 다시 생성합니다.
-      const allOption = document.createElement('option');
-      allOption.value = 'all';
-      allOption.text = '전체';
-      districtSelect.appendChild(allOption);
-
-      if (selectedCityId && selectedCityId !== 'all') {
-        // AJAX 요청을 통해 서버에서 자치구 목록을 가져옵니다.
-        fetch(`/admindivison/cities/districts?cityId=${selectedCityId}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(districts => {
-          districts.forEach(district => {
-            const option = document.createElement('option');
-            option.value = district.districtId;
-            option.text = district.districtName;
-            districtSelect.appendChild(option);
-          });
-        })
-        .catch(error => {
-          console.error('Error fetching districts:', error);
-          // 에러 처리를 위한 추가적인 사용자 피드백을 여기에 구현할 수 있습니다.
-        });
-      }
-    });
-
-    // 자치구 선택 시 이벤트 리스너
-    districtSelect.addEventListener('change', function () {
-      const selectedDistrictName = this.value;
-      neighborhoodSelect.innerHTML = '<option value="" disabled selected>읍/면/동</option>'; // 기본 옵션 초기화
-
-      // "전체" 옵션을 다시 생성합니다.
-      const allOption = document.createElement('option');
-      allOption.value = 'all';
-      allOption.text = '전체';
-      neighborhoodSelect.appendChild(allOption);
-
-      if (selectedDistrictName && selectedDistrictName !== 'all') {
-        // AJAX 요청을 통해 서버에서 동 목록을 가져옵니다.
-        fetch(`/admindivison/districts/neighborhoods?districtId=${selectedDistrictName}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(neighborhoods => {
-          neighborhoods.forEach(neighborhood => {
-            const option = document.createElement('option');
-            option.value = neighborhood.neighborhoodName;
-            option.text = neighborhood.neighborhoodName;
-            neighborhoodSelect.appendChild(option);
-          });
-        })
-        .catch(error => {
-          console.error('Error fetching neighborhoods:', error);
-        });
-      }
-    });
-
-    //각 셀렉트 박스의 변경 이벤트에 함수를 연결합니다.
-    $('#district, #neighborhood').change(function () {
-      sendSearchCriteria();  // 조건에 따른 매물 검색 함수 실행.
-    });
-
-  });
 </script>
 </body>
 </html>

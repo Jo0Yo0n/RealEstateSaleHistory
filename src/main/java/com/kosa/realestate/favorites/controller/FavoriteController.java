@@ -1,12 +1,9 @@
 package com.kosa.realestate.favorites.controller;
 
-import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
-import com.kosa.realestate.favorites.service.IFavoriteService;
-import com.kosa.realestate.users.model.UserDTO;
-import com.kosa.realestate.users.service.IUserService;
 import java.security.Principal;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
+import com.kosa.realestate.favorites.service.IFavoriteService;
+import com.kosa.realestate.users.model.UserDTO;
+import com.kosa.realestate.users.service.IUserService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -60,14 +63,21 @@ public class FavoriteController {
     return "favorite_list";
   }
 
-
+  
   // 즐겨찾기 추가
   @PostMapping("/{realEstateId}")
-  public String favoriteAdd(Principal principal, @PathVariable("realEstateId") Long realEstateId) {
+  @ResponseBody
+  public ResponseEntity<?> favoriteAdd(Principal principal, @PathVariable("realEstateId") Long realEstateId) {
+    
+    try {
 
-    favoriteService.addFavorite(realEstateId, "tot0119@naver.com");
-
-    return "favorite_list";
+      favoriteService.addFavorite(realEstateId, principal.getName());
+      return ResponseEntity.ok().body("즐겨찾기가 추가되었습니다.");
+      
+    } catch (Exception e) {
+      
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("즐겨찾기 추가에 실패했습니다.");
+    }
   }
 
 

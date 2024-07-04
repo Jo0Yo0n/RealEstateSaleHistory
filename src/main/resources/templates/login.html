@@ -6,36 +6,47 @@
   <title>로그인</title>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/login.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
   <script src="/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div th:replace="~{header :: headerFragment}"></div>
-<div class="container login-container">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <h2 class="card-title text-center mb-4">로그인</h2>
-          <div th:if="${param.error}" class="alert alert-danger mb-4">
-            <div th:text="${session.errorMessage}"></div>
+<div class="page-wrapper">
+  <div th:replace="~{header :: headerFragment}"></div>
+  <div class="content-wrapper">
+    <div class="container login-container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title text-center mb-4">로그인</h2>
+              <div th:if="${param.error}" class="alert alert-danger mb-4">
+                <div th:text="${session.errorMessage}"></div>
+              </div>
+              <form th:action="@{/users/login}" method="post">
+                <div class="mb-4">
+                  <input type="email" class="form-control" id="username" name="username"
+                         placeholder="아이디(이메일)" required>
+                </div>
+                <div class="mb-4">
+                  <input type="password" class="form-control" id="password" name="password"
+                         placeholder="비밀번호" required>
+                </div>
+                <div class="d-grid gap-3 d-flex justify-content-center">
+                  <button type="submit" class="btn btn-primary">로그인</button>
+                  <a href="/users/signup" class="btn btn-secondary">회원가입</a>
+                </div>
+              </form>
+            </div>
           </div>
-          <form th:action="@{/users/login}" method="post">
-            <div class="mb-4">
-              <input type="email" class="form-control" id="username" name="username" placeholder="아이디(이메일)" required>
-            </div>
-            <div class="mb-4">
-              <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required>
-            </div>
-            <div class="d-grid gap-3 d-flex justify-content-center">
-              <button type="submit" class="btn btn-primary">로그인</button>
-              <a href="/users/signup" class="btn btn-secondary">회원가입</a>
-            </div>
-          </form>
         </div>
       </div>
     </div>
   </div>
+  <div class="footer" th:replace="footer :: footerFragment"></div>
 </div>
 </body>
 </html>

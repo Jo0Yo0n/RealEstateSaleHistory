@@ -1,175 +1,223 @@
 @charset "UTF-8";
+
 body, html {
   margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  flex: 1;
   display: flex;
   justify-content: center;
-  padding: 40px 0px;
+  padding: 30px 0 10px;
 }
+
 .detail-page-container {
-	display: flex;
-	flex-direction: column;
-	width: 1024px;
-	align-items: center;
-	height: 1400px;
+  width: 1080px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.apt-container {
-	width: 1024px;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: baseline;
+
+.apt-info {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin-bottom: 30px;
 }
+
 .apt-name {
-	font-size: 26px;
+  font-size: 28px;
+  margin: 0 10px 0 0;
 }
+
 .apt-address {
-	font-size: 22px;
-	color: #616161;
-	margin-left: 10px;
+  font-size: 22px;
+  color: #616161;
+  margin: 0;
 }
-.base-date{
-	font-size: 18px;
-	color: #BDBDBD;
-	position: absolute;
-	margin-right: -800px;
-	margin-top: 60px;
+
+.base-date {
+  font-size: 18px;
+  color: #BDBDBD;
+  margin-left: auto;
 }
+
 .chart-container {
-	width: 1024px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between; 
-	margin-top: 30px;
-	align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  gap: 50px;
 }
+
+.basic-chart, .shoulder-knee-chart {
+  width: 520px;
+  font-weight: bold;
+}
+
 .shoulder-knee-chart {
-	width: 450px;
-	display: flex;
-	flex-direction: row;
+  display: flex;
+  position: relative;
 }
+
 .person {
-	height: 300px;
-	position: absolute;
-	margin-top: 30px;
-	margin-left: -100px;
+  height: 300px;
+  position: absolute;
+  left: -30px;
+  top: -20px;
 }
+
 table {
-    width: 350px;
-    height: 300px;
-    border-collapse: collapse;
-    border-top: 1px solid #d4d4d4;
-    margin-left: -50px;
-    margin-top: 50px;
+  width: 100%;
+  height: 300px;
+  border-collapse: collapse;
+  border-top: 1px solid #d4d4d4;
 }
 
 tr {
-    border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4d4d4;
 }
 
 td {
-    height: calc(390px / 6); /* 각 행의 높이를 300px / 5로 설정 */
-    text-align: center;
-}
-.none-border{
-	border-bottom: 0px;
-}
-.shoulder-knee-price{
-	width: 120px;
-	text-align: end;
-	position: absolute;
-	margin-left: 170px;
-	margin-top: -45px;
-}
-.text-gray{
-	color: #bdbdbd;
-}
-.price-detail-container {
-	display: flex;
-	flex-direction: column;
-	width: 1024px;
-	align-items: center; 
-	margin-top: 30px;
-	justify-content: flex-start;
-}
-.price-title {
-	font-size: 22px;
-	width: 1024px;
-}
-.price-content-container {
-	width: 1024px;
-	height: 150px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	font-size: 18px;
-}
-.price-content {
-	width: 500px;
-	height: 150px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-}
-.price-inner-content {
-	display: flex;
-	flex-direction: column;
-	height: 90px;
-	justify-content: space-around;
-}
-.price-high-row {
-	display: flex;
-	flex-direction: column;
-	color: #616161;
-}
-.max-min-price {
-	margin-left: 10px;
-}
-.trade-list-container {
-	width: 1024px;
-	display: flex;
-	flex-direction: column;
-	margin-top: 30px;
-	margin-bottom: 20px;
-}
-.trade-title {
-	font-size: 22px;
-}
-.trade-list {
-	display: flex;
-	flex-direction: column;
-	width: 1024px;
-	margin-top: 20px;
-	padding-bottom: 50px;
-}
-.trade-list-title {
-	width: 964px;
-	height: 50px;
-	border-bottom: 1px solid #616161;
-	padding: 0 30px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-}
-.trade-list-column {
-	width: 100px;
-	margin-top: 20px;
-	text-align: center;
-}
-.trade-list-content {
-	width: 964px;
-	height: 50px;
-	border-bottom: 1px solid #616161;
-	padding: 0 30px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	margin-top: 10px;
-}
-.trade-list-value {
-	width: 100px;
-	margin-top: 20px;
-	text-align: center;
+  height: 60px;
+  text-align: right;
+  padding-right: 20px;
 }
 
+.none-border {
+  border-bottom: 0;
+}
+
+.shoulder-knee-price {
+  font-size: 16px;
+}
+
+.text-gray {
+  color: #bdbdbd;
+}
+
+.price-detail-container {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 24px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.price-content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.current-price {
+  font-size: 28px;
+  font-weight: bold;
+  padding-left: 20px;
+}
+
+.price-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.recent-five-years,
+.sales-detail {
+  width: calc(50% - 10px);
+  padding: 0 20px;
+  border-radius: 8px;
+}
+
+.recent-five-years .title {
+  margin: 10px 0;
+  font-size: 21px;
+  font-weight: 600;
+  padding-bottom: 5px;
+}
+
+.max-min-price,
+.sales-detail p {
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+.trade-list-container {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.trade-list {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.trade-list-title, .trade-list-content {
+  display: flex;
+  padding: 15px 0;
+}
+
+.trade-list-title {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.trade-list-column, .trade-list-value {
+  width: 20%;
+  text-align: center;
+}
+
+.trade-list-content:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 1100px) {
+  .detail-page-container {
+    width: 95%;
+  }
+
+  .chart-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+  }
+
+  .basic-chart, .shoulder-knee-chart {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .price-content-container {
+    flex-direction: column;
+  }
+
+  .price-content {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

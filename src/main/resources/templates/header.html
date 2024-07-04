@@ -7,6 +7,9 @@
           integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
           crossorigin="anonymous"></script>
   <link rel='stylesheet' th:href='@{/css/header.css}' type='text/css'/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="header-container">
@@ -19,7 +22,7 @@
         </a>
       </span>
       </div>
-      <div class="menu-container">
+      <div class="header-menu-container">
         <span><a th:href="@{/realestate}">검색</a></span>
         <span><a th:href="@{/communityList}">게시판</a></span>
         <span><span sec:authorize="isAuthenticated()">
@@ -29,7 +32,7 @@
 
     </div>
     <div class="header-right-inner-container">
-      <div class="user-container">
+      <div class="header-user-container">
         <span><span sec:authorize="isAnonymous()"><a th:href="@{/users/login}">로그인</a></span></span>
         <span sec:authorize="isAnonymous()"><a th:href="@{/users/signup}">회원가입</a></span>
         <span sec:authorize="isAuthenticated()"><a th:href="@{/users/logout}">로그아웃</a></span>
