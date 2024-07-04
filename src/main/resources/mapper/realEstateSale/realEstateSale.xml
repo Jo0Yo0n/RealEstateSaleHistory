@@ -18,21 +18,84 @@
 		JOIN NEIGHBORHOOD C ON B.NEIGHBORHOOD_ID = C.NEIGHBORHOOD_ID
 		JOIN DISTRICT D ON C.DISTRICT_ID = D.DISTRICT_ID
     	<where>
-        	<if test="districtName != 0">
-            	AND D.DISTRICT_ID = #{districtName}
+        	<if test="districtName != null">
+            	AND D.DISTRICT_NAME = #{districtName}
         	</if>
         	<if test="neighborhoodName != null">
             	AND C.NEIGHBORHOOD_NAME= #{neighborhoodName}
         	</if>
-        	<if test="salePrice != null">
-            	AND A.SALE_PRICE BETWEEN #{salePrice.min} AND #{salePrice.max}
-        	</if>
-        	<if test="exclusiveArea != null">
-        		AND A.EXCLUSIVE_AREA BETWEEN #{exclusiveArea.min} AND (#{exclusiveArea.max} )
+			<if test="salePrice != null">
+			    AND A.SALE_PRICE BETWEEN #{salePrice.min, javaType=double, jdbcType=NUMERIC} AND #{salePrice.max, javaType=double, jdbcType=NUMERIC}
+			</if>
+        	<if test="realEstateId != null">
+        		AND A.REAL_ESTATE_ID = #{realEstateId}
         	</if>
     	</where>
 	</select>
 
+
+	<select id="selectRealEstateCount" resultType="int">
+		SELECT COUNT(*) AS total_count
+        from (
+	        select       re.real_estate_id
+	         	 , re.complex_name
+	         	 , re.address
+	         	 , re.address_street
+	         	 , re.construction_year
+				 , min(res.sale_price)  min_sale_price
+				 , max(res.sale_price)  max_sale_price
+				 , max(res.sale_price) keep (dense_rank last order by res.contract_date)     lately_sale_price
+				 , to_char(to_date(max(res.contract_date) keep
+				     (dense_rank last order by res.contract_date), 'YYYYMMDD'), 'YYYY.MM.DD')lately_contract_date
+				 , max(res.exclusive_area) keep (dense_rank last order by res.contract_date) lately_exclusive_area
+				 , max(res.floor) keep (dense_rank last order by res.contract_date)          lately_floor
+	
+	         	 , bt.building_type_name
+	         	 , ne.neighborhood_id
+	         	 , ne.neighborhood_name
+	         	 , di.district_name
+	         	 , ci.city_id
+	         	 , ci.city_name
+			  from real_estate             re
+			  inner join real_estate_sale     res
+			    	  on res.real_estate_id   = re.real_estate_id
+			  inner join building_type        bt
+		        	on bt.building_type_id  = re.building_type_id
+			  inner join neighborhood         ne
+		        	on ne.neighborhood_id   = re.neighborhood_id
+			  inner join district             di
+		        	on di.district_id       = ne.district_id
+			  inner join city                 ci
+		        	on ci.city_id           = di.city_id
+			  <where>
+			    <if test="districtName != 0">
+			      AND di.DISTRICT_ID = #{districtName}
+			    </if>
+			    <if test="neighborhoodName != null">
+			      AND ne.NEIGHBORHOOD_NAME = #{neighborhoodName}
+			    </if>
+			    <if test="salePrice != null">
+			      AND res.SALE_PRICE BETWEEN #{salePrice.min} AND #{salePrice.max}
+			    </if>
+			    <if test="exclusiveArea != null">
+			      AND res.EXCLUSIVE_AREA BETWEEN #{exclusiveArea.min} AND #{exclusiveArea.max}
+			    </if>
+			  </where>	
+			  	  group by re.real_estate_id
+				 , re.complex_name
+				 , re.address
+				 , re.address_street
+				 , re.construction_year
+				 , bt.building_type_id
+				 , bt.building_type_name
+				 , ne.neighborhood_id
+				 , ne.neighborhood_name
+				 , di.district_id
+				 , di.district_name
+				 , ci.city_id
+				 , ci.city_name)
+	</select>
+	
 <resultMap type="RealEstateWithSaleDTO" id="RealEstateWithSaleMapDTO">
 	<association property="realEstate" javaType="RealEstateDTO">
         <id property="realEstateId" column="REAL_ESTATE_ID"/>
@@ -96,19 +159,7 @@
     </select>
 
 
-	<select id="getAllDestrictId" resultType="hashmap">
-		SELECT 
-			district_id AS "districtId",
-			district_name AS "districtName"
-		FROM DISTRICT
-	</select>
-	
-	<select id="getAllNeighborhood" resultType="hashmap" parameterType="int">
-		SELECT B.NEIGHBORHOOD_NAME
-		FROM DISTRICT A
-		JOIN NEIGHBORHOOD B ON A.DISTRICT_ID = B.DISTRICT_ID
-		WHERE A.DISTRICT_ID = #{destrictId}
-	</select>
+
 	
  	<select id="selectRealEstateWithSalesByCondition" resultMap="RealEstateWithSaleMapDTO">
     	SELECT A.*, B.*,  E.city_name, F.building_type_name, D.district_name, C.neighborhood_name, G.ALL_PRICE
@@ -125,17 +176,17 @@
             GROUP BY REAL_ESTATE_ID
         ) G ON A.REAL_ESTATE_ID = G.REAL_ESTATE_ID
     	<where>
-        	<if test="districtName != 0">
-            	AND D.DISTRICT_ID = #{districtName}
+        	<if test="districtName != null">
+            	AND D.DISTRICT_NAME = #{districtName}
         	</if>
         	<if test="neighborhoodName != null">
             	AND C.NEIGHBORHOOD_NAME= #{neighborhoodName}
         	</if>
         	<if test="salePrice != null">
-            	AND A.SALE_PRICE BETWEEN #{salePrice.min} AND #{salePrice.max}
+            	AND A.SALE_PRICE BETWEEN #{salePrice.min, javaType=double, jdbcType=NUMERIC} AND #{salePrice.max, javaType=double, jdbcType=NUMERIC}
         	</if>
-        	<if test="exclusiveArea != null">
-        		AND A.EXCLUSIVE_AREA BETWEEN #{exclusiveArea.min} AND (#{exclusiveArea.max} +1)
+        	<if test="realEstateId != null">
+        		AND A.REAL_ESTATE_ID = #{realEstateId}
         	</if>
     	</where>
     	ORDER BY A.CONTRACT_DATE DESC

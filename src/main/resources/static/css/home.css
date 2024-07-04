@@ -1,5 +1,10 @@
 @charset "UTF-8";
 /* home.css */
+
+body {
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
+
 .home-menu-inner-container {
   padding: 20px;
 }
@@ -109,8 +114,8 @@
     width: 100%;
     padding: 10px;
     margin-top: 20px;
-    background-color: #007bff;
-    color: white;
+    background-color: #fedf04;
+    color: black;
     border: none;
     cursor: pointer;
 }
@@ -144,12 +149,14 @@
   font-size: 1.3em;
   font-weight: bold;
 }
-
+.building-favorite{
+  margin-left: auto; /* 오른쪽 끝으로 이동 */
+}
 .building-info {
   font-size: 0.5em;
   flex-wrap: wrap;
   gap: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 /* 최근 거래 내역 */
@@ -161,6 +168,7 @@
 
 .lately-title {
   font-size: 0.8em;
+  margin-right: 100px;
 }
 
 .lately-price {
@@ -183,7 +191,7 @@
   font-size: 0.5em;
 }
 
-.sale-price {
+.sale-min-price, .sale-max-price {
   color: #E3242B;
   font-size: 0.8em;
 }
@@ -207,7 +215,12 @@
 }
 
 .pagination .active {
-  background-color: #ffa500;
-  color: #fff;
-  border-color: #ffa500;
+  background-color: #fedf04;
+  color: #000000;
+  border-color: #fedf04;
+}
+
+.building-favorite .fa-star {
+  color: #ccc; /* 기본 색상 */
+  transition: color 0.3s; /* 색상 변경 애니메이션 */
 }

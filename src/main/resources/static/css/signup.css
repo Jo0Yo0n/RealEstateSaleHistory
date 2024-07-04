@@ -1,15 +1,31 @@
 /* signup.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 html {
   overflow-y: scroll;
 }
 
-
 body {
-  font-family: Arial, sans-serif;
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  flex: 1 0 auto;
 }
 
 .signup-container {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 50px;
 }
 
@@ -40,14 +56,14 @@ body {
 }
 
 .btn-primary {
-  background-color: #ffc107;
-  border-color: #ffc107;
+  background-color: #fedf04;
+  border-color: #fedf04;
   color: #000;
 }
 
 .btn-primary:hover {
-  background-color: #ffca2c;
-  border-color: #ffca2c;
+  background-color: #ffc107;
+  border-color: #ffc107;
   color: #000;
 }
 

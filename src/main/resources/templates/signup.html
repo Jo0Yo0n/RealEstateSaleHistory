@@ -6,48 +6,64 @@
   <title>회원가입</title>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/signup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
   <script src="/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div th:replace="~{header :: headerFragment}"></div>
-<div class="container signup-container">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <h2 class="card-title text-center mb-4">회원정보 입력</h2>
-          <form th:action="@{/users/signup}" th:object="${userCreateForm}" method="post">
-            <div class="alert alert-danger mb-4"
-                 th:if="${#fields.hasErrors('email') or #fields.hasErrors('password') or #fields.hasErrors('passwordConfirm') or #fields.hasErrors('nickname')}">
-              <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일 오류</div>
-              <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 오류</div>
-              <div th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">
-                비밀번호 확인 오류
-              </div>
-              <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉네임 오류</div>
+<div class="page-wrapper">
+  <div th:replace="~{header :: headerFragment}"></div>
+  <div class="content-wrapper">
+    <div class="container signup-container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title text-center mb-4">회원정보 입력</h2>
+              <form th:action="@{/users/signup}" th:object="${userCreateForm}" method="post">
+                <div class="alert alert-danger mb-4"
+                     th:if="${#fields.hasErrors('email') or #fields.hasErrors('password') or #fields.hasErrors('passwordConfirm') or #fields.hasErrors('nickname')}">
+                  <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일 오류</div>
+                  <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 오류
+                  </div>
+                  <div th:if="${#fields.hasErrors('passwordConfirm')}"
+                       th:errors="*{passwordConfirm}">
+                    비밀번호 확인 오류
+                  </div>
+                  <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉네임 오류</div>
 
+                </div>
+                <div class="mb-4">
+                  <input type="email" class="form-control" th:field="*{email}"
+                         placeholder="아이디 (이메일)"
+                         required>
+                </div>
+                <div class="mb-4">
+                  <input type="text" class="form-control" th:field="*{nickname}" placeholder="닉네임"
+                         required>
+                </div>
+                <div class="mb-4">
+                  <input type="password" class="form-control" th:field="*{password}"
+                         placeholder="비밀번호" required>
+                </div>
+                <div class="mb-4">
+                  <input type="password" class="form-control" th:field="*{passwordConfirm}"
+                         placeholder="비밀번호 확인" required>
+                </div>
+                <div class="d-grid d-flex justify-content-center">
+                  <button type="submit" class="btn w-50 btn-primary">가입하기</button>
+                </div>
+              </form>
             </div>
-            <div class="mb-4">
-              <input type="email" class="form-control" th:field="*{email}" placeholder="아이디 (이메일)" required>
-            </div>
-            <div class="mb-4">
-              <input type="text" class="form-control" th:field="*{nickname}" placeholder="닉네임" required>
-            </div>
-            <div class="mb-4">
-              <input type="password" class="form-control" th:field="*{password}" placeholder="비밀번호" required>
-            </div>
-            <div class="mb-4">
-              <input type="password" class="form-control" th:field="*{passwordConfirm}" placeholder="비밀번호 확인" required>
-            </div>
-            <div class="d-grid d-flex justify-content-center">
-              <button type="submit" class="btn w-50 btn-primary">가입하기</button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="footer" th:replace="footer :: footerFragment"></div>
 </div>
 </body>
 </html>

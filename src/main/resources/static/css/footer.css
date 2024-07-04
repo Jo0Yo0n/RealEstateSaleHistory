@@ -1,13 +1,73 @@
 @charset "UTF-8";
 
-.footer-container{
-/* 	background: #F9DE7B; */
+body {
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
+
+.footer-container {
   flex-shrink: 0;
-  height: 140px;
+  min-height: 140px;
   width: 100%;
   margin: 40px 0 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 1.5px solid #616161;
+  border-top: 1px solid #616161;
+  background-color: #f8f9fa;
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 1000px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.footer-title {
+  font-size: 1.7em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.footer-columns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-col {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 15px;
+}
+
+.footer-container p {
+  color: #555;
+  margin: 10px 0;
+  font-size: 0.9em;
+}
+
+.footer-container i {
+  margin-right: 8px;
+  color: #007bff;
+}
+
+.footer-container .fa-home {
+  font-size: 1.2em;
+  color: #28a745;
+}
+
+.footer-container .fa-user {
+  color: #17a2b8;
+}
+
+@media (max-width: 768px) {
+  .footer-columns {
+    flex-direction: column;
+  }
+
+  .footer-col {
+    width: 100%;
+  }
 }

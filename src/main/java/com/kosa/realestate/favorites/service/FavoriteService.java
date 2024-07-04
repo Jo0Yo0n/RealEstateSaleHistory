@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.kosa.realestate.favorites.model.dto.FavoriteDTO;
 import com.kosa.realestate.favorites.model.dto.FavoriteDetailListDTO;
 import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
 import com.kosa.realestate.favorites.repository.FavoriteRepostiory;
@@ -18,6 +19,11 @@ public class FavoriteService implements IFavoriteService {
   private final IUserService userService;
   private final FavoriteRepostiory favoriteRepostiory;
 
+  // 즐겨찾기 되어 있는지 확인
+  public FavoriteDTO findFavoriteCheck(Long realEstateId, Long userId) {
+    
+    return favoriteRepostiory.selectFavoriteCheck(realEstateId, userId);
+  }
 
   // 즐겨찾기 아파트 리스트 조회
   public List<FavoriteListDTO> findFavoriteList(int page, String email) {
@@ -43,8 +49,16 @@ public class FavoriteService implements IFavoriteService {
   public void addFavorite(Long realEstateId, String email) {
 
     UserDTO userDto = userService.findUserByEmail(email);
-
-    favoriteRepostiory.insertFavorite(realEstateId, userDto.getUserId());
+    
+    FavoriteDTO favorite = findFavoriteCheck(realEstateId, userDto.getUserId());
+    
+    if(favorite == null) {
+      
+      favoriteRepostiory.insertFavorite(realEstateId, userDto.getUserId());
+    } else {
+      
+      removeFavorite(favorite.getFavoriteId());
+    }
   }
 
 

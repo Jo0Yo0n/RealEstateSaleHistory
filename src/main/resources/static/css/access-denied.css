@@ -1,4 +1,4 @@
-/* login.css */
+/* access-denied.css */
 html, body {
   height: 100%;
   margin: 0;
@@ -12,6 +12,9 @@ html {
 
 body {
   font-family: "IBM Plex Sans KR", sans-serif;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
 }
 
 .page-wrapper {
@@ -22,26 +25,41 @@ body {
 
 .content-wrapper {
   flex: 1 0 auto;
+  display: flex;
+  align-items: center;
 }
 
-
-.login-container {
-  margin-top: 20px;
+.access-denied-container {
+  width: 100%;
 }
 
-.card {
-  border: none;
-  border-radius: 10px;
+.access-denied-message {
+  background-color: #fff;
+  border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: center;
 }
 
-.card-title {
-  color: #333;
-  font-weight: bold;
+.icon-wrapper {
+  font-size: 4rem;
+  color: #dc3545;
+  margin-bottom: 1rem;
 }
 
-.form-control {
-  border-radius: 5px;
+h1 {
+  color: #dc3545;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.button-wrapper {
+  margin-top: 2rem;
 }
 
 .btn {
@@ -71,12 +89,10 @@ body {
   border-color: #ced4da;
 }
 
-.alert-danger {
-  background-color: #fff3cd;
-  border-color: #ffeeba;
-  color: #856404;
-  padding: 12px;
-  border-radius: 5px;
-  font-weight: bold;
+.footer {
+  flex-shrink: 0;
+  background-color: #f8f9fa;
+  padding: 20px 0;
   text-align: center;
+  border-top: 1px solid #e9ecef;
 }

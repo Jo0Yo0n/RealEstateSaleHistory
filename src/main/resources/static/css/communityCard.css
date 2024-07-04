@@ -1,3 +1,7 @@
+body {
+	font-family: "IBM Plex Sans KR", sans-serif;
+}
+
 .container {
 	width: 1080px;
 	margin: 0 auto; /* 가운데 정렬 */
@@ -56,6 +60,7 @@
 	margin-top: 30px;
 	font-weight: bold;
 	font-size: 1.2rem;
+	padding-left: 30px;
 }
 
 .card-text {
@@ -65,6 +70,7 @@
 	font-size: 1.1rem;
 	color: #333;
 	line-height: 1.4;
+	padding-left: 30px;
 }
 
 .comment-box {
@@ -187,4 +193,15 @@
 	color: #fff;
 	border: none;
 	border-radius: 5px;
+}
+
+.backbtn {
+	border: none; /* 테두리 제거 */
+	background-color: transparent; /* 배경색 제거 */
+	margin-bottom: 20px;
+}
+
+.backbtn svg {
+	width: 43px;
+	height: 43px;
 }

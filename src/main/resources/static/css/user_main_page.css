@@ -1,11 +1,25 @@
+body {
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
 
-.main-container {
+.container {
   display: flex;
   justify-content: center;
 }
 
-.body-container {
+.main-container{
+  margin-top:20px;
   width: 1080px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+.body-container {
+  width: 1040px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,24 +32,23 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-top: 20px;
 }
 
 .search img {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   position: absolute;
   cursor: pointer;
-  right: 25px;
+  right: 15px;
   justify-content: center;
 }
 
 .search-box {
-  width: 400px;
+  width: 450px;
   height: 40px;
   border-radius: 10px;
   background: #f8f8f8;
-  font-size: 20px;
+  font-size: 15px;
   padding-left: 15px;
   font-weight: bold;
   border: 1px solid #616161;
@@ -52,7 +65,7 @@
 /* 자동 완성 */
 .auto-complete {
   position: absolute;
-  width: 350px;
+  width: 400px;
   margin: 1px 10px;
   background: #f8f8f8;
   border-radius: 10px;
@@ -73,14 +86,6 @@
   padding: .2rem .6rem;
   cursor: pointer;
 }
-
-
-
-
-
-
-
-
 
 
 /* 차트 */
@@ -118,7 +123,7 @@
 
 .navigation-manual {
   position: absolute;
-  width: 1080px;
+  width: 1030px;
   display: flex;
   justify-content: right;
   margin-top: 305px;
@@ -151,7 +156,7 @@
 .navigation-auto {
   position: absolute;
   display: flex;
-  width: 1080px;
+  width: 1030px;
   justify-content: right;
   margin-top: 305px;
 }
@@ -179,16 +184,17 @@
 .detail-info {
   display: flex;
   width: 100%; /* 전체 너비 사용 */
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 /* 최근 게시물 */
 .post-info {
-  border: 1px solid #000000;
-  padding: 10px;
+/*  border: 1px solid #000000;*/
+/*  padding: 10px;*/
+  padding-right: 10px;
   width: 65%;
-  margin: 0px 20px 0px 0px;
-  border-radius: 10px;
+/*  margin: 0px 10px 10px 0px;*/
+/*  border-radius: 10px;*/
 }
 
 .info-title {
@@ -198,9 +204,18 @@
   display: inline-block;
   border-bottom: 2px solid #000000;
   padding-bottom: 5px;
-  text-align: center;
-  justify-content: center;
   align-items: center;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.new-post {
+  border: 1px solid #000000;
+  padding: 10px;
+  width: 100%;
+  /*margin: 0px 20px 0px 0px;*/
+  border-radius: 10px;
+  height: 215px;
 }
 
 .post-link {
@@ -212,6 +227,7 @@
   margin: 5px 10px 0px 10px;
   border: 1px solid #000000;
   border-radius: 5px;
+  align-items: center;
 }
 
 .post-link:hover {
@@ -225,29 +241,25 @@
 
 .post-create-date {
   color: #616161;
-  font-size: 0.4em;
+  font-size: 0.5em;
 }
-
-
-
-
-
 
 
 /* 최근 매물 */
 .estate-info {
-  border: 1px solid #000000;
-  padding: 10px;
+  /*border: 1px solid #000000;*/
+  /*padding: 10px;*/
+  padding-left: 10px;
   width: 35%;
-  border-radius: 10px;
+  /*border-radius: 10px;*/
 }
 
 .building {
   padding: 10px;
-  margin-top: 10px;
+  margin-top: 24px;
   border: 1px solid #000000;
   border-radius: 10px;
-  background-color: #f8f8f8;
+  background-color: #ffffff;
 }
 
 .building-background {
@@ -257,11 +269,12 @@
 .building-header {
   display: flex;
   align-items: center;
+  margin-top: 5px;
 }
 
 .building-label {
-  font-size: 0.3em;
-  background-color: #FFFFFF;
+  font-size: 0.5em;
+  background-color: #f8f8f8;
   border-radius: 2px;
   padding: 2px 3px;
   margin-right: 5px;
@@ -269,12 +282,12 @@
 }
 
 .building-name {
-  font-size: 0.8em;
+  font-size: 0.9em;
   font-weight: bold;
 }
 
 .building-info {
-  font-size: 0.3em;
+  font-size: 0.6em;
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 20px;
@@ -294,7 +307,7 @@
 }
 
 .lately-info {
-  font-size: 0.4em;
+  font-size: 0.5em;
 }
 
 /* 매매 관련 오토 슬라이드 */
@@ -302,13 +315,16 @@
   width: 100%;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  border: 1px solid #000000;
+  padding: 10px;
+  border-radius: 10px;
+  height: 215px;
 }
 
 .estate-slider{
   width: 100%;
-  height: var(--height);
   overflow: hidden;
+  height: var(--height);
 }
 
 .estate-slider .estate-list{
