@@ -183,14 +183,16 @@ function showRealEstate(response) {
                     </div>
                 </div>
                 <div class="building-sale">
-                    <div>
-                        <div class="lately-title">최근 매매 실거래가</div>
-                        <div class="lately-price">${estate.latelySalePrice}억</div>
-					<div class="lately-info">
-					    <span class="lately-contract-date">${estate.latelyContractDate}</span>,
-					    <span class="lately-floor">${estate.latelyFloor}</span>,
-					    <span class="lately-exclusive-area">${estate.latelyExclusiveArea}</span>㎡
-					</div>
+                    <div class="lately">
+                      <div>
+                          <div class="lately-title">최근 매매 실거래가</div>
+                          <div class="lately-price">${estate.latelySalePrice}억</div>
+			  		          <div class="lately-info">
+		  			              <span class="lately-contract-date">${estate.latelyContractDate} </span>,
+	  				              <span class="lately-floor">${estate.latelyFloor}층 </span>,
+  					              <span class="lately-exclusive-area">${estate.latelyExclusiveArea}</span>㎡
+					            </div>
+					          </div>
                     </div>
                     <div class="sale-info">
                         <div>

@@ -237,12 +237,6 @@
 
   // 페이지 로드 시 최대 가격 옵션 초기화 및 선택된 가격대 표시 업데이트
   document.addEventListener('DOMContentLoaded', function () {
-
-    // 면적대 선택 버튼 클릭 이벤트 리스너
-    document.getElementById('area-select-btn').addEventListener('click', function () {
-      var popup = document.getElementById('area-range-popup');
-      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    });
     updateMaxPriceOptions();
     updateMaxAreaOptions();
   });
