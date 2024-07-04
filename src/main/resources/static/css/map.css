@@ -353,7 +353,7 @@ body, html {
 
 .customPagination button.active {
 	background-color: #fedf04;
-	color: #fff;
+	color: #000000;
 	border-color: #fedf04;
 }
 
