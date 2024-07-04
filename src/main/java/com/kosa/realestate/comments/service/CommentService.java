@@ -42,8 +42,8 @@ public class CommentService implements ICommentService {
 
     // 댓글 수정
     @Transactional
-    public void modifyComment(Long commentId) {
-        commentRepository.modifyComment(commentId);
+    public void modifyComment(Long commentId,String commentText) {
+        commentRepository.modifyComment(commentId,commentText);
     }
     
     

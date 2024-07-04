@@ -1,138 +1,156 @@
 .container {
-    width: 1080px;
-    margin: 0 auto; /* 가운데 정렬 */
+	width: 1080px;
+	margin: 0 auto; /* 가운데 정렬 */
 }
 
 /* 커뮤니티 탑*/
 .commutop {
-    padding-top: 20px;
-    display: flex;
+	padding-top: 20px;
+	display: flex;
 }
+
 .card {
-    padding: 20px 270px 120px 270px;
-    border-width: 0;
+	padding: 60px 270px 120px 270px;
 }
 
 .card-body {
-    padding: 15px;
-}
-
-.backbtn {
-    border: none; /* 테두리 제거 */
-    background-color: transparent; /* 배경색 제거 */
-    margin-bottom: 20px;
-}
-
-.backbtn svg {
-    width: 43px;
-    height: 43px;
+	padding: 15px;
 }
 
 .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    min-height: 50px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #e0e0e0;
+	min-height: 50px;
 }
 
 .nickname {
-    /*margin-bottom: 20px;*/
-    font-weight: bold;
-    font-size: 1.2rem;
+	/*margin-bottom: 20px;*/
+	font-weight: bold;
+	font-size: 1.2rem;
 }
 
 .time, .status, .view-count {
-    color: #999;
-    font-size: 1rem;
+	color: #999;
+	font-size: 1rem;
 }
 
 /* 게시글 */
 .card-title {
-    margin-top: 30px;
-    font-weight: bold;
-    font-size: 1.2rem;
+	margin-top: 30px;
+	font-weight: bold;
+	font-size: 1.2rem;
 }
-.card-text {
-    margin-top: 40px;
-    margin-bottom: 30px;
-    font-size: 1.1rem;
-    color: #333;
-    line-height: 1.4;
 
+.card-text {
+	margin-top: 40px;
+	margin-bottom: 30px;
+	font-size: 1.1rem;
+	color: #333;
+	line-height: 1.4;
 }
 
 /* 좋아요 , 댓글 */
-
 .comment-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-    color: #999;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+	font-size: 0.9rem;
+	color: #999;
 }
+
 .comment-box {
-    border-top: 1px solid #e0e0e0;
-    padding-top: 10px;
+	border-top: 1px solid #e0e0e0;
+	padding-top: 10px;
 }
 
 .comment-box input {
-    margin-top: 25px; /* 여백 설정 */
-    margin-left: 85px; /* 여백 설정 */
-    width: 850px;
-    height: 50px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    padding: 0 15px;
-    font-size: 0.9rem;
-    outline: none;
+	margin-top: 25px; /* 여백 설정 */
+	margin-left: 85px; /* 여백 설정 */
+	width: 850px;
+	height: 50px;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	padding: 0 15px;
+	font-size: 0.9rem;
+	outline: none;
 }
 
-.commentSub{
-    background-color: #F9DE7B;
-    width:50px;
-    height: 40px;
-    border-radius:4px;
-    border: none;
+.commentSub {
+	background-color: #F9DE7B;
+	width: 50px;
+	height: 40px;
+	border-radius: 4px;
+	border: none;
 }
 
 .comment-section {
-    margin-top: 20px;
-    width: 880px;
-    margin-left: 92px;
+	margin-top: 20px;
+	width: 880px;
+	margin-left: 92px;
 }
 
-
 .comment {
-    border-top: 1px solid #e0e0e0;
-    padding-top: 10px;
-    padding-bottom: 10px;
+	border-top: 1px solid #e0e0e0;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .comment-location {
-    font-size: 0.9rem;
-    color: #007bff;
-    margin-bottom: 5px;
+	font-size: 0.9rem;
+	color: #007bff;
+	margin-bottom: 5px;
 }
 
 .comment-text {
-    font-size: 1rem;
-    margin-bottom: 5px;
+	font-size: 1rem;
+	margin-bottom: 5px;
 }
 
 .comment-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: #999;
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.8rem;
+	color: #999;
 }
 
-.commentbtn{
-   margin-left:18px;
-   width: 65px;
-   height: 40px;
-   background-color: #ffa500;
-   color: #fff;
-   border: none;
-   border-radius: 5px;
-   }
+.commentbtn {
+	margin-left: 18px;
+	width: 65px;
+	height: 40px;
+	background-color: #ffa500;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+}
+
+.commentbtnn {
+	margin-left: 18px;
+	width: 60px;
+	height: 50px;
+	background-color: #F9DE7B;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+}
+.edit-input{
+	margin-top: 25px; /* 여백 설정 */
+	margin-left: 15px; /* 여백 설정 */
+	width: 400px;
+	height: 40px;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	padding: 0 15px;
+	font-size: 0.9rem;
+	outline: none;
+}
+.commentbtn2{
+   margin-left: 18px;
+	width: 50px;
+	height: 25px;
+	background-color: #F9DE7B;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+}
