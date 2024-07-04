@@ -164,6 +164,7 @@
 
 .lately-title {
   font-size: 0.8em;
+  margin-right: 100px;
 }
 
 .lately-price {
@@ -210,9 +211,9 @@
 }
 
 .pagination .active {
-  background-color: #ffa500;
-  color: #fff;
-  border-color: #ffa500;
+  background-color: #fedf04;
+  color: #000000;
+  border-color: #fedf04;
 }
 
 .building-favorite .fa-star {

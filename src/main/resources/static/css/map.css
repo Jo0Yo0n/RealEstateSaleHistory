@@ -339,7 +339,6 @@ body, html {
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	margin-top: 5px;
 	margin-bottom: 30px;
 	border-radius: 4px;	
 	margin-top: 20px; 
@@ -350,13 +349,12 @@ body, html {
   padding: 5px 10px;
   border: 1px solid #ddd;
   background-color: #fff;
-  border-radius: 4px;	  
 }
 
 .customPagination button.active {
-	background-color: #ffa500;
-	color: #fff;
-	border-color: #ffa500;
+	background-color: #fedf04;
+	color: #000000;
+	border-color: #fedf04;
 }
 
 
@@ -499,5 +497,4 @@ body, html {
     margin : 12px;
     font-weight: bold;
     position: relative;
-
 }
