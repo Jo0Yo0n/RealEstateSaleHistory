@@ -272,7 +272,7 @@
 					<!-- 댓글 섹션 -->
 					<div class="comment-section">
 					    <div class="comment" th:each="comments : ${commentList}">
-					        <div class="comment-nickname"><span th:text="${commuCard.nickname}"></span></div>
+					        <div class="comment-nickname"><span th:text="${comments.nickname}"></span></div>
 					        <div class="comment-text" th:text="${comments.comments}"></div>
 					        <div class="comment-meta">
 					                <div class="commentDate"><span th:text="${comments.dateOnly}"></span></div>
