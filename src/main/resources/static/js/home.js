@@ -168,7 +168,7 @@ function showRealEstate(response) {
                 	<div class="building-id" data-real-estate-id="${estate.realEstateId}"></div>
                     <div class="building-label">아파트</div>
                     <div class="building-name">${estate.complexName}</div>
-                    <div class="building-favorite">별</div>
+                    <div class="building-favorite"><i class="fa-regular fa-star"></i></div>
                 </div>
                 <div class="building-info">
                     <div>
@@ -363,6 +363,32 @@ let currentSelectedBuildingId = null;
 
 //상위 요소인 .district-list-container에 클릭 이벤트 리스너를 추가
 document.querySelector('.district-list-container').addEventListener('click', function(event) {
+	 // 클릭된 요소가 별 모양인지 확인
+  if (event.target.classList.contains('fa-regular') && event.target.classList.contains('fa-star')) {
+    // .building-header 요소를 찾습니다.
+    var buildingHeader = event.target.closest('.building-header');
+    // .building-header 요소 내부에서 .building-id 요소를 찾습니다.
+    var realEstateId = buildingHeader.querySelector('.building-id').getAttribute('data-real-estate-id');
+    console.log(realEstateId);
+    
+    // AJAX 요청을 통해 서버에 즐겨찾기 추가
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'favorites/' + realEstateId, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onreadystatechange = function() {
+      if (this.readyState === XMLHttpRequest.DONE) {
+        if (this.status === 200) {
+          console.log(this.responseText); // 성공 메시지 출력
+        } else {
+          console.error('즐겨찾기 추가에 실패했습니다.'); // 오류 메시지 출력
+        }
+      }
+    };
+    
+    xhr.send();
+  }
+  
 let buildingElement = event.target.closest('.building');
 if (buildingElement) {
     // 데이터 추출 최적화
@@ -594,6 +620,7 @@ function loadPage(pageNumber, estate) {
         }
     });
 }
+
 function formatDate(dateString) {
   var year = dateString.substring(0, 4);
   var month = dateString.substring(4, 6);
@@ -603,7 +630,7 @@ function formatDate(dateString) {
 }
 
 
-// 별 클릭 이벤트 리스너
+/*// 별 클릭 이벤트 리스너
 document.querySelector('.building-favorite').addEventListener('click', function() {
   var realEstateId = this.parentElement.querySelector('.building-id').getAttribute('data-real-estate-id');
   
@@ -623,4 +650,4 @@ document.querySelector('.building-favorite').addEventListener('click', function(
   };
   
   xhr.send();
-});
+});*/
