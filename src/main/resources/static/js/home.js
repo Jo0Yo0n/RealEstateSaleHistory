@@ -168,6 +168,7 @@ function showRealEstate(response) {
                 	<div class="building-id" data-real-estate-id="${estate.realEstateId}"></div>
                     <div class="building-label">아파트</div>
                     <div class="building-name">${estate.complexName}</div>
+                    <div class="building-favorite">별</div>
                 </div>
                 <div class="building-info">
                     <div>
@@ -536,44 +537,54 @@ function loadPage(pageNumber, estate) {
             // 컨테이너 비우기
             $('#estate-list').empty();
 	        
+            // 중복되지 않는 부동산 이름을 저장할 Set 객체 생성
+		    const estateNames = new Set();
+		
+		    // 부동산 이름을 Set에 추가
+		    data.forEach(function(estate) {
+		        estateNames.add(estate.realEstate.complexName);
+		    });
+		
+		    // Set에 저장된 각 부동산 이름에 대해 h4 요소 추가
+		    estateNames.forEach(function(name) {
+		        $('#estate-list').append(`
+        		<div class="estate-header">
+		        	<h4>${name} 아파트 🏢</h4>
+        		</div>
+            	<div class="estate-info">
+                    <div>
+                        <span>${estate.cityName}</span>
+                        <span> / ${estate.districtName}</span>
+                        <span> / ${estate.neighborhoodName}</span>
+                    </div>
+                    <div>
+                        <span>${estate.constructionYear}</span>
+                        <span>${estate.address}</span>
+                        <span>${estate.addressStreet}</span>
+                    </div>
+            	</div>
+		        `);
+		    });
+	        
+
+
+	        
             data.forEach(function(estate) {
+				var formattedContractDate = formatDate(estate.realEstateSale.contractDate);
 	        	//  부동산 이름과 가격을 리스트 아이템으로 추가
 		        $('#estate-list').append(`
 					<div class="estate-item">
-                		<div class="estate-header">
-                    		<div class="estate-label">아파트</div>
-                    		<div class="estate-name">${estate.realEstate.complexName}</div>
-                    		<div class="estate-salesId"><a class="btn btn-warning" href=""/realestate/detail/${estate.realEstateSale.salesId}" role="button" style="color: white;">상세페이지 이동</a></div>
-                		</div>
-	                	<div class="building-info">
-		                    <div>
-		                        <span>${estate.cityName}</span>
-		                        <span> / ${estate.districtName}</span>
-		                        <span> / ${estate.neighborhoodName}</span>
-		                    </div>
-		                    <div>
-		                        <span>설립:${estate.constructionYear}</span>
-		                        <span> / 번지:${estate.address}</span>
-		                        <span> / 도로명:${estate.addressStreet}</span>
-		                    </div>
-	                	</div>
-		                <div class="building-sale">
-		                    <div>
-		                        <div class="lately-title">최근 매매 실거래가</div>
-		                        <div class="lately-price">${estate.latelySalePrice}억</div>
-							<div class="lately-info">
-							    <span class="lately-contract-date">${estate.latelyContractDate}</span>,
-							    <span class="lately-floor">${estate.latelyFloor}</span>,
-							    <span class="lately-exclusive-area">${estate.latelyExclusiveArea}</span>㎡
+		                 <div class="estate-sale">
+ 							<div class="estate-lately-info">
+							    <span class="estate-contract-date">${formattedContractDate}</span>,
+							    <span class="estate-floor">${estate.realEstateSale.floor}층</span>,
+							    <span class="estate-exclusive-area">${estate.realEstateSale.exclusiveArea}</span>㎡
 							</div>
+		                    <div>
+		                       <div class="lately-title">실거래가 : <span class="lately-price" style="color: red;">${estate.realEstateSale.salePrice}억</span></div>
+				                <a class="btn btn-warning" href="/realestate/detail/${estate.realEstateSale.salesId}" role="button" style="color: white;">매매 기록 보기</a>
 		                    </div>
-		                    <div class="sale-info">
-		                        <div>
-		                            <span class="sale-title">전체 매매가</span>
-		                            <span class="sale-min-price">${estate.minSalePrice}억</span> ~ <span class="sale-max-price">${estate.maxSalePrice}억</span>
-		                        </div>
-		                    </div>
-		                </div> 
+		                </div>
 	            	</div>
 		        `);
 	   	 	});
@@ -583,3 +594,33 @@ function loadPage(pageNumber, estate) {
         }
     });
 }
+function formatDate(dateString) {
+  var year = dateString.substring(0, 4);
+  var month = dateString.substring(4, 6);
+  var day = dateString.substring(6, 8);
+
+  return year + '년 ' + month + '월 ' + day + '일';
+}
+
+
+// 별 클릭 이벤트 리스너
+document.querySelector('.building-favorite').addEventListener('click', function() {
+  var realEstateId = this.parentElement.querySelector('.building-id').getAttribute('data-real-estate-id');
+  
+  // AJAX 요청을 통해 서버에 즐겨찾기 추가
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'favorites/' + realEstateId, true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  
+  xhr.onreadystatechange = function() {
+    if (this.readyState === XMLHttpRequest.DONE) {
+      if (this.status === 200) {
+        console.log(this.responseText); // 성공 메시지 출력
+      } else {
+        console.error('즐겨찾기 추가에 실패했습니다.'); // 오류 메시지 출력
+      }
+    }
+  };
+  
+  xhr.send();
+});

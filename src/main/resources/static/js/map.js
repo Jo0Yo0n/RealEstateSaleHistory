@@ -5,4 +5,3 @@ $(document).ready(function () {
 	    document.getElementById('same-districtid-container').style.display = 'none';
 	});
 });
-
