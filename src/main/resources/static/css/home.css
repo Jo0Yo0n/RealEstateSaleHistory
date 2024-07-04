@@ -28,7 +28,7 @@ body {
 .price-select-btn, .area-select-btn {
   width: 100%;
   padding: 5px;
-  background-color: #f8f9fa;
+  background-color: #fedf04;
   border: 1px solid #ced4da;
   border-radius: 4px;
 }
@@ -85,6 +85,7 @@ body {
 
 .popup-close-btn {
     cursor: pointer;
+    border-width: 0;
 }
 
 /* 선택박스 스타일 */
@@ -137,7 +138,7 @@ body {
 }
 
 .building-label {
-  font-size: 0.3em;
+  font-size: 0.6em;
   background-color: #FFFFFF;
   border-radius: 2px;
   padding: 2px 3px;
@@ -153,7 +154,7 @@ body {
   margin-left: auto; /* 오른쪽 끝으로 이동 */
 }
 .building-info {
-  font-size: 0.5em;
+  font-size: 0.7em;
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 10px;
@@ -166,9 +167,14 @@ body {
   margin-bottom: 10px;
 }
 
+.lately {
+  width: 140px;
+}
+
 .lately-title {
   font-size: 0.8em;
-  margin-right: 100px;
+  width: 150px;
+  margin-right: 65px;
 }
 
 .lately-price {
@@ -178,7 +184,7 @@ body {
 }
 
 .lately-info {
-  font-size: 0.5em;
+  font-size: 0.6em;
 }
 
 .sale-info {
@@ -188,12 +194,12 @@ body {
 }
 
 .sale-title {
-  font-size: 0.5em;
+  font-size: 0.7em;
 }
 
 .sale-min-price, .sale-max-price {
   color: #E3242B;
-  font-size: 0.8em;
+  font-size: 1em;
 }
 
 /* 페이지네이션 */
