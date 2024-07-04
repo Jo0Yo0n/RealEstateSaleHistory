@@ -16,8 +16,8 @@ $(document).ready(function() {
 	}
 
 	const chartApiEndpoints = [
-		{ url: "/statistics/districts/avg-sales-prices", chartId: 'chart1', chartType: 'bar', dataFunction: avgSaleDistrict, label: '지역구 전체 매매 평균 순위' },
-		{ url: "/statistics/neighborhoods/most-favorite", chartId: 'chart2', chartType: 'bar', dataFunction: mostFavoriteNeighborhood, label: '즐겨찾기 많이 된 동 순위' },
+		{ url: "/statistics/districts/avg-sales-prices", chartId: 'chart1', chartType: 'bar', dataFunction: avgSaleDistrict, label: '지역구 전체 매매 평균' },
+		{ url: "/statistics/neighborhoods/most-favorite", chartId: 'chart2', chartType: 'bar', dataFunction: mostFavoriteNeighborhood, label: '즐겨찾기 많이 된 동' },
 		{ url: "/statistics/real-estates/changes/five-years?orderBy=desc", chartId: 'chart3', chartType: 'bar', dataFunction: realEstateChangeFiveYear, label: '최근 5년간 최고 상승' },
 		{ url: "/statistics/real-estates/changes/five-years?orderBy=asc", chartId: 'chart4', chartType: 'bar', dataFunction: realEstateChangeFiveYear, label: '최근 5년간 최저 상승' }
 	];
@@ -93,7 +93,11 @@ $(document).ready(function() {
 								weight: 'bold' // Y축 항목 글자 굵기
 							},
 							callback: function(value) {
-								return value + '(억)';
+								if (chartId == 'chart2') {
+									return value + '(개)';
+								} else {
+									return value + '(억)';
+								}
 							}
 						}
 					}
