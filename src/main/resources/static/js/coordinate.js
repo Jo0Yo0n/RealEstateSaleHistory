@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
+	
+	
+	// 시작 위치 - 서울 시청
+	var map = new naver.maps.Map("map", {
+		zoom: 11,
+		center: new naver.maps.LatLng(37.5664056, 126.9778222),
+		zoomControl: true,
+		zoomControlOptions: {
+			position: naver.maps.Position.TOP_RIGHT,
+			style: naver.maps.ZoomControlStyle.SMALL,
+		},
+	});
+	
 
 	let dataList = [];
 	// 캐시 유효 기간: 24시간
@@ -8,16 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	const cachedData = localStorage.getItem('autoCompleteData');
 	const cacheTimestamp = localStorage.getItem('autoCompleteDataTimestamp');
 	const now = Date.now();
-	
+
 	const urlParams = new URLSearchParams(window.location.search);
 	const lo = urlParams.get('lo');
 	const ms = urlParams.get('ms');
 
 	if (cachedData && cacheTimestamp && (now - cacheTimestamp < CACHE_EXPIRY_TIME)) {
-		console.log("?");
+
 		dataList = JSON.parse(cachedData);
-		markerCoordinates();
-		changeUrlCoordinate();
+		markerCoordinates()
+		setTimeout(() => { changeUrlCoordinate() }, 100);
 	} else {
 		// 데이터가 캐시되지 않았거나 유효 기간이 지난 경우 서버에서 가져옴*/
 		newFetchData({ url: "/admindivison/auto/search", dataFunction: autoSearchData });
@@ -40,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	/* 자동 완성 데이터 */
 	function autoSearchData(data) {
-		console.log(1);
+
 		data.forEach(item => {
 			dataList.push(item);
 		});
@@ -48,27 +61,27 @@ document.addEventListener("DOMContentLoaded", () => {
 		localStorage.setItem('autoCompleteData', JSON.stringify(dataList));
 		localStorage.setItem('autoCompleteDataTimestamp', Date.now());
 		markerCoordinates();
-		changeUrlCoordinate();
+		setTimeout(() => { changeUrlCoordinate() }, 100);
 	}
 
 
 	// URL 확인 후 URL 변경 밑 좌표 검색
 	function changeUrlCoordinate() {
-		
+
 		if (lo !== null) {
 			// 페이지 이동시 입력값
 			document.querySelector('.search-box').value = lo;
 		}
-		console.log(lo);
+
 		// 경도 위도가 있는경우
 		if (ms !== "" && ms !== null) {
-			
+
 			const [lat, lng] = ms.split(',');
 			updateUrlWithoutReload(lo, `${lat}`, `${lng}`);
 			mapCoordinate(`${lat}`, `${lng}`);
-			
+
 		} else if (lo !== "" && lo !== null) {
-			
+
 			geoCoder(document.querySelector(".search-box").value);
 		}
 	}
@@ -317,24 +330,24 @@ document.addEventListener("DOMContentLoaded", () => {
 					var clickedId = $(clickedMarker.getIcon().content).find('.disabled').text();
 					getFilteredEstateCount();
 
+
+					/*					// 메뉴 내용을 클릭된 마커 정보로 업데이트 (clickedId를 사용하도록 수정)
+										$('#apt-info').html(
+											`<p>Clicked Marker Information</p><p>Apt: ${clickedApt}</p><p>Real Estate ID: ${clickedId}</p>`);
 					
-/*					// 메뉴 내용을 클릭된 마커 정보로 업데이트 (clickedId를 사용하도록 수정)
-					$('#apt-info').html(
-						`<p>Clicked Marker Information</p><p>Apt: ${clickedApt}</p><p>Real Estate ID: ${clickedId}</p>`);
-
-					// 모든 메뉴를 닫고 apt-info 메뉴를 열기
-					$('.menu').removeClass('active');
-					$('#apt-info').addClass('active');
-
-					// 닫기 버튼 추가
-					var closeBtn = $('#close-btn-template').html();
-					$('#apt-info').prepend(closeBtn);
-
-					// 닫기 버튼에 클릭 이벤트 추가
-					$('.close-menu-img').click(function() {
-						$('#apt-info').removeClass('active');
-						$(this).remove(); // 닫기 버튼 제거
-					});*/
+										// 모든 메뉴를 닫고 apt-info 메뉴를 열기
+										$('.menu').removeClass('active');
+										$('#apt-info').addClass('active');
+					
+										// 닫기 버튼 추가
+										var closeBtn = $('#close-btn-template').html();
+										$('#apt-info').prepend(closeBtn);
+					
+										// 닫기 버튼에 클릭 이벤트 추가
+										$('.close-menu-img').click(function() {
+											$('#apt-info').removeClass('active');
+											$(this).remove(); // 닫기 버튼 제거
+										});*/
 				});
 			}
 		}
