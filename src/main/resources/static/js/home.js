@@ -605,13 +605,13 @@ function loadPage(pageNumber, estate) {
 					<div class="estate-item">
 		                 <div class="estate-sale">
  							<div class="estate-lately-info">
-							    <span class="estate-contract-date">${formattedContractDate}</span>,
-							    <span class="estate-floor">${estate.realEstateSale.floor}층</span>,
-							    <span class="estate-exclusive-area">${estate.realEstateSale.exclusiveArea}</span>㎡
+							    <span class="estate-contract-date">${formattedContractDate}, </span>
+							    <span class="estate-floor">${estate.realEstateSale.floor}층, </span>
+							    <span class="estate-exclusive-area">${estate.realEstateSale.exclusiveArea}㎡</span>
 							</div>
 		                    <div>
-		                       <div class="lately-title">실거래가 : <span class="lately-price" style="color: red;">${estate.realEstateSale.salePrice}억</span></div>
-				                <a class="btn btn-warning" href="/realestate/detail/${estate.realEstateSale.salesId}" role="button" style="color: black;">매매 기록 보기</a>
+		                      <div class="lately-title">실거래가 : <span class="lately-price" style="color: red;">${estate.realEstateSale.salePrice}억</span></div>
+				                  <a class="btn btn-warning sales-history-btn" href="/realestate/detail/${estate.realEstateSale.salesId}" role="button" style="color: black;">매매 기록 보기</a>
 		                    </div>
 		                </div>
 	            	</div>
