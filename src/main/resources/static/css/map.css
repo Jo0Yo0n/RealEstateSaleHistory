@@ -14,6 +14,7 @@ body, html {
   position: absolute;
 }
 
+
 .marker-container {
   display: flex;
   border-radius: 10px;
@@ -23,6 +24,8 @@ body, html {
   z-index: 1;
   transition: z-index 0.3s;
 }
+
+
 
 .marker-container:hover {
   z-index: 999;
@@ -164,6 +167,22 @@ body, html {
   transform: translateY(calc(100% + 160px)); /* 화면 아래로 숨김 */
 }
 
+.menu::-webkit-scrollbar {
+    width: 10px; /* 스크롤바의 너비 */
+}
+
+/* 스크롤바 막대(썸)에 대한 설정 */
+.menu::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1; /* 스크롤바 썸의 색상 */
+    border-radius: 5px; /* 스크롤바 썸의 모서리 둥글기 */
+    border: 2px solid white; /* 스크롤바 썸의 테두리 */
+}
+
+/* 스크롤바 트랙(경로)에 대한 설정 */
+.menu::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* 스크롤바 트랙의 색상 */
+    border-radius: 5px; /* 스크롤바 트랙의 모서리 둥글기 */
+}
 
 .menu.active {
   transform: translateY(0); /* 원래 위치로 이동 */
@@ -193,11 +212,13 @@ body, html {
   height: 15px;
 }
 
+
 /*.page-item.page-link.active {*/
 /*  background-color: #4CAF50; !* 활성 페이지의 배경색 *!*/
 /*  color: white; !* 활성 페이지의 글자색 *!*/
 /*  border: 1px solid #4CAF50; !* 활성 페이지의 테두리 *!*/
 /*}*/
+
 
 
 /* 검색창 */
@@ -300,4 +321,205 @@ body, html {
   background: #f8f8f8;
   padding: .2rem .6rem;
   cursor: pointer;
+}
+.menu-container{
+	display: flex;
+}
+
+
+
+
+
+
+
+.same-districtid-container{
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	padding: 20px;
+	position : absolute;
+	top: 170px; /* 헤더(80px) + 검색 컨테이너(80px) 아래에 위치 */
+	left: 451px;
+	width: 450px;
+	height: calc(100% - 170px);
+    display: none; 
+    overflow-y: scroll;
+}
+.closeable-container{
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 15px;	
+  position: relative;
+
+  padding-top: 10px; /* 상단 패딩 */
+  padding-bottom: 10px; /* 하단 패딩 */
+}
+.customPagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin-top: 5px;
+	margin-bottom: 30px;
+	border-radius: 4px;	
+	margin-top: 20px; 
+}
+
+.customPagination button {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 4px;	  
+}
+
+.customPagination button.active {
+	background-color: #ffa500;
+	color: #fff;
+	border-color: #ffa500;
+}
+
+
+/* 기본 스타일 */
+.estate-item {
+   	padding: 20px;
+	margin-top: 10px;
+	border: 1px solid #E0E0E0;
+	border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    animation: bottom-200 1s ease forwards;
+}
+
+.estate-header {
+	display:flex;
+	align-items: center;
+}
+.estate-info{
+  font-size: 0.7em;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+
+.estate-salesId{
+  display: flex;
+  justify-content: flex-end; /* a태그를 오른쪽 끝으로 정렬 */
+}
+
+.estate-sale {
+ position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+/* 부모 요소에 flexbox 적용 */
+.estate-sale > div {
+  display: flex;
+  align-items: center;
+}
+/* 버튼 스타일 */
+.btn-warning {
+  margin-left: auto; /* 오른쪽 끝으로 이동 */
+  transform: translateY(0); /* 초기 위치 설정 */
+  transition: transform 0.3s ease; /* 부드러운 전환 효과를 위한 설정 */
+}
+
+.btn-warning:hover {
+  transform: translateY(-10px); /* 호버 시 버튼을 위로 이동 */
+}
+.estate-lately-info > * {
+  flex-shrink: 1; /* 요소들이 필요에 따라 축소될 수 있도록 설정 */
+  white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+  overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+  text-overflow: ellipsis; /* 내용이 넘칠 경우 말줄임표로 표시 */
+}
+
+.estate-lately-info {
+  display: flex;
+  flex-wrap: wrap; /* 요소들이 필요에 따라 다음 줄로 넘어갈 수 있도록 설정 */
+  gap: 10px; /* 요소들 사이의 간격 설정 */
+}
+.estate-contract-date, .estate-floor, .estate-exclusive-area {
+  font-size: 14px;
+  color: #666;
+}
+@keyframes bottom-200 {
+    0% {
+        transform: translateY(200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes left-200 {
+    0% {
+        transform: translateX(-200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes right-200 {
+    0% {
+        transform: translateX(200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* '.same-districtid-container' 요소의 스크롤바 전체 영역에 대한 설정 */
+.same-districtid-container::-webkit-scrollbar {
+    width: 10px; /* 스크롤바의 너비 */
+}
+
+/* 스크롤바 막대(썸)에 대한 설정 */
+.same-districtid-container::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1; /* 스크롤바 썸의 색상 */
+    border-radius: 5px; /* 스크롤바 썸의 모서리 둥글기 */
+    border: 2px solid white; /* 스크롤바 썸의 테두리 */
+}
+
+/* 스크롤바 트랙(경로)에 대한 설정 */
+.same-districtid-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* 스크롤바 트랙의 색상 */
+    border-radius: 5px; /* 스크롤바 트랙의 모서리 둥글기 */
+}
+
+
+#close-button{
+	position : absolute;
+	top : 15px;
+	left: 80%; 
+	margin: 13px;
+	padding: 5px;
+	z-index: 2;
+}
+
+.closeable-container h4 {
+    padding: 10px;
+    margin : 12px;
+    font-weight: bold;
+    position: relative;
+
 }

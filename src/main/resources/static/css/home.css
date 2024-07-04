@@ -1,5 +1,6 @@
 @charset "UTF-8";
 /* home.css */
+
 .home-menu-inner-container {
   padding: 20px;
 }
@@ -144,12 +145,14 @@
   font-size: 1.3em;
   font-weight: bold;
 }
-
+.building-favorite{
+  margin-left: auto; /* 오른쪽 끝으로 이동 */
+}
 .building-info {
   font-size: 0.5em;
   flex-wrap: wrap;
   gap: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 /* 최근 거래 내역 */
@@ -183,7 +186,7 @@
   font-size: 0.5em;
 }
 
-.sale-price {
+.sale-min-price, .sale-max-price {
   color: #E3242B;
   font-size: 0.8em;
 }
@@ -211,3 +214,4 @@
   color: #fff;
   border-color: #ffa500;
 }
+
