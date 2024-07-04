@@ -7,6 +7,9 @@ body {
 	margin: 0 auto; /* 가운데 정렬 */
 }
 
+.commentDate{
+	margin-top: 3px;
+}
 /* 커뮤니티 탑*/
 .commutop {
 	padding-top: 20px;
@@ -15,6 +18,14 @@ body {
 
 .card {
 	padding: 60px 270px 120px 270px;
+}
+
+.modal-footer {
+	border: none;
+}
+
+.modal-header {
+	border: none;
 }
 
 .card-body {
@@ -30,7 +41,8 @@ body {
 }
 
 .nickname {
-	/*margin-bottom: 20px;*/
+	margin-top:10px;
+	margin-bottom: 20px;
 	font-weight: bold;
 	font-size: 1.2rem;
 }
@@ -39,9 +51,12 @@ body {
 	color: #999;
 	font-size: 1rem;
 }
-
+.edit-comment{
+	margin-right: 10px;
+}
 /* 게시글 */
 .card-title {
+	margin-left:10px;
 	margin-top: 30px;
 	font-weight: bold;
 	font-size: 1.2rem;
@@ -49,21 +64,13 @@ body {
 }
 
 .card-text {
+	margin-left:10px;
 	margin-top: 40px;
 	margin-bottom: 30px;
 	font-size: 1.1rem;
 	color: #333;
 	line-height: 1.4;
 	padding-left: 30px;
-}
-
-/* 좋아요 , 댓글 */
-.comment-header {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 10px;
-	font-size: 0.9rem;
-	color: #999;
 }
 
 .comment-box {
@@ -73,7 +80,7 @@ body {
 
 .comment-box input {
 	margin-top: 25px; /* 여백 설정 */
-	margin-left: 85px; /* 여백 설정 */
+	margin-left: 65px; /* 여백 설정 */
 	width: 850px;
 	height: 50px;
 	border: 1px solid #e0e0e0;
@@ -84,11 +91,12 @@ body {
 }
 
 .commentSub {
-	background-color: #F9DE7B;
+	background-color: #FEDF04;
 	width: 50px;
 	height: 40px;
 	border-radius: 4px;
 	border: none;
+	color: black;
 }
 
 .comment-section {
@@ -101,6 +109,7 @@ body {
 	border-top: 1px solid #e0e0e0;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	width: 800px;
 }
 
 .comment-location {
@@ -121,26 +130,50 @@ body {
 	color: #999;
 }
 
+
 .commentbtn {
 	margin-left: 18px;
 	width: 65px;
 	height: 40px;
-	background-color: #ffa500;
-	color: #fff;
+	color: black;
+	background-color: #FEDF04;
 	border: none;
 	border-radius: 5px;
 }
 
+.backbtn {
+	border: none; /* 테두리 제거 */
+	background-color: transparent; /* 배경색 제거 */
+	margin-bottom: 20px;
+}
+
+.backbtn svg {
+	width: 43px;
+	height: 43px;
+}
+
 .commentbtnn {
-	margin-left: 18px;
+	margin-left: 5px;
 	width: 60px;
 	height: 50px;
-	background-color: #F9DE7B;
-	color: #fff;
+	color: #F9DE7B;
 	border: none;
 	border-radius: 5px;
 }
-.edit-input{
+.bcontainer {
+  margin-top: 30px;
+  width: 1080px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.edit-input {
 	margin-top: 25px; /* 여백 설정 */
 	margin-left: 15px; /* 여백 설정 */
 	width: 400px;
@@ -151,8 +184,9 @@ body {
 	font-size: 0.9rem;
 	outline: none;
 }
-.commentbtn2{
-   margin-left: 18px;
+
+.commentbtn2 {
+	margin-left: 18px;
 	width: 50px;
 	height: 25px;
 	background-color: #F9DE7B;

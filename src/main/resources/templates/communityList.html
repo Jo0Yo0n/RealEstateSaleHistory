@@ -140,7 +140,6 @@
         <input class="searchBox" type='text' placeholder='검색어 입력 (제목+내용)'/>
       </div>
     </div>
-    <hr class="hrs">
     <div class="select-row">
       <select class="form-control pt-1 mt-4 selectbox">
         <option selected>서울특별시</option>
@@ -157,6 +156,7 @@
       </select>
     </div>
     <div class="go-post">
+
       <button class="btn writeBtn" style="background-color: #fedf04; color: #000000;"
               th:onclick="'window.location.href=\'' + @{/communityForm} + '\''">글 작성하기
       </button>

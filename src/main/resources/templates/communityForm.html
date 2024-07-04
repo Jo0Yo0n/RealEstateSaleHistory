@@ -258,7 +258,7 @@ $(document).ready(function() {
         files.forEach(function(file) {
             var fileElement = $('<div class="file-item"></div>');
             var imageElement = $('<img src="/uploads/' + file.filePath + file.fileName + '" alt="' + file.fileOriginName + '" style="max-width: 80px; max-height: 80px;" />');
-            var deleteButton = $('<button type="button" class="btn btn-primary delbtn" style="background-color: #FAEBAC; color: black; border: none;" data-bs-toggle="modal" data-fileid="' + file.fileId + '" data-bs-target="#deleteFileModal">삭제</button>');
+            var deleteButton = $('<button type="button" class="btn btn-primary delbtn" style="background-color: #FEDF04; color: black; border: none;" data-bs-toggle="modal" data-fileid="' + file.fileId + '" data-bs-target="#deleteFileModal">삭제</button>');
 
             fileElement.append(imageElement);
             fileElement.append(deleteButton);
@@ -352,7 +352,7 @@ $(document).ready(function() {
 												style="max-width: 80px; max-height: 80px;" />
 
 											<button type="button" class="btn btn-primary delbtn"
-												style="background-color: #FAEBAC; color: black; border: none;"
+												style="background-color: #FEDF04; color: black; border: none;"
 												data-bs-toggle="modal" th:data-fileId="${file.fileId}">삭제</button>
 										</div>
 									</div>
@@ -368,11 +368,11 @@ $(document).ready(function() {
 										style="background-color: #F9DE7B; margin-right: 10px;">취소</button>
 									<th:block th:if="${update}">
 										<button id="updateBtn" class="btn"
-											style="background-color: #FEDF04; margin-right: 10px;">수정</button>
+											style="background-color: #FEDF04; color:black; margin-right: 10px;">수정</button>
 									</th:block>
 									<th:block th:unless="${update}">
 										<button id="uploadBtn" class="btn"
-											style="background-color: #FEDF04; margin-right: 10px;">
+											style="background-color: #FEDF04; color:black; margin-right: 10px;">
 											작성<span th:text="${update}"></span>
 										</button>
 									</th:block>
@@ -402,7 +402,7 @@ $(document).ready(function() {
 				<div class="modal-footer" style="border: none">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal"
-						style="background-color: #F9DE7B; border: none; color: black;">닫기</button>
+						style="background-color: #FEDF04; border: none; color: black;">닫기</button>
 				</div>
 			</div>
 		</div>
