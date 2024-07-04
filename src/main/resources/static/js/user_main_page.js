@@ -264,9 +264,8 @@ $(document).ready(function() {
 });
 
 
-/* 이미지 슬라이드 5초 간격으로 변경 */
 var counter = 1;
-var interval = setInterval(changeSlide, 10000);
+var interval = setInterval(changeSlide, 23000);
 
 function changeSlide() {
 	counter++;
@@ -278,7 +277,7 @@ function changeSlide() {
 
 function resetInterval() {
 	clearInterval(interval);
-	interval = setInterval(changeSlide, 10000);
+	interval = setInterval(changeSlide, 23000);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
