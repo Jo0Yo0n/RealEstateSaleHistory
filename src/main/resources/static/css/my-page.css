@@ -66,12 +66,22 @@ body {
 }
 
 .user-edit button {
-  background-color: #ffa500;
   border: none;
-  color: #fff;
   padding: 5px 12px;
   cursor: pointer;
   border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #fedf04;
+  border-color: #fedf04;
+  color: #000;
+}
+
+.btn-primary:hover {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #000;
 }
 
 /* 회원 탈퇴 버튼 */
@@ -81,10 +91,6 @@ body {
   color: red;
   font-size: 0.9em;
   cursor: pointer;
-}
-
-.user-edit .delete:hover {
-  color: #cc0000;
 }
 
 .favorite-count-box {
@@ -150,7 +156,3 @@ body {
   color: #fff;
   border-color: #ffa500;
 }
-
-/*.footer {*/
-/*  flex-shrink: 0;*/
-/*}*/
