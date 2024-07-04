@@ -10,11 +10,11 @@ html {
   overflow-y: scroll;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-}
+/*body {*/
+/*  font-family: Arial, sans-serif;*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*}*/
 
 .page-wrapper {
   display: flex;
@@ -27,7 +27,7 @@ body {
 }
 
 .signup-container {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 50px;
 }
 

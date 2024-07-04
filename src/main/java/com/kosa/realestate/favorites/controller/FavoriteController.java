@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
 import com.kosa.realestate.favorites.service.IFavoriteService;
 import com.kosa.realestate.users.model.UserDTO;
@@ -74,6 +75,7 @@ public class FavoriteController {
   
   // 즐겨찾기 추가
   @PostMapping("/{realEstateId}")
+  @ResponseBody
   public ResponseEntity<?> favoriteAdd(Principal principal, @PathVariable("realEstateId") Long realEstateId) {
     try {
       favoriteService.addFavorite(realEstateId, principal.getName());
