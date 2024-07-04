@@ -139,8 +139,17 @@ public class communityController {
 
     // 댓글
     List<CommentDTO> commentList = commentService.findCommentByPostId(postId);
+    // 각 게시물의 생성일자 날짜 부분만 추출하여 새로운 속성에 설정
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    for (CommentDTO commentDTO : commentList) {
+      LocalDateTime createdAt = commentDTO.getCreatedAt();
+      if (createdAt != null) {
+        String dateOnly = createdAt.format(formatter);
+        commentDTO.setDateOnly(dateOnly);
+      }
+    }
     model.addAttribute("commentList", commentList);
-    System.out.println("commentList"+commentList);
 
     // 사용자 검증
     if (principal != null) {
