@@ -382,6 +382,7 @@ document.querySelector('.district-list-container').addEventListener('click', fun
           console.log(this.responseText); // 성공 메시지 출력
         } else {
           console.error('즐겨찾기 추가에 실패했습니다.'); // 오류 메시지 출력
+          alert('로그인해주세요');
         }
       }
     };
@@ -651,3 +652,11 @@ document.querySelector('.building-favorite').addEventListener('click', function(
   
   xhr.send();
 });*/
+
+document.addEventListener('DOMContentLoaded', function () {
+    // 닫기 버튼에 클릭 이벤트 리스너를 추가합니다.
+    document.getElementById('close-button').addEventListener('click', function() {
+        // 'same-districtid-container' 요소를 찾아서 숨깁니다.
+        document.getElementById('same-districtid-container').style.display = 'none';
+    });
+});

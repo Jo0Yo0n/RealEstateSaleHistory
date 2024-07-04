@@ -366,7 +366,6 @@ body, html {
 	border-radius: 4px;
     align-items: center;
     justify-content: center;
-    animation: bottom-200 1s ease forwards;
 }
 
 .estate-header {
@@ -397,16 +396,16 @@ body, html {
   display: flex;
   align-items: center;
 }
-/* 버튼 스타일 */
 .btn-warning {
   margin-left: auto; /* 오른쪽 끝으로 이동 */
-  transform: translateY(0); /* 초기 위치 설정 */
-  transition: transform 0.3s ease; /* 부드러운 전환 효과를 위한 설정 */
+  background-color: #fedf04; /* 기본 배경 색상 변경 */
 }
 
 .btn-warning:hover {
-  transform: translateY(-10px); /* 호버 시 버튼을 위로 이동 */
+  background-color: #ffc107; /* 호버 시 배경 색상 변경 */
 }
+
+
 .estate-lately-info > * {
   flex-shrink: 1; /* 요소들이 필요에 따라 축소될 수 있도록 설정 */
   white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
