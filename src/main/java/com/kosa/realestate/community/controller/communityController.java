@@ -111,7 +111,8 @@ public class communityController {
       int end = Math.min(start + postsPerPage, totalPosts);
       List<PostDTO> pagedPostList = postList.subList(start, end);
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+      
       for (PostDTO postDTO : pagedPostList) {
           LocalDateTime createdAt = postDTO.getCreatedAt();
           if (createdAt != null) {
@@ -253,7 +254,7 @@ public class communityController {
     }
 
     // 각 게시물의 생성일자 날짜 부분만 추출하여 새로운 속성에 설정
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     for (PostDTO postDTO : filterPostList) {
       LocalDateTime createdAt = postDTO.getCreatedAt();
@@ -281,7 +282,7 @@ public class communityController {
     }
     // 전체 조회수
     else if (districtId == 0 && filterOption.equals("조회순")) {
-      System.out.println("여기");
+      
       filterOptionPostList = communityService.postViewList();
     }
     // 구별 최신순
@@ -295,7 +296,7 @@ public class communityController {
     }
 
     // 각 게시물의 생성일자 날짜 부분만 추출하여 새로운 속성에 설정
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     for (PostDTO postDTO : filterOptionPostList) {
       LocalDateTime createdAt = postDTO.getCreatedAt();
@@ -323,7 +324,7 @@ public class communityController {
       }
 
       // 각 게시물의 생성일자 날짜 부분만 추출하여 새로운 속성에 설정
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
       
       for (PostDTO postDTO : posts) {
         LocalDateTime createdAt = postDTO.getCreatedAt();

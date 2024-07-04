@@ -9,6 +9,7 @@
 <link
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	rel="stylesheet">
+	
 <!-- Select2 CSS 링크 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
@@ -46,14 +47,20 @@ function checkExtension(fileName, fileSize) {
 }
 
 //폼 검증 함수
-function validateForm() {
-    var districtId = $('#selectbox2').val();
-    console.log("야ㅕ기"+districtId);
+function validateForm(districtId1) {
+	
+    var districtId
     
+    if(districtId1!=null){
+    	districtId = districtId1;
+    }else{
+    	districtId = $('#selectbox2').val();
+    }
+  
     var title = $('#title').val().trim();
     var content = $('#content').val().trim();
     
-    if (districtId=="undefined") {
+    if (districtId=="undefined" || districtId==null) {
         showAlert("자치구를 선택하세요.");
         return false;
     }
@@ -104,7 +111,9 @@ $(document).ready(function() {
     $("#updateBtn").on("click", function(e) {
         e.preventDefault();
         
-        if (!validateForm()) {
+        console.log(districtId);
+        
+        if (!validateForm(districtId)) {   	
             return;
         }
 
@@ -216,9 +225,6 @@ $(document).ready(function() {
 
         var fileId = $(this).data('fileid');
         var postId = $("#postId").val();
-        
-        console.log("여기야2"+fileId);
-        console.log("여기야2"+postId);
         
         $.ajax({
             url: '/deleteFile',
@@ -356,15 +362,15 @@ $(document).ready(function() {
 								<br>
 								<div class="d-flex">
 									<button type="button" class="cancelbtn btn"
-										style="background-color: #F9DE7B; margin-right: 10px;">Cancel</button>
+										style="background-color: #F9DE7B; margin-right: 10px;">취소</button>
 									<th:block th:if="${update}">
 										<button id="updateBtn" class="btn"
-											style="background-color: #fd7e14; margin-right: 10px;">수정</button>
+											style="background-color: #FEDF04; margin-right: 10px;">수정</button>
 									</th:block>
 									<th:block th:unless="${update}">
 										<button id="uploadBtn" class="btn"
-											style="background-color: #fd7e14; margin-right: 10px;">
-											Submit!<span th:text="${update}"></span>
+											style="background-color: #FEDF04; margin-right: 10px;">
+											작성<span th:text="${update}"></span>
 										</button>
 									</th:block>
 
@@ -373,10 +379,9 @@ $(document).ready(function() {
 							
 						</div>
 					</div>
-				</div>
 			</form>
 		</div>
-	</div>
+		</div>
 	<div class="footer" th:replace="footer :: footerFragment"></div>
 	<!-- 알림 모달 -->
 	<div class="modal fade" id="alertModal" tabindex="-1" role="dialog"

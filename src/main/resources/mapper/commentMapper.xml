@@ -11,7 +11,7 @@
          	 , post_id
          	 , user_id
          	 , comments
-         	 , to_char(created_at, 'yyyy-mm-dd hh24:mi:ss') created_at
+         	 , to_char(created_at, 'yyyy-mm-dd hh24:mi') created_at
 		  from comments
 		 where comment_id      = #{commentId}
 		   and is_deleted   = UPPER('N')
@@ -54,7 +54,7 @@
  	<!-- 댓글 수정 -->
  	<update id="modifyComment" parameterType="map">
  		update comments
-       	   set comments     = #{commentForm.comments, jdbcType=VARCHAR}
+       	   set comments     = #{commentText}
              , updated_at   = current_date
 		 where comment_id   = #{commentId}
  	</update>

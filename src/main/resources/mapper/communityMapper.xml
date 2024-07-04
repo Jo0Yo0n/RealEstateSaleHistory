@@ -143,8 +143,10 @@
 		, content
 		, to_char(created_at, 'yyyy-mm-dd hh24:mi:ss') created_at
 		from post
+		where isdeleted = 'N'
 		order by created_at desc
-		fetch first 5 rows only
+		fetch first 5
+		rows only
 	</select>
 
 
@@ -262,31 +264,27 @@
 		SELECT
 		p.post_id AS "postId",
 		p.content,
-		p.user_id AS
-		"userId",
+		p.user_id AS "userId",
 		p.district_id,
 		p.title,
 		p.created_at,
 		p.updated_at,
-		p.post_view
-		AS "postView",
+		p.post_view AS "postView",
 		u.user_id AS "user.userId",
 		u.nickname AS "nickname",
 		d.district_id AS "districtId",
 		d.district_name AS "districtName"
 		FROM
 		post p
-		INNER JOIN
-		users u ON p.user_id = u.user_id
-		INNER JOIN
-		district d
-		ON p.district_id = d.district_id
+		INNER JOIN users u ON p.user_id = u.user_id
+		INNER JOIN district d ON p.district_id = d.district_id
 		WHERE
-		p.title LIKE '%' || #{searchText}
-		|| '%'
-		OR p.content LIKE '%' || #{searchText} || '%'
+		p.isdeleted = 'N'
+		AND (p.title LIKE '%' || #{searchText} || '%'
+		OR p.content LIKE '%' || #{searchText} || '%')
 		ORDER BY
 		p.post_view DESC
+
 	</select>
 
 	<select id="getPostsByUserId" resultType="UserPostDTO">
@@ -332,12 +330,14 @@
 		SELECT
 		p.post_id AS "postId",
 		p.content,
-		p.user_id AS "userId",
+		p.user_id AS
+		"userId",
 		p.district_id,
 		p.title,
 		p.created_at,
 		p.updated_at,
-		p.post_view AS "postView",
+		p.post_view
+		AS "postView",
 		u.user_id AS "user.userId",
 		u.nickname AS "nickname",
 		d.district_id AS "districtId",
@@ -347,11 +347,14 @@
 		INNER JOIN
 		users u ON p.user_id = u.user_id
 		INNER JOIN
-		district d ON p.district_id = d.district_id
+		district d
+		ON p.district_id = d.district_id
 		WHERE
 		d.district_id = #{districtId}
-		AND (p.title LIKE '%' || #{searchText} || '%'
-		OR p.content LIKE '%' || #{searchText} || '%')
+		AND
+		(p.title LIKE '%' || #{searchText} || '%'
+		OR p.content LIKE '%' ||
+		#{searchText} || '%')
 		ORDER BY p.created_at DESC
 	</select>
 
