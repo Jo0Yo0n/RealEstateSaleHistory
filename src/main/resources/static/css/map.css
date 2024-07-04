@@ -188,21 +188,6 @@ body, html {
   transform: translateY(0); /* 원래 위치로 이동 */
 }
 
-/*.close-menu {*/
-/*  position: absolute;*/
-/*  right: 10px;*/
-/*  top: 10px;*/
-/*  width: 30px;*/
-/*  height: 30px;*/
-/*  background-color: white;*/
-/*  border: 1px solid #dee2e6;*/
-/*  border-radius: 50%;*/
-/*  display: flex;*/
-/*  justify-content: center;*/
-/*  align-items: center;*/
-/*  cursor: pointer;*/
-/*}*/
-
 .search-container {
   z-index: 1020;
 }
@@ -211,14 +196,6 @@ body, html {
   width: 15px;
   height: 15px;
 }
-
-
-/*.page-item.page-link.active {*/
-/*  background-color: #4CAF50; !* 활성 페이지의 배경색 *!*/
-/*  color: white; !* 활성 페이지의 글자색 *!*/
-/*  border: 1px solid #4CAF50; !* 활성 페이지의 테두리 *!*/
-/*}*/
-
 
 
 /* 검색창 */
@@ -258,22 +235,33 @@ body, html {
 }
 
 .search img {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   position: absolute;
   cursor: pointer;
-  right: 25px;
+  right: 15px;
   justify-content: center;
 }
 
 .search-box {
   width: 100%;
-  padding: 10px 15px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  background-color: white; /* 검색 박스에 배경색 지정 */
+  height: 40px;
+  border-radius: 10px;
+  background: #f8f8f8;
+  font-size: 15px;
+  padding-left: 15px;
+  font-weight: bold;
+  border: 1px solid #616161;
   flex-grow: 1;
   margin-right: 10px;
+}
+
+.search-box::placeholder {
+  color: #b7b7b7;
+}
+
+.search-box:focus {
+  outline: 0.5px solid #616161;
 }
 
 .search-enter {
@@ -286,24 +274,15 @@ body, html {
   cursor: pointer;
 }
 
-.search-box::placeholder {
-  color: #b7b7b7;
-}
-
-.search-box:focus {
-  outline: 0.5px solid #616161;
-}
 
 /* 자동 완성 */
 .auto-complete {
   position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: white;
-  border: 1px solid #ced4da;
+  width: 400px;
+  margin: 1px 10px;
+  background: #f8f8f8;
+  border-radius: 10px;
   border-top: none;
-  border-radius: 0 0 4px 4px;
   z-index: 1031;
 }
 
@@ -314,7 +293,7 @@ body, html {
 
 .auto-complete > div:hover, .auto-complete > div.hover {
   background: #666;
-  color: white;;
+  color: white;
 }
 
 .auto-complete > div {
@@ -322,12 +301,12 @@ body, html {
   padding: .2rem .6rem;
   cursor: pointer;
 }
+
+
+
 .menu-container{
 	display: flex;
 }
-
-
-
 
 
 
