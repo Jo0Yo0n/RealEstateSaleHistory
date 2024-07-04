@@ -2,6 +2,10 @@ body {
 	font-family: "IBM Plex Sans KR", sans-serif;
 }
 
+.card-text pre {
+	font-family: "IBM Plex Sans KR", sans-serif;
+}
+
 .container {
 	width: 1080px;
 	margin: 0 auto; /* 가운데 정렬 */
