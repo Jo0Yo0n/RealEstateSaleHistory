@@ -95,25 +95,6 @@ html, body {
   cursor: pointer;
 }
 
-.favorite-count-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #fafafa;
-  padding: 10px 20px;
-  border: 1px solid #ddd;
-}
-
-.favorite-count-box .count {
-  font-size: 24px;
-  color: #ffa500;
-}
-
-.favorite-count-box .label {
-  font-size: 14px;
-  color: #888;
-}
-
 .tabs {
   display: flex;
   border-bottom: 1px solid #ddd;
@@ -127,9 +108,9 @@ html, body {
 }
 
 .tab.active {
-  color: #ffa500;
+  color: #fedf04;
   font-weight: bold;
-  border-bottom: 2px solid #ffa500;
+  border-bottom: 2px solid #fedf04;
 }
 
 .tab:hover {
@@ -154,7 +135,7 @@ html, body {
 }
 
 .pagination .active {
-  background-color: #ffa500;
+  background-color: #fedf04;
   color: #fff;
-  border-color: #ffa500;
+  border-color: #fedf04;
 }
