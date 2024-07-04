@@ -63,24 +63,19 @@ public class FavoriteController {
     return "favorite_list";
   }
 
-
-//  // 즐겨찾기 추가
-//  @PostMapping("/{realEstateId}")
-//  public String favoriteAdd(Principal principal, @PathVariable("realEstateId") Long realEstateId) {
-//
-//    favoriteService.addFavorite(realEstateId, "tot0119@naver.com");
-//
-//    return "favorite_list";
-//  }
   
   // 즐겨찾기 추가
   @PostMapping("/{realEstateId}")
   @ResponseBody
   public ResponseEntity<?> favoriteAdd(Principal principal, @PathVariable("realEstateId") Long realEstateId) {
+    
     try {
-      favoriteService.addFavorite(realEstateId, principal.getName());
+      System.out.println("gd");
+      favoriteService.addFavorite(realEstateId, "o.d.g@gmail.com");
       return ResponseEntity.ok().body("즐겨찾기가 추가되었습니다.");
+      
     } catch (Exception e) {
+      
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("즐겨찾기 추가에 실패했습니다.");
     }
   }
