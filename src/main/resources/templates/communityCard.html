@@ -276,7 +276,7 @@
 					        <div class="comment-text" th:text="${comments.comments}"></div>
 					        <div class="comment-meta">
 					                <div class="commentDate"><span th:text="${comments.dateOnly}"></span></div>
-					            <div th:if="${isAuthor}">
+					            <div th:if="${#authentication.principal.userId == comments.userId}">
 					                <a href="#" class="edit-comment commentbtnn" th:data-comment-id="${comments.commentId}" th:data-post-id="${commuCard.postId}">수정</a>
 					                <span> | </span>
 					                <a href="#" class="delete-comment commentbtnn">삭제</a>
