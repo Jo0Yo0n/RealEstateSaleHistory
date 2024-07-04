@@ -65,7 +65,7 @@
 	margin: 0 auto; /* 가운데 정렬 */
 }
 .bcontainer{
-  margin-top:30px;
+  margin-top:20px;
   width: 1080px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -86,12 +86,12 @@
 
 .search {
 	width: 400px; /* 너비를 키움 */
-	margin-top: 55px;
+	margin-top: 5px;
 	position: relative; /* 부모 요소에 position: relative; 추가 */
 }
 
 .hrs {
-	margin-top: 40px;
+	margin-top: 20px;
 	width: 1000px;
 }
 
