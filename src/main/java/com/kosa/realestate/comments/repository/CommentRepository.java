@@ -23,7 +23,7 @@ public interface CommentRepository {
     int insertComment(CommentDTO cdto);
 
     // 댓글 수정
-    int modifyComment(Long commentId);
+    int modifyComment(@Param("commentId")Long commentId,@Param("commentText")String commentText);
     
     // 댓글 삭제 수정
     int modifyCommentDelete(Long commentId);

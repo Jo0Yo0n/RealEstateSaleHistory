@@ -3,7 +3,6 @@ package com.kosa.realestate.comments.service;
 import java.util.List;
 
 import com.kosa.realestate.comments.model.dto.CommentDTO;
-import com.kosa.realestate.comments.model.form.CommentForm;
 
 public interface ICommentService {
 	
@@ -14,7 +13,7 @@ public interface ICommentService {
 	void addComments(CommentDTO cdto);
 
 	// 댓글 수정
-	void modifyComment(Long commentId);
+	void modifyComment(Long commentId,String commentText);
 	
 	// 댓글 삭제 수정
 	void modfiyDeleteComment(Long commentId);

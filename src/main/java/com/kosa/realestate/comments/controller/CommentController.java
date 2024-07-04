@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,14 +34,14 @@ public class CommentController {
   // 댓글 조회
   @GetMapping("/posts/{postId}")
   public ResponseEntity<List<CommentDTO>> commentList(@PathVariable("postId") Long postId) {
-    
+
     return ResponseEntity.ok(commentService.findCommentByPostId(postId));
   }
 
   // 댓글 등록
   @ResponseBody
   @PostMapping("/posts/{postId}")
-  public List<CommentDTO>  commentSave(@RequestParam("postId") Long postId,
+  public List<CommentDTO> commentSave(@RequestParam("postId") Long postId,
       @RequestParam("commentText") String commentText, Principal principal) {
 
     String email = principal.getName();
@@ -53,7 +54,7 @@ public class CommentController {
     cdto.setUserId(userId);
 
     commentService.addComments(cdto);
-    
+
     List<CommentDTO> commentList = commentService.findCommentByPostId(postId);
 
     return commentList;
@@ -62,26 +63,23 @@ public class CommentController {
 
 
   // 댓글 수정
-  @GetMapping("/commentUpdate")
+  @PostMapping("/commentUpdate")
   @ResponseBody
-  public String commentModify(@RequestParam("commentId") Long commentId, Model model,
-      Principal principal) {
-    System.out.println("commentId"+commentId);
-    
-    commentService.modifyComment(commentId);
+  public void commentModify(@RequestParam("commentId") Long commentId,
+      @RequestParam("commentText") String commentText, Model model, Principal principal) {
 
-    return "redirect:/";
+    commentService.modifyComment(commentId, commentText);
+
   }
 
 
   // 댓글 삭제
   @ResponseBody
-      @GetMapping("/commentdelete")
-      public String deleteComment(@RequestParam("commentId") Long commentId) {
-          // 댓글 삭제 로직
-    System.out.println("commentId"+commentId);
-          return "redirect:/communityCard?postId=";
-      
+  @DeleteMapping("/commentdelete")
+  public void deleteComment(@RequestParam("commentId") Long commentId) {
+
+    commentService.modfiyDeleteComment(commentId);
+
   }
 
 }
