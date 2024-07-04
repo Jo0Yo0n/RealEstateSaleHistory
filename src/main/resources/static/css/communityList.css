@@ -25,9 +25,9 @@
 }
 
 .pagination .page-item.active .page-link {
-    background-color: #ffa500;
-    color: #fff;
-    border-color: #ffa500;
+    background-color: #FEDF04;
+    color: black;
+    border-color: #FEDF04;
 }
 
 .pagination .page-item.disabled .page-link {
@@ -88,11 +88,7 @@
 	width: 400px; /* 너비를 키움 */
 	margin-top: 55px;
 	position: relative; /* 부모 요소에 position: relative; 추가 */
-}
-
-.hrs {
-	margin-top: 40px;
-	width: 1000px;
+/*     border: 1px solid #ced4da; */
 }
 
 .select-row {
@@ -127,6 +123,7 @@
 	box-shadow: 0 5px 10px rgba(186, 185, 185, 0.19);
 	margin-right: 5px; /* 이미지와의 여백 설정 */
 	margin-left: 170px;
+	margin-bottom: 10px;
 	font-size: 15px;
 }
 
