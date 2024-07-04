@@ -167,7 +167,7 @@
     <div th:each="post : ${postList}" class="card">
       <div class="card-body">
         <div class="card-header">
-          <span th:text="작성자_+${post.nickname}"></span>
+		<span th:text="'작성자: ' + ${post.nickname}"></span>
           <div class="location">서울특별시 · <span class="postcon" th:text="${post.districtName}"></span>
           </div>
         </div>

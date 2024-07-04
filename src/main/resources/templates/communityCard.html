@@ -16,6 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script>
+
         $(document).ready(function() {     	
             // 댓글 수정 버튼 클릭 이벤트
             $(".comment-section").on("click", ".edit-comment", function(e) {
@@ -43,58 +44,57 @@
                 commentElement.find(".edit-comment").show();
             });
             
-            //댓글 수정
-$(".comment-section").on("click", ".save-edit", function() {
-    var commentElement = $(this).closest(".comment");
-    var editBox = commentElement.find(".edit-box");
-    var commentTextElement = commentElement.find(".comment-text");
-    var editInput = editBox.find(".edit-input");
-    var commentId = $(this).data("comment-id");
-    var newCommentText = editInput.val();
-    var postId = $('#postId').val(); // postId 가져오기
-    
-    // 수정 확인 모달을 보여줍니다.
-    $("#commentUpModal").modal('show');
-    
-    // 확인 모달에서 "수정" 버튼을 클릭할 때의 동작을 처리합니다.
-    $(".commentUpSub").off('click').on('click', function() {
-        // 댓글을 업데이트하는 AJAX 요청을 수행합니다.
-        $.ajax({
-            url: '/comments/commentUpdate',
-            type: 'POST',
-            data: {
-                commentId: commentId,
-                commentText: newCommentText
-            },
-            success: function() {
-                // 페이지 상의 댓글 텍스트를 업데이트합니다.
-                commentTextElement.text(newCommentText);
-                editBox.hide();
-                commentTextElement.show();
-                commentElement.find(".edit-comment").show();
-
-                // 첫 번째 모달 (확인 모달)을 닫습니다.
-                $("#commentUpModal").modal('hide');
-                
-                // 두 번째 모달 (수정 성공 모달)을 보여줍니다.
-                $("#updateSuccessModal").modal('show');
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("댓글 수정 실패: " + textStatus + " - " + errorThrown);
-            }
-        });
-        
-        // .commentUpSub 버튼 클릭 이벤트를 한 번만 처리하기 위해 off('click') 사용
-        $(this).off('click');
-    });
-    
-    // 수정 성공 모달이 닫힐 때의 동작을 처리합니다.
-    $("#updateSuccessModal").on('hidden.bs.modal', function () {
-        // 페이지를 리다이렉트합니다.
-        window.location.href = '/communityCard?postId=' + postId;
-    });
-});
-
+		 //댓글 수정
+		$(".comment-section").on("click", ".save-edit", function() {
+		    var commentElement = $(this).closest(".comment");
+		    var editBox = commentElement.find(".edit-box");
+		    var commentTextElement = commentElement.find(".comment-text");
+		    var editInput = editBox.find(".edit-input");
+		    var commentId = $(this).data("comment-id");
+		    var newCommentText = editInput.val();
+		    var postId = $('#postId').val(); // postId 가져오기
+		    
+		    // 수정 확인 모달을 보여줍니다.
+		    $("#commentUpModal").modal('show');
+		    
+		    // 확인 모달에서 "수정" 버튼을 클릭할 때의 동작을 처리합니다.
+		    $(".commentUpSub").off('click').on('click', function() {
+		        // 댓글을 업데이트하는 AJAX 요청을 수행합니다.
+		        $.ajax({
+		            url: '/comments/commentUpdate',
+		            type: 'POST',
+		            data: {
+		                commentId: commentId,
+		                commentText: newCommentText
+		            },
+		            success: function() {
+		                // 페이지 상의 댓글 텍스트를 업데이트합니다.
+		                commentTextElement.text(newCommentText);
+		                editBox.hide();
+		                commentTextElement.show();
+		                commentElement.find(".edit-comment").show();
+		
+		                // 첫 번째 모달 (확인 모달)을 닫습니다.
+		                $("#commentUpModal").modal('hide');
+		                
+		                // 두 번째 모달 (수정 성공 모달)을 보여줍니다.
+		                $("#updateSuccessModal").modal('show');
+		            },
+		            error: function(jqXHR, textStatus, errorThrown) {
+		                console.error("댓글 수정 실패: " + textStatus + " - " + errorThrown);
+		            }
+		        });
+		        
+		        // .commentUpSub 버튼 클릭 이벤트를 한 번만 처리하기 위해 off('click') 사용
+		        $(this).off('click');
+		    });
+		    
+		    // 수정 성공 모달이 닫힐 때의 동작을 처리합니다.
+		    $("#updateSuccessModal").on('hidden.bs.modal', function () {
+		        // 페이지를 리다이렉트합니다.
+		        window.location.href = '/communityCard?postId=' + postId;
+		    });
+		});
 
             
         	//댓글 등록
@@ -149,51 +149,47 @@ $(".comment-section").on("click", ".save-edit", function() {
                 });
             });
 
-// 댓글 삭제
-$(".comment-section").on("click", ".delete-comment", function(e) {
-    var postId = $('#postId').val();
-    e.preventDefault();
-    
-    var commentElement = $(this).closest(".comment");
-    var postId = $('#postId').val();
-    var commentId = $(this).siblings(".edit-comment").data("comment-id");
-    
-    // 함수로 추출하여 중복을 줄입니다.
-    handleCommentDelete(commentId, postId);
-});
+		// 댓글 삭제
+		$(".comment-section").on("click", ".delete-comment", function(e) {
+		    var postId = $('#postId').val();
+		    e.preventDefault();
+		    
+		    var commentElement = $(this).closest(".comment");
+		    var postId = $('#postId').val();
+		    var commentId = $(this).siblings(".edit-comment").data("comment-id");
+		    
+		    // 함수로 추출하여 중복을 줄입니다.
+		    handleCommentDelete(commentId, postId);
+		});
 
-function handleCommentDelete(commentId, postId) {
-    $("#commentdeleteModal").modal('show');
-
-    // 확인 버튼 클릭 시 DELETE 요청 보내기
-    $("#commentsdelbtn").off('click').on('click', function() {
-        $.ajax({
-            url: '/comments/commentdelete?commentId=' + commentId,
-            type: 'DELETE',
-            success: function() {
-                $("#commentdeleteModal").modal('hide'); // 모달 닫기
-                $("#deleteSuccessModal").modal('show'); // 삭제 성공 모달 띄우기
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("댓글 삭제 실패: " + textStatus + " - " + errorThrown);
-            }
-        });
-        
-        $(this).off('click');
-    });
-    
-    // 수정 성공 모달이 닫힐 때의 동작을 처리합니다.
-    $("#deleteSuccessModal").on('hidden.bs.modal', function () {
-        // 페이지를 리다이렉트합니다.
-        window.location.href = '/communityCard?postId=' + postId;
-    });
-    
-}
-
-
-
-            
-            
+		function handleCommentDelete(commentId, postId) {
+		    $("#commentdeleteModal").modal('show');
+		
+		    // 확인 버튼 클릭 시 DELETE 요청 보내기
+		    $("#commentsdelbtn").off('click').on('click', function() {
+		        $.ajax({
+		            url: '/comments/commentdelete?commentId=' + commentId,
+		            type: 'DELETE',
+		            success: function() {
+		                $("#commentdeleteModal").modal('hide'); // 모달 닫기
+		                $("#deleteSuccessModal").modal('show'); // 삭제 성공 모달 띄우기
+		            },
+		            error: function(jqXHR, textStatus, errorThrown) {
+		                console.error("댓글 삭제 실패: " + textStatus + " - " + errorThrown);
+		            }
+		        });
+		        
+		        $(this).off('click');
+		    });
+		    
+		    // 수정 성공 모달이 닫힐 때의 동작을 처리합니다.
+		    $("#deleteSuccessModal").on('hidden.bs.modal', function () {
+		        // 페이지를 리다이렉트합니다.
+		        window.location.href = '/communityCard?postId=' + postId;
+		    });
+		    
+		} 
+		            
             // 게시글 등록 모달 띄우기
             $("#openCreatePostModal").click(function(e) {
                 e.preventDefault();
@@ -260,7 +256,7 @@ function handleCommentDelete(commentId, postId) {
                 <!-- 게시글 제목 및 내용 -->
                 <div class="card-title"><span th:text="${commuCard.title}"></span></div>
                 <div class="card-text">
-                    <span th:text="${commuCard.content}"></span>
+                    <pre th:text="${commuCard.content}"></pre>
                 </div>
                 <div>
                     <!-- 파일 첨부 -->

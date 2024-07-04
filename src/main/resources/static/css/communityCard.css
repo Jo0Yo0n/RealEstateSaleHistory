@@ -15,7 +15,9 @@ body {
 	padding-top: 20px;
 	display: flex;
 }
-
+.comment-nickname{
+	font-weight: bold;
+}
 .card {
 	padding: 60px 270px 120px 270px;
 }
@@ -70,7 +72,9 @@ body {
 	font-size: 1.1rem;
 	color: #333;
 	line-height: 1.4;
+	white-space: pre-wrap; /* 줄바꿈과 공백을 그대로 유지 */
 	padding-left: 30px;
+
 }
 
 .comment-box {
