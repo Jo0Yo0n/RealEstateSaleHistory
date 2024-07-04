@@ -46,7 +46,7 @@ public class FavoriteService implements IFavoriteService {
 
 
   // 즐겨찾기 추가
-  public void addFavorite(Long realEstateId, String email) {
+  public String addFavorite(Long realEstateId, String email) {
 
     UserDTO userDto = userService.findUserByEmail(email);
     
@@ -55,9 +55,11 @@ public class FavoriteService implements IFavoriteService {
     if(favorite == null) {
       
       favoriteRepostiory.insertFavorite(realEstateId, userDto.getUserId());
+      return "즐겨찾기 추가되었습니다.";
     } else {
       
       removeFavorite(favorite.getFavoriteId());
+      return "즐겨찾기 삭제되었습니다.";
     }
   }
 

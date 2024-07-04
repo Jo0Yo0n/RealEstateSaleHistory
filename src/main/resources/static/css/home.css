@@ -230,3 +230,6 @@ body {
   color: #ccc; /* 기본 색상 */
   transition: color 0.3s; /* 색상 변경 애니메이션 */
 }
+.building-favorite .fa-solid {
+  color: #fedf04; /* 기본 색상 */
+}
