@@ -445,19 +445,6 @@ if (buildingElement) {
 	            console.error('데이터를 로드하는 데 실패했습니다:', error);
 	        });
 		}
-		
-     	// 순차적으로 나타나는 애니메이션 적용
- 	    var items = document.querySelectorAll('.estate-item');
-        let delay = 0;
-        
-        items.forEach(function(item) {
-        	setTimeout(function() {
-	            item.style.opacity = '1'; // 요소를 보이게 합니다
-	            item.style.transform = 'translateY(0)'; // 요소를 위로 이동시킵니다
-        	}, delay);
-        	delay += 500; // 다음 요소의 애니메이션 딜레이를 0.5초씩 증가
-    	});
-
     
     }
 });
