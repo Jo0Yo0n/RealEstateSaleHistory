@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author 이주윤
+ */
 @Getter
 @Setter
 public class UserCreateForm {

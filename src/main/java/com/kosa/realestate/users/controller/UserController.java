@@ -37,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * UserController 클래스
  *
- * @author 이주윤
+ * @author 이주윤, 백재우 오동건
  */
 
 @Controller

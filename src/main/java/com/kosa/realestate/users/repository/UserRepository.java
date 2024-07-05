@@ -13,7 +13,7 @@ import com.kosa.realestate.users.model.Users;
 /**
  * UserDAO 인터페이스
  * 
- * @author 이주윤
+ * @author 이주윤, 백재우, 오동건
  */
 @Mapper
 @Repository

@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * UserService 클래스
  *
- * @author 이주윤
+ * @author 이주윤, 백재우, 오동건
  */
 @Service
 @RequiredArgsConstructor

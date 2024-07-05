@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+/**
+ * @author 이주윤, 백재우
+ */
 public interface IUserService {
   void createUser(String email, String password, String nickname);
 
