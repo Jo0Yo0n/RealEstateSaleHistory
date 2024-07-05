@@ -60,7 +60,7 @@
 	
 	<!-- 5년간 부동산 등락 -->
 	<select id="selectRealEstateChangeFive" parameterType="String" resultType="RealEstateChangeFiveYearDTO">
-   		<![CDATA[
+		<![CDATA[
         select ci.city_id
              , ci.city_name
              , di.district_id
@@ -72,7 +72,7 @@
              , df.max_price
              , abs(df.max_price - df.min_price)  diff_price
           from (select re.neighborhood_id
-                     , re.complex_name
+                     , re.complex_name || ' ' || res.exclusive_area || '㎡' complex_name
                      , min(res.sale_price)  min_price
                      , max(res.sale_price)  max_price
                   from real_estate          re
@@ -80,19 +80,20 @@
                     on res.real_estate_id   = re.real_estate_id
                  where to_date(res.contract_date, 'yyyymmdd') >= trunc(add_months(sysdate, -60), 'year')
               group by re.neighborhood_id
-                     , re.complex_name) df
-    inner join neighborhood             ne
-            on ne.neighborhood_id       = df.neighborhood_id
-    inner join district                 di
-            on di.district_id           = ne.district_id
-    inner join city                     ci
-            on ci.city_id               = di.city_id
-         where df.max_price - df.min_price <> 0
-		]]> 
-	  order by diff_price 
-	  		<if test="orderBy != null and (orderBy == 'asc' or orderBy == 'desc')">
+                     , re.complex_name
+                     , res.exclusive_area)  df
+    inner join neighborhood                 ne
+            on ne.neighborhood_id           = df.neighborhood_id
+    inner join district                     di
+            on di.district_id               = ne.district_id
+    inner join city                         ci
+            on ci.city_id                   = di.city_id
+         where df.max_price - df.min_price <> 0]]> 
+	  order by diff_price
+            <if test="orderBy != null and (orderBy == 'asc' or orderBy == 'desc')">
 	  			${orderBy}
 	  		</if>
+             , df.complex_name
          fetch first 10 rows only
 	</select>
 

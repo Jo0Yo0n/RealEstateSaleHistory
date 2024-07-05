@@ -70,6 +70,7 @@
 			 , ci.city_name
 			 , re.lat
          	 , re.lng
+      order by re.complex_name
 		offset #{offset} rows fetch next #{pageSize} rows only
 	</select>
 
