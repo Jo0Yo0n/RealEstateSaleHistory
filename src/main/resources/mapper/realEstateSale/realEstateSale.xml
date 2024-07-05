@@ -249,6 +249,7 @@
 	    di.district_name,
 	    ci.city_id,
 	    ci.city_name
+	   order by re.real_estate_id
 	    OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
 	</select>
 	
