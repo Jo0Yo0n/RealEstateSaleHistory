@@ -7,6 +7,9 @@ html, body {
 
 body {
   font-family: "IBM Plex Sans KR", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 최소 높이를 뷰포트 높이로 설정 */
 }
 
 .page-wrapper {
