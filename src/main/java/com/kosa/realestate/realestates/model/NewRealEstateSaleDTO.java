@@ -5,6 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
+/*
+ * @author 백재우
+ */
 public class NewRealEstateSaleDTO {
 
     private Long salesId;

@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import com.kosa.realestate.realestates.model.NewRealEstateSaleDTO;
 import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
 import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
-
+/*
+ * @author 백재우
+ */
 @Mapper
 public interface RealEstateSaleRepository {
   int getRealEstateSaleCount();
@@ -34,7 +36,9 @@ public interface RealEstateSaleRepository {
   int selectRealEstateCount(@Param("districtName") int districtName,
       @Param("neighborhoodName")String neighborhoodName,@Param("salePrice") Map<String, Object> salePrice,
       @Param("exclusiveArea") Map<String, Object> exclusiveArea);
-  
+  /*
+   * @author 강안수
+   */
   // 최근 등록 매물 (메인화면)
   List<NewRealEstateSaleDTO> selectNewRealEstateSale();
 }

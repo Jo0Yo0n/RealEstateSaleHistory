@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
 import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
-
+/*
+ * @author 백재우
+ */
 public interface IRealEstateSaleService {
   int getRealEstateSaleCount();
   int getRealEstateSaleCount(int realEstateId);
@@ -24,7 +26,9 @@ public interface IRealEstateSaleService {
   //아파트 중복 없이 검색
   List<Map<String, Object>> selectRealEstate(int districtName, String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize, int currentPage);
   int selectRealEstateCount(int districtName, String neighborhoodName, int minPrice, int maxPrice, int minExclusiveSize, int maxExclusiveSize);
-  
+  /*
+   * @author 강안수
+   */
   // 최근 등록 매물 (메인화면)
   List<NewRealEstateSaleDTO> findNewRealEstateSale();
 }
