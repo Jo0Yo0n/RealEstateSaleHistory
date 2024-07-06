@@ -18,7 +18,9 @@ import com.kosa.realestate.realestates.model.RealEstateSaleDTO;
 import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 import com.kosa.realestate.realestates.service.IRealEstateSaleService;
 import lombok.RequiredArgsConstructor;
-
+/*
+ * @author 백재우
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/realestate")

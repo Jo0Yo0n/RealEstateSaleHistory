@@ -10,7 +10,9 @@ import com.kosa.realestate.realestates.model.RealEstateWithSaleDTO;
 import com.kosa.realestate.realestates.repository.RealEstateSaleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
+/*
+ * @author 백재우
+ */
 @Service
 @RequiredArgsConstructor
 @Log4j2
