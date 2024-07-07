@@ -31,7 +31,11 @@ import com.kosa.realestate.users.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
+/**
+ * communityController 클래스
+ *
+ * @author 강희원
+ */
 
 
 @Controller
