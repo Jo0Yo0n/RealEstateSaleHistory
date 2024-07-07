@@ -9,6 +9,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * CommunityRepository 클래스
+ * 
+ * @author 강희원
+ */
+
 @Mapper
 @Repository
 public interface CommunityRepository {
