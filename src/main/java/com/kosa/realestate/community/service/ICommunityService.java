@@ -11,6 +11,12 @@ import com.kosa.realestate.community.dto.PostDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * ICommunityService 클래스
+ * 
+ * @author 강희원
+ */
+
 public interface ICommunityService {
 
   // 게시글 등록
