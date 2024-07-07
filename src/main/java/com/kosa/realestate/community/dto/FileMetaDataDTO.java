@@ -4,6 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
+/**
+ * FileMetaDataDTO 클래스
+ *
+ * @author 강희원
+ */
+
 @Getter
 @Setter
 @ToString
@@ -20,13 +27,6 @@ import lombok.ToString;
 		private String fileOriginName;
 		private String uploadDate;
 		
-//		private int file_id;
-//		private int post_id;
-//		private String file_name;
-//		private String file_path;
-//		private String file_type;
-//		private int file_size;
-//		private String upload_date;
 
 }
 
