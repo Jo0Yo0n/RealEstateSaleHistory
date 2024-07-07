@@ -11,6 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * PostDTO 클래스
+ * 
+ * @author 강희원
+ */
+
 @Getter
 @Setter
 @ToString
