@@ -20,6 +20,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * CommunityService 클래스
+ * 
+ * @author 강희원
+ */
+
 @Service
 @RequiredArgsConstructor
 
