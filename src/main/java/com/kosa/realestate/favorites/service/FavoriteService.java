@@ -12,6 +12,11 @@ import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * FavoriteService
+ *
+ * @author 오동건
+ */
 @Service
 @RequiredArgsConstructor
 public class FavoriteService implements IFavoriteService {

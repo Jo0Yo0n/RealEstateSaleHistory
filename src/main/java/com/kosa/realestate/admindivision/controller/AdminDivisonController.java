@@ -13,6 +13,11 @@ import com.kosa.realestate.admindivision.model.dto.NeighborhoodDTO;
 import com.kosa.realestate.admindivision.service.IAdminDivisionService;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AdminDivisonController
+ *
+ * @author 오동건
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admindivison")

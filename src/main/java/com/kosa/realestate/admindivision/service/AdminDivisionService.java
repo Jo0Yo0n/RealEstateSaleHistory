@@ -14,6 +14,11 @@ import com.kosa.realestate.admindivision.model.entity.Neighborhood;
 import com.kosa.realestate.admindivision.repository.AdminDivisionRepository;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AdminDivisionService
+ *
+ * @author 오동건
+ */
 @Service
 @RequiredArgsConstructor
 public class AdminDivisionService implements IAdminDivisionService {
