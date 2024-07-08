@@ -8,6 +8,11 @@ import com.kosa.realestate.admindivision.model.dto.NeighborhoodDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * IAdminDivisionService
+ *
+ * @author 오동건
+ */
 public interface IAdminDivisionService {
 
   // 행정구역 조회

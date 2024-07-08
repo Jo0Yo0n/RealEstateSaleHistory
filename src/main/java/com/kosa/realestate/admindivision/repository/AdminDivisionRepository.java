@@ -8,6 +8,11 @@ import com.kosa.realestate.admindivision.model.entity.City;
 import com.kosa.realestate.admindivision.model.entity.District;
 import com.kosa.realestate.admindivision.model.entity.Neighborhood;
 
+/**
+ * AdminDivisionRepository
+ *
+ * @author 오동건
+ */
 @Mapper
 @Repository
 public interface AdminDivisionRepository {

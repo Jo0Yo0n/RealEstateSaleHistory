@@ -5,6 +5,11 @@ import com.kosa.realestate.favorites.model.dto.FavoriteDTO;
 import com.kosa.realestate.favorites.model.dto.FavoriteDetailListDTO;
 import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;
 
+/**
+ * IFavoriteService
+ *
+ * @author 오동건
+ */
 public interface IFavoriteService {
   
   // 즐겨찾기 되어 있는지 확인

@@ -19,6 +19,11 @@ import com.kosa.realestate.users.model.UserDTO;
 import com.kosa.realestate.users.service.IUserService;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * FavoriteController
+ *
+ * @author 오동건
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/favorites")

@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * ExceptionControllerAdvice
+ *
+ * @author 오동건
+ */
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 

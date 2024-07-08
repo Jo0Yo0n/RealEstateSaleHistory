@@ -8,6 +8,11 @@ import com.kosa.realestate.favorites.model.dto.FavoriteDTO;
 import com.kosa.realestate.favorites.model.dto.FavoriteDetailListDTO;
 import com.kosa.realestate.favorites.model.dto.FavoriteListDTO;   
 
+/**
+ * FavoriteRepostiory
+ *
+ * @author 오동건
+ */
 @Mapper
 @Repository
 public interface FavoriteRepostiory {

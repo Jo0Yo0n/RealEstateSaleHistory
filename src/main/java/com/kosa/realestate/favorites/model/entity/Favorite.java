@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Favorite
+ *
+ * @author 오동건
+ */
 @Getter
 @Setter
 @Builder

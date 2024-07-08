@@ -2,6 +2,11 @@ package com.kosa.realestate.exception;
 
 import lombok.Getter;
 
+/**
+ * GlobalException
+ *
+ * @author 오동건
+ */
 @Getter
 public class GlobalException extends RuntimeException {
 
